@@ -7,37 +7,42 @@
 </head>
 <body>
 
-    <h2>Step 1: The Input Zone</h2>
+    <h2>Step 1: The Input Zone (Multi-file enabled)</h2>
     
     <!-- 1. The Drag and Drop Area -->
     <div id="drop-zone" style="border: 2px dashed #999; padding: 60px; text-align: center; width: 400px; margin-bottom: 20px;">
-        Drag and drop your data file here<br><br>
-        <small>(Accepts .csv, .xlsx, .jpg, .png)</small>
+        Drag and drop your data files here<br><br>
+        <small>(Accepts multiple .csv, .xlsx, .jpg, .png)</small>
     </div>
 
-    <!-- 2. The Standard File Button -->
-    <label for="file-upload">Or choose a file manually: </label>
-    <input type="file" id="file-upload" accept=".csv, .xlsx, image/png, image/jpeg">
+    <!-- 2. The Standard File Button (Notice the "multiple" attribute added at the end) -->
+    <label for="file-upload">Or choose files manually: </label>
+    <input type="file" id="file-upload" accept=".csv, .xlsx, image/png, image/jpeg" multiple>
 
     <!-- 3. The Output Message -->
-    <p><strong>File ready for AI:</strong> <span id="file-name" style="color: blue;">None selected yet</span></p>
+    <p><strong>Files ready for AI:</strong></p>
+    <ul id="file-list" style="color: blue;">
+        <li>None selected yet</li>
+    </ul>
 
     <!-- The JavaScript Engine -->
     <script>
         const dropZone = document.getElementById('drop-zone');
         const fileInput = document.getElementById('file-upload');
-        const fileNameDisplay = document.getElementById('file-name');
+        const fileListDisplay = document.getElementById('file-list');
+        
+        // This array will hold all the files the user adds
+        let allUploadedFiles = [];
 
         // Handle file selection from the standard button
         fileInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            processFile(file);
+            processFiles(event.target.files);
         });
 
         // Prevent the browser from just opening the file when you drop it
         dropZone.addEventListener('dragover', function(event) {
             event.preventDefault();
-            dropZone.style.backgroundColor = '#f0f0f0'; // Slight color change on hover
+            dropZone.style.backgroundColor = '#f0f0f0';
         });
 
         dropZone.addEventListener('dragleave', function(event) {
@@ -51,20 +56,33 @@
             dropZone.style.backgroundColor = 'transparent';
             
             if (event.dataTransfer.files.length > 0) {
-                const file = event.dataTransfer.files[0];
-                processFile(file);
+                processFiles(event.dataTransfer.files);
             }
         });
 
-        // The master function that catches the file
-        function processFile(file) {
-            if (file) {
-                // Update the screen to show the file was caught successfully
-                fileNameDisplay.textContent = `${file.name} (Ready to analyze)`;
-                
-                // This is where Step 2 will happen. Right now it just logs to the console.
-                console.log("SUCCESS: We caught the file. Next step is sending this to the AI:", file);
+        // The new master function that catches MULTIPLE files
+        function processFiles(files) {
+            // Loop through the new files and add them to our main array
+            for (let i = 0; i < files.length; i++) {
+                allUploadedFiles.push(files[i]);
             }
+            
+            updateDisplay();
+        }
+
+        // Updates the list on the screen
+        function updateDisplay() {
+            // Clear out the "None selected yet" text
+            fileListDisplay.innerHTML = '';
+            
+            // Create a new bullet point for each file
+            allUploadedFiles.forEach(file => {
+                const li = document.createElement('li');
+                li.textContent = file.name;
+                fileListDisplay.appendChild(li);
+            });
+
+            console.log("Current files queued for AI:", allUploadedFiles);
         }
     </script>
 
