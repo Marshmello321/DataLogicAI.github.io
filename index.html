@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>AI Data Analysis</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Data Analyzer Engine</title>
 </head>
 <body>
-  <h1>Welcome to DataLogic AI!</h1>
-  <p>My professional data analysis website is coming soon.</p>
+
+    <h2>Step 1: The Input Zone</h2>
+    
+    <!-- 1. The Drag and Drop Area -->
+    <div id="drop-zone" style="border: 2px dashed #999; padding: 60px; text-align: center; width: 400px; margin-bottom: 20px;">
+        Drag and drop your data file here<br><br>
+        <small>(Accepts .csv, .xlsx, .jpg, .png)</small>
+    </div>
+
+    <!-- 2. The Standard File Button -->
+    <label for="file-upload">Or choose a file manually: </label>
+    <input type="file" id="file-upload" accept=".csv, .xlsx, image/png, image/jpeg">
+
+    <!-- 3. The Output Message -->
+    <p><strong>File ready for AI:</strong> <span id="file-name" style="color: blue;">None selected yet</span></p>
+
+    <!-- The JavaScript Engine -->
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-upload');
+        const fileNameDisplay = document.getElementById('file-name');
+
+        // Handle file selection from the standard button
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            processFile(file);
+        });
+
+        // Prevent the browser from just opening the file when you drop it
+        dropZone.addEventListener('dragover', function(event) {
+            event.preventDefault();
+            dropZone.style.backgroundColor = '#f0f0f0'; // Slight color change on hover
+        });
+
+        dropZone.addEventListener('dragleave', function(event) {
+            event.preventDefault();
+            dropZone.style.backgroundColor = 'transparent';
+        });
+
+        // Handle the actual drop event
+        dropZone.addEventListener('drop', function(event) {
+            event.preventDefault();
+            dropZone.style.backgroundColor = 'transparent';
+            
+            if (event.dataTransfer.files.length > 0) {
+                const file = event.dataTransfer.files[0];
+                processFile(file);
+            }
+        });
+
+        // The master function that catches the file
+        function processFile(file) {
+            if (file) {
+                // Update the screen to show the file was caught successfully
+                fileNameDisplay.textContent = `${file.name} (Ready to analyze)`;
+                
+                // This is where Step 2 will happen. Right now it just logs to the console.
+                console.log("SUCCESS: We caught the file. Next step is sending this to the AI:", file);
+            }
+        }
+    </script>
+
 </body>
 </html>
