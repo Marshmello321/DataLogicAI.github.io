@@ -17,6 +17,12 @@
             --border-color: #444746;
         }
 
+        /* --- CUSTOM DARK SCROLLBARS --- */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #444746; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #5f6368; }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color); color: var(--text-main);
@@ -40,18 +46,27 @@
         }
         .new-chat-btn:hover { background-color: rgba(255,255,255,0.05); }
         
-        .history-list { flex-grow: 1; overflow-y: auto; }
+        .history-list { flex-grow: 1; overflow-y: auto; padding-right: 4px; }
         .history-section-title { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin: 12px 0 8px 4px; letter-spacing: 0.5px; }
+        
         .history-item {
             padding: 10px 12px; border-radius: 8px; cursor: pointer; color: var(--text-muted);
             font-size: 13px; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center;
-            position: relative;
+            position: relative; flex-wrap: nowrap;
         }
         .history-item.active { background-color: rgba(255,255,255,0.1); color: var(--text-main); }
         .history-item:hover { background-color: rgba(255,255,255,0.05); color: var(--text-main); }
-        .history-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; margin-right: 8px; display: flex; align-items: center; gap: 6px; }
         
-        .history-options-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px 6px; border-radius: 4px; opacity: 0; display: flex; align-items: center;}
+        .history-title { 
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+            flex-grow: 1; min-width: 0; margin-right: 8px; display: flex; align-items: center; gap: 6px; 
+        }
+        
+        .history-options-btn { 
+            background: none; border: none; color: var(--text-muted); cursor: pointer; 
+            padding: 2px 6px; border-radius: 4px; opacity: 0; display: flex; align-items: center; 
+            flex-shrink: 0; /* Prevents button from being pushed off screen */
+        }
         .history-item:hover .history-options-btn { opacity: 1; }
         .history-options-btn:hover { background-color: rgba(255,255,255,0.1); color: var(--text-main); }
 
@@ -75,10 +90,10 @@
 
         .empty-state {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            flex-grow: 1; padding: 20px; text-align: center; margin-bottom: 80px;
+            flex-grow: 1; padding: 20px; text-align: center; margin-bottom: 80px; overflow-y: auto;
         }
         .empty-state h1 { font-size: 32px; margin-bottom: 32px; background: linear-gradient(90deg, #a8c7fa, #c58af9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .suggestions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 640px; width: 100%; }
+        .suggestions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 660px; width: 100%; }
         
         .suggestion-chip {
             background-color: var(--sidebar-bg); border: 1px solid var(--border-color);
@@ -131,7 +146,11 @@
         .remove-btn:hover { background: #ff4444; }
 
         .chat-bar { display: flex; align-items: flex-end; gap: 12px; }
-        textarea { flex-grow: 1; background: transparent; border: none; color: var(--text-main); font-size: 16px; resize: none; outline: none; max-height: 150px; min-height: 24px; padding: 10px 0; font-family: inherit; }
+        textarea { 
+            flex-grow: 1; background: transparent; border: none; color: var(--text-main); 
+            font-size: 16px; resize: none; outline: none; max-height: 200px; min-height: 24px; 
+            padding: 10px 0; font-family: inherit; overflow-y: auto;
+        }
         
         .icon-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; transition: 0.2s; }
         .icon-btn:hover { background-color: rgba(255,255,255,0.1); }
@@ -165,13 +184,13 @@
         <div style="width:40px;"></div>
     </header>
 
-    <!-- EMPTY STATE DASHBOARD (Professional Modes) -->
+    <!-- EMPTY STATE DASHBOARD -->
     <div class="empty-state" id="empty-state">
         <h1>Select Analysis Mode</h1>
         <div class="suggestions">
-            <div class="suggestion-chip" onclick="setPrompt('Extract all numerical data, totals, and key metrics from these files. Output the data in clean Markdown tables and use text-based ASCII bar charts (e.g., ██████ 60%) to visualize comparisons.')">
+            <div class="suggestion-chip" onclick="setPrompt('Extract all numerical data, totals, and key metrics from these files. Output the data in clean, structured Markdown tables and use text-based visual charts to make comparisons easy to read.')">
                 <div class="chip-title"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg> Data Extraction & Charting</div>
-                <div class="chip-desc">Force AI to draw ASCII bar charts and clean tables from your files.</div>
+                <div class="chip-desc">Extract numerical data into structured tables and visual charts.</div>
             </div>
             <div class="suggestion-chip" onclick="setPrompt('Perform a CTR (Click-Through Rate) & Thumbnail Audit. Analyze the visual hierarchy, contrast, and psychological hooks. Provide a structured breakdown and a final X/10 score.')">
                 <div class="chip-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> CTR & Thumbnail Audit</div>
@@ -317,7 +336,13 @@
     renderSidebar();
 
     // --- SUGGESTION CHIPS (Auto-Trigger Data Modes) ---
-    window.setPrompt = function(text) { document.getElementById('prompt-input').value = text; document.getElementById('prompt-input').focus(); }
+    window.setPrompt = function(text) { 
+        const input = document.getElementById('prompt-input');
+        input.value = text; 
+        input.style.height = 'auto'; 
+        input.style.height = (input.scrollHeight) + 'px';
+        input.focus(); 
+    }
 
     // --- FILE UPLOADS (Permanent Base64) ---
     const fileInput = document.getElementById('file-upload');
@@ -382,7 +407,13 @@
         document.getElementById('chat-container').appendChild(wrapper); scrollToBottom();
     }
 
-    window.editPrompt = function(el) { promptInput.value = decodeURIComponent(el.getAttribute('data-raw')); promptInput.focus(); }
+    window.editPrompt = function(el) { 
+        promptInput.value = decodeURIComponent(el.getAttribute('data-raw')); 
+        promptInput.style.height = 'auto'; 
+        promptInput.style.height = (promptInput.scrollHeight) + 'px';
+        promptInput.focus(); 
+    }
+    
     window.copyPrompt = function(el) { 
         navigator.clipboard.writeText(decodeURIComponent(el.getAttribute('data-raw')));
         const originalHtml = el.innerHTML;
@@ -402,10 +433,11 @@
         chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' });
     }
 
-    // --- SMOOTH ELEMENT REVEAL ANIMATION (FIXED 4) ---
+    // --- SMART SMOOTH ELEMENT REVEAL ANIMATION ---
     function smoothReveal(bubbleElement, rawMarkdown, onComplete) {
         bubbleElement.innerHTML = marked.parse(rawMarkdown);
         const elements = Array.from(bubbleElement.children);
+        const chatBox = document.getElementById('chat-container');
         
         if (elements.length === 0) { if(onComplete) onComplete(); return; }
 
@@ -418,11 +450,13 @@
         let delay = 0;
         elements.forEach((el, index) => {
             setTimeout(() => {
-                el.style.opacity = '1'; el.style.transform = 'translateY(0)';
-                scrollToBottom();
+                el.style.opacity = '1'; 
+                el.style.transform = 'translateY(0)';
+                // Gently track scroll with each new revealing block
+                chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
                 if (index === elements.length - 1 && onComplete) setTimeout(onComplete, 400);
             }, delay);
-            delay += 150; // Smooth 150ms cascade between paragraphs/tables
+            delay += 150; 
         });
     }
 
@@ -454,7 +488,7 @@
                 loadingBubble.innerHTML = `API Error: ${data.error || 'Request failed'}`; loadingBubble.style.color = '#ff4444';
             } else {
                 const rawMarkdown = data.candidates[0].content.parts[0].text;
-                // Run the buttery smooth cascade animation!
+                // Run the buttery smooth cascade animation with smart auto-scroll!
                 smoothReveal(loadingBubble, rawMarkdown, () => {
                     saveSession(userText, imagesToSave, marked.parse(rawMarkdown)); 
                 });
