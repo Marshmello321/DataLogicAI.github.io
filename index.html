@@ -3,156 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Data Analyzer Engine</title>
-</head>
-<body style="font-family: sans-serif; padding: 20px;">
+    <title>DataLogic AI - Multi-File Intelligence</title>
+    <!-- Marked library for parsing Markdown tables and headings -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
 
-    <h2>Step 1: The Input Zone (Multi-file enabled)</h2>
-    
-    <div id="drop-zone" style="border: 2px dashed #999; padding: 60px; text-align: center; width: 400px; margin-bottom: 20px;">
-        Drag and drop your data files here<br><br>
-        <small>(Accepts multiple .csv, .xlsx, .jpg, .png)</small>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin-top: 0;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        #drop-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: rgba(15, 23, 42, 0.5);
+        }
+
+        #drop-zone.dragover {
+            border-color: var(--accent);
+            background-color: rgba(56, 189, 248, 0.1);
+        }
+
+        .file-input-wrapper {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-btn {
+            background-color: #334155;
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .custom-file-btn:hover {
+            background-color: #475569;
+        }
+
+        #file-list {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0 0 0;
+        }
+
+        #file-list li {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: var(--accent);
+            border: 1px solid #334155;
+        }
+
+        .analyze-btn {
+            background-color: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+            margin-top: 16px;
+        }
+
+        .analyze-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        #loading {
+            display: none;
+            text-align: center;
+            color: var(--accent);
+            font-weight: 600;
+            padding: 16px;
+        }
+
+        #result-box {
+            display: none;
+            line-height: 1.6;
+        }
+
+        /* Markdown Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0f172a;
+            color: var(--accent);
+        }
+
+        td {
+            background-color: rgba(15, 23, 42, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>DataLogic AI</h1>
+    <p class="subtitle">Multi-file visual intelligence & data analysis engine.</p>
+
+    <div class="card">
+        <div id="drop-zone">
+            <strong>Drag and drop files here</strong>
+            <p style="color: var(--text-muted); font-size: 13px; margin: 6px 0 0 0;">Accepts images (.png, .jpg) & datasets</p>
+        </div>
+
+        <div class="file-input-wrapper">
+            <label for="file-upload" class="custom-file-btn">Browse Files</label>
+            <span id="file-count" style="color: var(--text-muted); font-size: 14px;">No files selected</span>
+            <input type="file" id="file-upload" accept=".csv, .xlsx, image/png, image/jpeg" multiple>
+        </div>
+
+        <ul id="file-list"></ul>
+
+        <button id="analyze-btn" class="analyze-btn">Analyze with AI</button>
     </div>
 
-    <label for="file-upload">Or choose files manually: </label>
-    <input type="file" id="file-upload" accept=".csv, .xlsx, image/png, image/jpeg" multiple>
+    <div id="loading">⚡ Analyzing files with Gemini... Please wait...</div>
 
-    <p><strong>Files ready for AI:</strong></p>
-    <ul id="file-list" style="color: blue;">
-        <li>None selected yet</li>
-    </ul>
+    <div id="result-container" class="card" style="display: none;">
+        <h3 style="margin-top: 0; color: var(--accent);">Analysis Report</h3>
+        <div id="result-box"></div>
+    </div>
+</div>
 
-    <button id="analyze-btn" style="padding: 10px 20px; font-size: 16px; margin-top: 10px; cursor: pointer;">
-        Analyze Files
-    </button>
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-upload');
+    const fileListDisplay = document.getElementById('file-list');
+    const fileCount = document.getElementById('file-count');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const loading = document.getElementById('loading');
+    const resultContainer = document.getElementById('result-container');
+    const resultBox = document.getElementById('result-box');
     
-    <div id="loading" style="display: none; color: orange; margin-top: 15px; font-weight: bold;">Sending to AI... Please wait...</div>
-    <div id="result-box" style="margin-top: 20px; padding: 15px; border: 1px solid #ccc; background: #f9f9f9; display: none; white-space: pre-wrap; width: 600px;"></div>
+    let allUploadedFiles = [];
 
-    <script>
-        const dropZone = document.getElementById('drop-zone');
-        const fileInput = document.getElementById('file-upload');
-        const fileListDisplay = document.getElementById('file-list');
-        const analyzeBtn = document.getElementById('analyze-btn');
-        const loading = document.getElementById('loading');
-        const resultBox = document.getElementById('result-box');
-        
-        let allUploadedFiles = [];
+    dropZone.addEventListener('click', () => fileInput.click());
 
-        fileInput.addEventListener('change', (e) => processFiles(e.target.files));
-        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.backgroundColor = '#f0f0f0'; });
-        dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.style.backgroundColor = 'transparent'; });
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.style.backgroundColor = 'transparent';
-            if (e.dataTransfer.files.length > 0) processFiles(e.dataTransfer.files);
-        });
-
-        function processFiles(files) {
-            for (let i = 0; i < files.length; i++) allUploadedFiles.push(files[i]);
-            updateDisplay();
-        }
-
-        function updateDisplay() {
-            fileListDisplay.innerHTML = '';
-            allUploadedFiles.forEach(file => {
-                const li = document.createElement('li');
-                li.textContent = file.name;
-                fileListDisplay.appendChild(li);
-            });
-        }
-
-       async function fileToGenerativePart(file) {
-    return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image();
-            img.onload = () => {
-                const maxDim = 1024;
-                let width = img.width;
-                let height = img.height;
-
-                if (width > maxDim || height > maxDim) {
-                    if (width > height) {
-                        height = Math.round((height * maxDim) / width);
-                        width = maxDim;
-                    } else {
-                        width = Math.round((width * maxDim) / height);
-                        height = maxDim;
-                    }
-                }
-
-                const canvas = document.createElement('canvas');
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-
-                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                const base64Data = compressedDataUrl.split(',')[1];
-
-                resolve({
-                    inlineData: { data: base64Data, mimeType: 'image/jpeg' }
-                });
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+    fileInput.addEventListener('change', (e) => processFiles(e.target.files));
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) processFiles(e.dataTransfer.files);
     });
-}
-analyzeBtn.addEventListener('click', async () => {
-            if (allUploadedFiles.length === 0) {
-                alert("Please upload at least one file first!");
-                return;
-            }
 
-            // PASTE YOUR KEY HERE AGAIN
-            
-            
-            loading.style.display = "block";
-            resultBox.style.display = "none";
+    function processFiles(files) {
+        for (let i = 0; i < files.length; i++) allUploadedFiles.push(files[i]);
+        updateDisplay();
+    }
 
-            try {
-                const imageParts = await Promise.all(allUploadedFiles.map(fileToGenerativePart));
-                const prompt = "Act as an expert analyst. Look at these images and tell me exactly what they contain. If they are YouTube thumbnails, rate them out of 10 for how eye-catching they are and suggest one improvement.";
-
-                // FIX 1: We are using a safer way to combine the URL and the API key 
-                // We also updated the model name to 'gemini-1.5-flash-latest' to prevent 404 errors
-              const apiUrl = "/api/analyze";
-                const response = await fetch(apiUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: prompt }, ...imageParts]
-                        }]
-                    })
-                });
-
-                const data = await response.json();
-                
-                // FIX 2: If Google throws an error, print the exact error to the screen!
-                if (!response.ok) {
-                    console.error("Google API Error:", data);
-                    resultBox.textContent = "API Error: " + (data.error?.message || "Unknown error occurred.");
-                    resultBox.style.display = "block";
-                    return; // Stop the code here so it doesn't crash
-                }
-
-                // If it succeeds, show the answer
-                const aiText = data.candidates[0].content.parts[0].text;
-                resultBox.textContent = aiText;
-                resultBox.style.display = "block";
-
-            } catch (error) {
-                console.error("Crash Error:", error);
-                resultBox.textContent = "Something crashed. Check the console for details.";
-                resultBox.style.display = "block";
-            } finally {
-                loading.style.display = "none";
-            }
+    function updateDisplay() {
+        fileListDisplay.innerHTML = '';
+        fileCount.textContent = allUploadedFiles.length === 1 ? '1 file selected' : `${allUploadedFiles.length} files selected`;
+        allUploadedFiles.forEach(file => {
+            const li = document.createElement('li');
+            li.textContent = '📄 ' + file.name;
+            fileListDisplay.appendChild(li);
         });
+    }
 
+    async function fileToGenerativePart(file) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const maxDim = 1024;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        } else {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    const base64Data = compressedDataUrl.split(',')[1];
+
+                    resolve({
+                        inlineData: { data: base64Data, mimeType: 'image/jpeg' }
+                    });
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    analyzeBtn.addEventListener('click', async () => {
+        if (allUploadedFiles.length === 0) {
+            alert("Please upload at least one file first!");
+            return;
+        }
+
+        loading.style.display = "block";
+        resultContainer.style.display = "none";
+
+        try {
+            const imageParts = await Promise.all(allUploadedFiles.map(fileToGenerativePart));
+            const prompt = "Act as an expert data and media analyst. Provide a structured markdown table and concise actionable feedback analyzing the provided files.";
+
+            const response = await fetch("/api/analyze", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: prompt }, ...imageParts]
+                    }]
+                })
+            });
+
+            const data = await response.json();
+            
+            if (!response.ok) {
+                resultBox.innerHTML = `<p style="color: #ef4444;">API Error: ${data.error || 'Request failed'}</p>`;
+            } else {
+                const rawMarkdown = data.candidates[0].content.parts[0].text;
+                resultBox.innerHTML = marked.parse(rawMarkdown);
+            }
+
+            resultContainer.style.display = "block";
+            resultBox.style.display = "block";
+
+        } catch (error) {
+            console.error("Crash Error:", error);
+            resultBox.innerHTML = `<p style="color: #ef4444;">Something went wrong. Please try again.</p>`;
+            resultContainer.style.display = "block";
+            resultBox.style.display = "block";
+        } finally {
+            loading.style.display = "none";
+        }
+    });
 </script>
 </body>
 </html>
