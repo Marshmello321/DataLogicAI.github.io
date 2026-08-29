@@ -23,6 +23,8 @@
             margin: 0; display: flex; height: 100vh; overflow: hidden;
         }
 
+        svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
         /* --- SIDEBAR & HISTORY MENU --- */
         .sidebar {
             width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color);
@@ -47,9 +49,9 @@
         }
         .history-item.active { background-color: rgba(255,255,255,0.1); color: var(--text-main); }
         .history-item:hover { background-color: rgba(255,255,255,0.05); color: var(--text-main); }
-        .history-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; margin-right: 8px; }
+        .history-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; margin-right: 8px; display: flex; align-items: center; gap: 6px; }
         
-        .history-options-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px 6px; border-radius: 4px; opacity: 0; }
+        .history-options-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px 6px; border-radius: 4px; opacity: 0; display: flex; align-items: center;}
         .history-item:hover .history-options-btn { opacity: 1; }
         .history-options-btn:hover { background-color: rgba(255,255,255,0.1); color: var(--text-main); }
 
@@ -64,24 +66,29 @@
             background: none; border: none; width: 100%; text-align: left; cursor: pointer; font-size: 13px;
         }
         .history-dropdown button:hover { background-color: rgba(255,255,255,0.1); }
+        .history-dropdown button svg { width: 14px; height: 14px; }
 
         /* --- MAIN CONTENT & EMPTY STATE --- */
         .main-content { flex-grow: 1; display: flex; flex-direction: column; position: relative; width: 100%; }
         .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; }
-        .menu-toggle { background: none; border: none; color: var(--text-main); cursor: pointer; padding: 8px; }
+        .menu-toggle { background: none; border: none; color: var(--text-main); cursor: pointer; padding: 8px; display: flex; align-items: center; }
 
         .empty-state {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             flex-grow: 1; padding: 20px; text-align: center; margin-bottom: 80px;
         }
         .empty-state h1 { font-size: 32px; margin-bottom: 32px; background: linear-gradient(90deg, #a8c7fa, #c58af9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .suggestions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; max-width: 600px; }
+        .suggestions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 640px; width: 100%; }
+        
         .suggestion-chip {
             background-color: var(--sidebar-bg); border: 1px solid var(--border-color);
-            padding: 12px 20px; border-radius: 12px; cursor: pointer; color: var(--text-muted);
-            transition: 0.2s; font-size: 14px; flex: 1 1 calc(50% - 12px); min-width: 200px; text-align: left;
+            padding: 16px; border-radius: 12px; cursor: pointer; color: var(--text-muted);
+            transition: 0.2s; text-align: left; display: flex; flex-direction: column; gap: 8px;
         }
-        .suggestion-chip:hover { background-color: rgba(255,255,255,0.05); color: var(--text-main); border-color: var(--accent); }
+        .suggestion-chip:hover { background-color: rgba(255,255,255,0.05); border-color: var(--accent); }
+        .chip-title { display: flex; align-items: center; gap: 8px; color: var(--text-main); font-weight: 600; font-size: 14px; }
+        .chip-title svg { width: 18px; height: 18px; color: var(--accent); }
+        .chip-desc { font-size: 12px; line-height: 1.4; }
 
         /* --- CHAT STREAM --- */
         .chat-container {
@@ -120,7 +127,7 @@
         .file-previews:empty { display: none; margin-bottom: 0; }
         .preview-card { position: relative; width: 64px; height: 64px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); }
         .preview-card img { width: 100%; height: 100%; object-fit: cover; }
-        .remove-btn { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+        .remove-btn { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
         .remove-btn:hover { background: #ff4444; }
 
         .chat-bar { display: flex; align-items: flex-end; gap: 12px; }
@@ -131,6 +138,7 @@
         .send-btn { background-color: #0b57d0; color: #ffffff; margin-bottom: 2px; }
         .send-btn:hover { background-color: #1b6ef3; }
 
+        /* Rendered Markdown Styling */
         table { width: 100%; border-collapse: collapse; margin: 16px 0; }
         th, td { border: 1px solid var(--border-color); padding: 10px 14px; text-align: left; }
         th { background-color: #282a2c; color: var(--accent); }
@@ -141,36 +149,41 @@
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
     <button class="new-chat-btn" onclick="startNewChat()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         New Chat
     </button>
-    <div class="history-list" id="history-list">
-        <!-- Dynamic History Injected Here -->
-    </div>
+    <div class="history-list" id="history-list"></div>
 </aside>
 
 <!-- MAIN CONTENT -->
 <main class="main-content">
     <header class="header">
         <button class="menu-toggle" id="toggle-sidebar">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
         <h2 style="margin:0; font-size: 18px; color: var(--text-muted);">DataLogic AI</h2>
-        <div style="width:40px;"></div> <!-- Spacer for flex alignment -->
+        <div style="width:40px;"></div>
     </header>
 
-    <!-- EMPTY STATE DASHBOARD -->
+    <!-- EMPTY STATE DASHBOARD (Professional Modes) -->
     <div class="empty-state" id="empty-state">
-        <h1>What would you like to analyze today?</h1>
+        <h1>Select Analysis Mode</h1>
         <div class="suggestions">
-            <div class="suggestion-chip" onclick="setPrompt('Analyze these two YouTube thumbnails and tell me which one will have a higher CTR.')">
-                <strong style="color:var(--text-main);">🖼️ Compare Thumbnails</strong><br>Find out which image drives more clicks.
+            <div class="suggestion-chip" onclick="setPrompt('Extract all numerical data, totals, and key metrics from these files. Output the data in clean Markdown tables and use text-based ASCII bar charts (e.g., ██████ 60%) to visualize comparisons.')">
+                <div class="chip-title"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg> Data Extraction & Charting</div>
+                <div class="chip-desc">Force AI to draw ASCII bar charts and clean tables from your files.</div>
             </div>
-            <div class="suggestion-chip" onclick="setPrompt('Extract all the text, numbers, and key data from this document into a table.')">
-                <strong style="color:var(--text-main);">📄 Extract Data</strong><br>Pull clean tables from screenshots or invoices.
+            <div class="suggestion-chip" onclick="setPrompt('Perform a CTR (Click-Through Rate) & Thumbnail Audit. Analyze the visual hierarchy, contrast, and psychological hooks. Provide a structured breakdown and a final X/10 score.')">
+                <div class="chip-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> CTR & Thumbnail Audit</div>
+                <div class="chip-desc">Deep psychological and visual breakdown to maximize clicks.</div>
             </div>
-            <div class="suggestion-chip" onclick="setPrompt('Act as an expert. Give me 3 creative ways to improve this image.')">
-                <strong style="color:var(--text-main);">🎨 Creative Critique</strong><br>Get actionable feedback on your designs.
+            <div class="suggestion-chip" onclick="setPrompt('Provide an Executive Summary of this document. Condense the core arguments into 3-5 high-level bullet points suitable for a busy executive.')">
+                <div class="chip-title"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg> Executive Summary</div>
+                <div class="chip-desc">Condense dense screenshots or text into quick bullet points.</div>
+            </div>
+            <div class="suggestion-chip" onclick="setPrompt('Perform a UI/UX Design Review on this image. Identify friction points, evaluate color theory and spacing, and provide 3 actionable recommendations to improve user experience.')">
+                <div class="chip-title"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> UI/UX Design Review</div>
+                <div class="chip-desc">Identify layout flaws and get expert design recommendations.</div>
             </div>
         </div>
     </div>
@@ -183,18 +196,25 @@
         <div id="file-previews" class="file-previews"></div>
         <div class="chat-bar">
             <input type="file" id="file-upload" accept=".csv, .xlsx, image/png, image/jpeg" multiple style="display: none;">
-            <button id="add-file-btn" class="icon-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7h14"/></svg></button>
-            <textarea id="prompt-input" rows="1" placeholder="Ask a question or upload files..."></textarea>
-            <button id="send-btn" class="icon-btn send-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+            <button id="add-file-btn" class="icon-btn"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg></button>
+            <textarea id="prompt-input" rows="1" placeholder="Choose a mode above, or type a custom question..."></textarea>
+            <button id="send-btn" class="icon-btn send-btn"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
         </div>
     </div>
 </main>
 
 <script>
-    // --- ICONS ---
-    const editIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
-    const copyIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
-    const checkIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+    // --- PREMIUM SVG ICONS ---
+    const svgs = {
+        edit: `<svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`,
+        copy: `<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`,
+        check: `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
+        pin: `<svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>`,
+        share: `<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>`,
+        trash: `<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`,
+        dots: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>`,
+        x: `<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`
+    };
 
     // --- STATE & HISTORY MANAGEMENT ---
     let sessions = JSON.parse(localStorage.getItem('dl_sessions')) || [];
@@ -207,7 +227,6 @@
                 const title = userText ? userText.split(' ').slice(0, 4).join(' ') + '...' : 'New Analysis';
                 sessions.unshift({ id: currentSessionId, title: title, pinned: false, messages: [] });
             }
-            
             const session = sessions.find(s => s.id === currentSessionId);
             if (session) {
                 session.messages.push({ role: 'user', text: userText, images: base64Images });
@@ -216,8 +235,7 @@
                 renderSidebar();
             }
         } catch (e) {
-            console.warn("Local storage full! Clearing old chats.");
-            if(sessions.length > 3) sessions.pop(); // delete oldest to make room for images
+            if(sessions.length > 2) sessions.pop(); // Prevent storage limit crashes
             localStorage.setItem('dl_sessions', JSON.stringify(sessions));
         }
     }
@@ -225,7 +243,6 @@
     function renderSidebar() {
         const list = document.getElementById('history-list');
         list.innerHTML = '';
-        
         let pinned = sessions.filter(s => s.pinned);
         let unpinned = sessions.filter(s => !s.pinned);
 
@@ -241,13 +258,13 @@
         const item = document.createElement('div');
         item.className = `history-item ${session.id === currentSessionId ? 'active' : ''}`;
         item.innerHTML = `
-            <span class="history-title">${session.title}</span>
-            <button class="history-options-btn" onclick="toggleMenu('${session.id}', event)">⋮</button>
+            <span class="history-title">${session.pinned ? svgs.pin : ''} ${session.title}</span>
+            <button class="history-options-btn" onclick="toggleMenu('${session.id}', event)">${svgs.dots}</button>
             <div class="history-dropdown" id="menu-${session.id}">
-                <button onclick="actionChat('${session.id}', 'pin', event)">📌 ${session.pinned ? 'Unpin' : 'Pin Chat'}</button>
-                <button onclick="actionChat('${session.id}', 'rename', event)">✏️ Rename</button>
-                <button onclick="alert('Share URL generated!')">🔗 Share</button>
-                <button onclick="actionChat('${session.id}', 'delete', event)" style="color:#ff4444;">🗑️ Delete</button>
+                <button onclick="actionChat('${session.id}', 'pin', event)">${svgs.pin} ${session.pinned ? 'Unpin Chat' : 'Pin Chat'}</button>
+                <button onclick="actionChat('${session.id}', 'rename', event)">${svgs.edit} Rename</button>
+                <button onclick="alert('Share URL generated!')">${svgs.share} Share</button>
+                <button onclick="actionChat('${session.id}', 'delete', event)" style="color:#ff4444;">${svgs.trash} Delete</button>
             </div>
         `;
         item.addEventListener('click', () => loadSession(session.id));
@@ -263,73 +280,56 @@
     window.actionChat = function(id, action, event) {
         event.stopPropagation();
         const session = sessions.find(s => s.id === id);
-        if (action === 'delete') {
-            sessions = sessions.filter(s => s.id !== id);
-            if (currentSessionId === id) startNewChat();
-        } else if (action === 'pin') {
-            session.pinned = !session.pinned;
-        } else if (action === 'rename') {
-            const newName = prompt("Rename chat:", session.title);
-            if (newName) session.title = newName;
-        }
-        localStorage.setItem('dl_sessions', JSON.stringify(sessions));
-        renderSidebar();
+        if (action === 'delete') { sessions = sessions.filter(s => s.id !== id); if (currentSessionId === id) startNewChat(); } 
+        else if (action === 'pin') session.pinned = !session.pinned;
+        else if (action === 'rename') { const newName = prompt("Rename chat:", session.title); if (newName) session.title = newName; }
+        localStorage.setItem('dl_sessions', JSON.stringify(sessions)); renderSidebar();
     }
-
     window.onclick = function() { document.querySelectorAll('.history-dropdown').forEach(d => d.classList.remove('show')); }
 
     function startNewChat() {
         currentSessionId = null;
-        document.getElementById('chat-container').innerHTML = '';
-        document.getElementById('chat-container').style.display = 'none';
+        document.getElementById('chat-container').innerHTML = ''; document.getElementById('chat-container').style.display = 'none';
         document.getElementById('empty-state').style.display = 'flex';
-        allUploadedFiles = []; updateDisplay();
-        renderSidebar();
+        allUploadedFiles = []; updateDisplay(); renderSidebar();
     }
 
     function loadSession(id) {
-        currentSessionId = id;
-        const session = sessions.find(s => s.id === id);
+        currentSessionId = id; const session = sessions.find(s => s.id === id);
         document.getElementById('empty-state').style.display = 'none';
         const chatBox = document.getElementById('chat-container');
-        chatBox.style.display = 'flex';
-        chatBox.innerHTML = '';
-        
+        chatBox.style.display = 'flex'; chatBox.innerHTML = '';
         if (session) {
             session.messages.forEach(msg => {
                 if (msg.role === 'user') appendUserMessage(msg.text, msg.images || []);
-                if (msg.role === 'ai') appendAIMessage(msg.text, false);
+                if (msg.role === 'ai') {
+                    const wrap = document.createElement('div'); wrap.className = 'message-wrapper ai-message';
+                    wrap.innerHTML = `<div class="bubble ai-bubble">${msg.text}</div>`;
+                    chatBox.appendChild(wrap);
+                }
             });
         }
-        renderSidebar();
+        renderSidebar(); scrollToBottom();
         if (window.innerWidth < 768) document.getElementById('sidebar').classList.add('hidden');
     }
 
-    // --- UI SETUP ---
     document.getElementById('toggle-sidebar').addEventListener('click', () => { document.getElementById('sidebar').classList.toggle('hidden'); });
     renderSidebar();
 
-    // --- SUGGESTION CHIPS ---
-    window.setPrompt = function(text) {
-        document.getElementById('prompt-input').value = text;
-        document.getElementById('prompt-input').focus();
-    }
+    // --- SUGGESTION CHIPS (Auto-Trigger Data Modes) ---
+    window.setPrompt = function(text) { document.getElementById('prompt-input').value = text; document.getElementById('prompt-input').focus(); }
 
-    // --- FILE UPLOADS (Base64) ---
+    // --- FILE UPLOADS (Permanent Base64) ---
     const fileInput = document.getElementById('file-upload');
     const filePreviews = document.getElementById('file-previews');
     const promptInput = document.getElementById('prompt-input');
-    
-    let allUploadedFiles = []; // holds { dataUrl, mimeType }
+    let allUploadedFiles = []; 
 
     promptInput.addEventListener('input', function() { this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px'; });
     document.getElementById('add-file-btn').addEventListener('click', () => fileInput.click());
 
     fileInput.addEventListener('change', async (e) => {
-        for (let i = 0; i < e.target.files.length; i++) {
-            const fileData = await compressImage(e.target.files[i]);
-            allUploadedFiles.push(fileData);
-        }
+        for (let i = 0; i < e.target.files.length; i++) allUploadedFiles.push(await compressImage(e.target.files[i]));
         updateDisplay();
     });
 
@@ -342,8 +342,7 @@
                     const canvas = document.createElement('canvas');
                     let w = img.width, h = img.height;
                     if (w > 800 || h > 800) { if (w > h) { h = Math.round(h * 800 / w); w = 800; } else { w = Math.round(w * 800 / h); h = 800; } }
-                    canvas.width = w; canvas.height = h;
-                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                     const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
                     resolve({ dataUrl: dataUrl, base64: dataUrl.split(',')[1], mimeType: 'image/jpeg' });
                 };
@@ -357,11 +356,10 @@
         filePreviews.innerHTML = '';
         allUploadedFiles.forEach((file, index) => {
             const card = document.createElement('div'); card.className = 'preview-card';
-            card.innerHTML = `<img src="${file.dataUrl}"><button class="remove-btn" onclick="removeFile(${index})">✕</button>`;
+            card.innerHTML = `<img src="${file.dataUrl}"><button class="remove-btn" onclick="removeFile(${index})">${svgs.x}</button>`;
             filePreviews.appendChild(card);
         });
     }
-
     window.removeFile = function(index) { allUploadedFiles.splice(index, 1); updateDisplay(); }
 
     // --- CHAT RENDERING ---
@@ -369,8 +367,7 @@
         document.getElementById('empty-state').style.display = 'none';
         document.getElementById('chat-container').style.display = 'flex';
         
-        const wrapper = document.createElement('div');
-        wrapper.className = 'message-wrapper user-message';
+        const wrapper = document.createElement('div'); wrapper.className = 'message-wrapper user-message';
         let imagesHtml = imgUrls.length > 0 ? `<div class="chat-images">` + imgUrls.map(url => `<img src="${url}" class="chat-img">`).join('') + `</div>` : '';
         const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         
@@ -378,54 +375,55 @@
             ${imagesHtml}
             <div class="bubble user-bubble">${safeText}</div>
             <div class="message-actions">
-                <span class="action-link" onclick="editPrompt(this)" data-raw="${encodeURIComponent(text)}">${editIcon} Edit</span>
-                <span class="action-link" onclick="copyPrompt(this)" data-raw="${encodeURIComponent(text)}">${copyIcon} Copy</span>
+                <span class="action-link" onclick="editPrompt(this)" data-raw="${encodeURIComponent(text)}">${svgs.edit} Edit</span>
+                <span class="action-link" onclick="copyPrompt(this)" data-raw="${encodeURIComponent(text)}">${svgs.copy} Copy</span>
             </div>
         `;
-        document.getElementById('chat-container').appendChild(wrapper);
-        scrollToBottom();
+        document.getElementById('chat-container').appendChild(wrapper); scrollToBottom();
     }
 
     window.editPrompt = function(el) { promptInput.value = decodeURIComponent(el.getAttribute('data-raw')); promptInput.focus(); }
-    
     window.copyPrompt = function(el) { 
         navigator.clipboard.writeText(decodeURIComponent(el.getAttribute('data-raw')));
         const originalHtml = el.innerHTML;
-        el.innerHTML = `${checkIcon} Copied!`; el.classList.add('copied');
+        el.innerHTML = `${svgs.check} Copied!`; el.classList.add('copied');
         setTimeout(() => { el.innerHTML = originalHtml; el.classList.remove('copied'); }, 2000);
     }
 
     function appendAIMessage(htmlContent, isLoading = false) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'message-wrapper ai-message';
+        const wrapper = document.createElement('div'); wrapper.className = 'message-wrapper ai-message';
         wrapper.innerHTML = `<div class="bubble ai-bubble">${htmlContent}</div>`;
-        document.getElementById('chat-container').appendChild(wrapper);
-        scrollToBottom();
+        document.getElementById('chat-container').appendChild(wrapper); scrollToBottom();
         return wrapper.querySelector('.ai-bubble');
     }
 
     function scrollToBottom() {
         const chat = document.getElementById('chat-container');
-        chat.scrollTop = chat.scrollHeight;
+        chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' });
     }
 
-    // --- STREAMING ANIMATION ---
-    function streamText(bubbleElement, rawMarkdown, onComplete) {
-        let currentLength = 0;
-        const chunkSize = 5; // Characters per frame
+    // --- SMOOTH ELEMENT REVEAL ANIMATION (FIXED 4) ---
+    function smoothReveal(bubbleElement, rawMarkdown, onComplete) {
+        bubbleElement.innerHTML = marked.parse(rawMarkdown);
+        const elements = Array.from(bubbleElement.children);
         
-        const interval = setInterval(() => {
-            currentLength += chunkSize;
-            if (currentLength >= rawMarkdown.length) {
-                currentLength = rawMarkdown.length;
-                clearInterval(interval);
-                bubbleElement.innerHTML = marked.parse(rawMarkdown); // final clean parse
-                if(onComplete) onComplete();
-            } else {
-                bubbleElement.innerHTML = marked.parse(rawMarkdown.substring(0, currentLength) + '▌');
-            }
-            scrollToBottom();
-        }, 15); // Milliseconds per frame
+        if (elements.length === 0) { if(onComplete) onComplete(); return; }
+
+        elements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(15px)';
+            el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        });
+
+        let delay = 0;
+        elements.forEach((el, index) => {
+            setTimeout(() => {
+                el.style.opacity = '1'; el.style.transform = 'translateY(0)';
+                scrollToBottom();
+                if (index === elements.length - 1 && onComplete) setTimeout(onComplete, 400);
+            }, delay);
+            delay += 150; // Smooth 150ms cascade between paragraphs/tables
+        });
     }
 
     // --- SEND API REQUEST ---
@@ -438,11 +436,9 @@
         const imagesToSend = allUploadedFiles.map(f => ({ inlineData: { data: f.base64, mimeType: f.mimeType } }));
         
         appendUserMessage(userText, imagesToSave);
-        
-        allUploadedFiles = []; updateDisplay(); 
-        promptInput.value = ''; promptInput.style.height = 'auto';
+        allUploadedFiles = []; updateDisplay(); promptInput.value = ''; promptInput.style.height = 'auto';
 
-        const loadingBubble = appendAIMessage(`<div class="spinner"></div> <span>Analyzing data...</span>`, true);
+        const loadingBubble = appendAIMessage(`<div class="spinner"></div> <span style="color:var(--accent); font-weight:500;">Analyzing data...</span>`, true);
 
         try {
             let contents = [{ parts: [{ text: userText }] }];
@@ -455,18 +451,16 @@
             const data = await response.json();
             
             if (!response.ok) {
-                loadingBubble.innerHTML = `API Error: ${data.error || 'Request failed'}`;
-                loadingBubble.style.color = '#ff4444';
+                loadingBubble.innerHTML = `API Error: ${data.error || 'Request failed'}`; loadingBubble.style.color = '#ff4444';
             } else {
                 const rawMarkdown = data.candidates[0].content.parts[0].text;
-                // Run the streaming animation!
-                streamText(loadingBubble, rawMarkdown, () => {
+                // Run the buttery smooth cascade animation!
+                smoothReveal(loadingBubble, rawMarkdown, () => {
                     saveSession(userText, imagesToSave, marked.parse(rawMarkdown)); 
                 });
             }
         } catch (error) {
-            loadingBubble.innerHTML = `Something went wrong. Check console.`;
-            loadingBubble.style.color = '#ff4444';
+            loadingBubble.innerHTML = `Something went wrong. Check console.`; loadingBubble.style.color = '#ff4444';
         }
     });
 
