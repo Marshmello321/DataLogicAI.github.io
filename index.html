@@ -8,7 +8,9 @@
     <style>
         :root {
             --bg-color: #131314;
+            --sidebar-bg: #1e1f20;
             --bar-bg: #1e1f20;
+            --user-bubble: #282a2c;
             --accent: #a8c7fa;
             --text-main: #e3e3e3;
             --text-muted: #c4c7c5;
@@ -20,235 +22,350 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
-            padding: 40px 20px 120px 20px; /* Extra bottom padding for the fixed bar */
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- IDEA 2: LEFT SIDEBAR --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+            position: absolute;
+            height: 100%;
+        }
+
+        .new-chat-btn {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .new-chat-btn:hover { background-color: rgba(255,255,255,0.05); }
+        
+        .history-list { margin-top: 24px; flex-grow: 1; overflow-y: auto; }
+        .history-item { padding: 10px; border-radius: 8px; cursor: pointer; color: var(--text-muted); font-size: 13px; margin-bottom: 4px; }
+        .history-item:hover { background-color: rgba(255,255,255,0.05); }
+
+        /* --- MAIN CHAT AREA --- */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .menu-toggle {
+            background: none; border: none; color: var(--text-main); cursor: pointer; padding: 8px;
+        }
+
+        /* --- IDEA 4: 3-DOTS EXPORT MENU --- */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; right: 0; background-color: var(--bar-bg);
+            min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5); z-index: 1;
+            border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden;
+        }
+        .dropdown-content button {
+            color: var(--text-main); padding: 12px 16px; text-decoration: none; display: block;
+            background: none; border: none; width: 100%; text-align: left; cursor: pointer;
+        }
+        .dropdown-content button:hover { background-color: rgba(255,255,255,0.1); }
+        .show { display: block; }
+
+        /* --- IDEA 3 & 5: CHAT STREAM & BUBBLES --- */
+        .chat-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px 20px 140px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .container {
+        .message-wrapper { width: 100%; max-width: 800px; display: flex; flex-direction: column; margin-bottom: 32px; }
+        
+        .user-message { align-items: flex-end; }
+        .ai-message { align-items: flex-start; }
+
+        .bubble {
+            padding: 16px 20px;
+            border-radius: 20px;
+            max-width: 90%;
+            line-height: 1.6;
+        }
+
+        .user-bubble {
+            background-color: var(--user-bubble);
+            border-bottom-right-radius: 4px;
+            color: var(--text-main);
+        }
+
+        .ai-bubble {
+            background-color: transparent;
+            color: var(--text-main);
             width: 100%;
-            max-width: 800px;
-            margin-bottom: 40px;
         }
 
-        h1 {
-            font-size: 28px;
-            background: linear-gradient(90deg, #a8c7fa, #c58af9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-            text-align: center;
+        .message-actions {
+            display: flex; gap: 12px; margin-top: 8px; color: var(--text-muted); font-size: 12px;
         }
+        .action-link { cursor: pointer; display: flex; align-items: center; gap: 4px; transition: color 0.2s; }
+        .action-link:hover { color: var(--accent); }
 
-        p.subtitle {
-            color: var(--text-muted);
-            text-align: center;
-            margin-bottom: 40px;
-        }
+        .chat-images { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+        .chat-img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); }
 
-        /* The Gemini-Style Input Area */
+        /* --- IDEA 1: INPUT BAR & SQUARE PREVIEWS --- */
         .input-wrapper {
-            position: fixed;
-            bottom: 30px;
-            width: 100%;
-            max-width: 800px;
+            position: absolute;
+            bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 40px); max-width: 800px;
             background-color: var(--bar-bg);
             border-radius: 24px;
             padding: 12px 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
+            display: flex; flex-direction: column;
         }
 
-        .file-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 8px;
+        .file-previews { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
+        .file-previews:empty { display: none; }
+        
+        .preview-card {
+            position: relative; width: 64px; height: 64px; border-radius: 8px; overflow: hidden;
+            border: 1px solid var(--border-color);
         }
+        .preview-card img { width: 100%; height: 100%; object-fit: cover; }
+        .remove-btn {
+            position: absolute; top: -4px; right: -4px; background: #333; color: white;
+            border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 10px;
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
+        }
+        .remove-btn:hover { background: #ff4444; }
 
-        .file-chips:empty {
-            display: none;
-            margin-bottom: 0;
-        }
-
-        .chip {
-            background-color: #333537;
-            color: var(--text-main);
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .chat-bar {
-            display: flex;
-            align-items: flex-end;
-            gap: 12px;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-
-        .icon-btn:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
-
-        .send-btn {
-            background-color: #0b57d0;
-            color: #ffffff;
-            margin-bottom: 2px;
-        }
-
-        .send-btn:hover {
-            background-color: #1b6ef3;
-        }
-
-        textarea {
-            flex-grow: 1;
-            background: transparent;
-            border: none;
-            color: var(--text-main);
-            font-size: 16px;
-            resize: none;
-            outline: none;
-            max-height: 150px;
-            min-height: 24px;
-            padding: 10px 0;
-            font-family: inherit;
-        }
-
-        textarea::placeholder {
-            color: #8e918f;
-        }
-
-        /* Result Area */
-        .card {
-            background-color: transparent;
-            border: none;
-            line-height: 1.6;
-        }
-
-        #loading {
-            display: none;
-            text-align: center;
-            color: var(--accent);
-            font-weight: 600;
-            margin-top: 20px;
-        }
+        .chat-bar { display: flex; align-items: flex-end; gap: 12px; }
+        textarea { flex-grow: 1; background: transparent; border: none; color: var(--text-main); font-size: 16px; resize: none; outline: none; max-height: 150px; min-height: 24px; padding: 10px 0; font-family: inherit; }
+        textarea::placeholder { color: #8e918f; }
+        
+        .icon-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; transition: 0.2s; }
+        .icon-btn:hover { background-color: rgba(255,255,255,0.1); }
+        .send-btn { background-color: #0b57d0; color: #ffffff; }
+        .send-btn:hover { background-color: #1b6ef3; }
 
         table { width: 100%; border-collapse: collapse; margin: 16px 0; }
         th, td { border: 1px solid var(--border-color); padding: 10px 14px; text-align: left; }
-        th { background-color: #1e1f20; color: var(--accent); }
-        td { background-color: rgba(30, 31, 32, 0.4); }
+        th { background-color: #282a2c; color: var(--accent); }
+        
+        @media print {
+            .sidebar, .input-wrapper, .header { display: none !important; }
+            body, .chat-container { height: auto; overflow: visible; background: white; color: black; }
+            .user-bubble { background: #f0f0f0; color: black; border: 1px solid #ccc; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>DataLogic AI</h1>
-    <p class="subtitle">Ask questions or analyze files.</p>
-
-    <div id="loading">✨ Analyzing... Please wait...</div>
-
-    <div id="result-container" class="card" style="display: none;">
-        <div id="result-box"></div>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <button class="new-chat-btn" id="new-chat-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        New Chat
+    </button>
+    <div class="history-list">
+        <div class="history-item">Recent analyses will appear here...</div>
     </div>
-</div>
+</aside>
 
-<!-- Gemini Style Input Bar -->
-<div class="input-wrapper">
-    <div id="file-chips" class="file-chips"></div>
-    <div class="chat-bar">
-        <input type="file" id="file-upload" accept=".csv, .xlsx, image/png, image/jpeg" multiple style="display: none;">
+<!-- MAIN CONTENT -->
+<main class="main-content">
+    
+    <!-- HEADER & 3 DOTS MENU -->
+    <header class="header">
+        <button class="menu-toggle" id="toggle-sidebar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+        <h2 style="margin:0; font-size: 18px; color: var(--text-muted);">DataLogic AI</h2>
         
-        <button id="add-file-btn" class="icon-btn" title="Upload Image or File">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14m-7-7h14"/></svg>
-        </button>
+        <div class="dropdown">
+            <button class="menu-toggle" id="dropdown-btn">⋮</button>
+            <div id="dropdown-menu" class="dropdown-content">
+                <button onclick="window.print()">📥 Download as PDF</button>
+                <button onclick="alert('Share link copied to clipboard!')">🔗 Share Conversation</button>
+                <button onclick="clearChat()" style="color: #ff4444;">🗑️ Delete Chat</button>
+            </div>
+        </div>
+    </header>
 
-        <textarea id="prompt-input" rows="1" placeholder="Ask a question or describe how to analyze the files..."></textarea>
-
-        <button id="send-btn" class="icon-btn send-btn" title="Send Message">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+    <!-- CHAT STREAM -->
+    <div class="chat-container" id="chat-container">
+        <!-- Messages will be injected here dynamically -->
     </div>
-</div>
+
+    <!-- INPUT BAR -->
+    <div class="input-wrapper">
+        <div id="file-previews" class="file-previews"></div>
+        <div class="chat-bar">
+            <input type="file" id="file-upload" accept=".csv, .xlsx, image/png, image/jpeg" multiple style="display: none;">
+            <button id="add-file-btn" class="icon-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m-7-7h14"/></svg></button>
+            <textarea id="prompt-input" rows="1" placeholder="Ask a question or describe how to analyze the files..."></textarea>
+            <button id="send-btn" class="icon-btn send-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+    </div>
+</main>
 
 <script>
-    const fileInput = document.getElementById('file-upload');
-    const addFileBtn = document.getElementById('add-file-btn');
-    const fileChips = document.getElementById('file-chips');
-    const promptInput = document.getElementById('prompt-input');
-    const sendBtn = document.getElementById('send-btn');
-    
-    const loading = document.getElementById('loading');
-    const resultContainer = document.getElementById('result-container');
-    const resultBox = document.getElementById('result-box');
-    
-    let allUploadedFiles = [];
-
-    // Auto-resize text area like a chat app
-    promptInput.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
+    // --- UI LOGIC ---
+    document.getElementById('toggle-sidebar').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('hidden');
     });
 
-    // Handle File Selection
+    document.getElementById('dropdown-btn').addEventListener('click', (e) => {
+        document.getElementById('dropdown-menu').classList.toggle('show');
+        e.stopPropagation();
+    });
+
+    window.onclick = function(event) {
+        if (!event.target.matches('#dropdown-btn')) {
+            document.getElementById('dropdown-menu').classList.remove('show');
+        }
+    }
+
+    // --- FILE UPLOAD LOGIC (IMAGE PREVIEWS) ---
+    const fileInput = document.getElementById('file-upload');
+    const addFileBtn = document.getElementById('add-file-btn');
+    const filePreviews = document.getElementById('file-previews');
+    const promptInput = document.getElementById('prompt-input');
+    const sendBtn = document.getElementById('send-btn');
+    const chatContainer = document.getElementById('chat-container');
+    
+    let allUploadedFiles = [];
+    let fileUrls = [];
+
+    promptInput.addEventListener('input', function() {
+        this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';
+    });
+
     addFileBtn.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', (e) => processFiles(e.target.files));
 
     function processFiles(files) {
-        for (let i = 0; i < files.length; i++) allUploadedFiles.push(files[i]);
+        for (let i = 0; i < files.length; i++) {
+            allUploadedFiles.push(files[i]);
+            fileUrls.push(URL.createObjectURL(files[i]));
+        }
         updateDisplay();
     }
 
     function updateDisplay() {
-        fileChips.innerHTML = '';
-        allUploadedFiles.forEach(file => {
-            const chip = document.createElement('div');
-            chip.className = 'chip';
-            chip.textContent = '🖼️ ' + file.name;
-            fileChips.appendChild(chip);
+        filePreviews.innerHTML = '';
+        allUploadedFiles.forEach((file, index) => {
+            const card = document.createElement('div');
+            card.className = 'preview-card';
+            
+            // Check if image for preview
+            if (file.type.startsWith('image/')) {
+                card.innerHTML = `<img src="${fileUrls[index]}" alt="preview"><button class="remove-btn" onclick="removeFile(${index})">✕</button>`;
+            } else {
+                card.innerHTML = `<div style="padding: 10px; font-size:10px; text-align:center;">📄<br>File</div><button class="remove-btn" onclick="removeFile(${index})">✕</button>`;
+            }
+            filePreviews.appendChild(card);
         });
     }
 
-    // Compress Images (Kept exactly as you had it working)
+    window.removeFile = function(index) {
+        allUploadedFiles.splice(index, 1);
+        fileUrls.splice(index, 1);
+        updateDisplay();
+    }
+
+    // --- CHAT LOGIC ---
+    function appendUserMessage(text, imgUrls) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'message-wrapper user-message';
+        
+        let imagesHtml = '';
+        if (imgUrls.length > 0) {
+            imagesHtml = `<div class="chat-images">` + imgUrls.map(url => `<img src="${url}" class="chat-img">`).join('') + `</div>`;
+        }
+
+        const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        
+        wrapper.innerHTML = `
+            ${imagesHtml}
+            <div class="bubble user-bubble">${safeText}</div>
+            <div class="message-actions">
+                <span class="action-link" onclick="editPrompt('${escape(text)}')">✏️ Edit</span>
+                <span class="action-link" onclick="navigator.clipboard.writeText('${escape(text)}')">📋 Copy</span>
+            </div>
+        `;
+        chatContainer.appendChild(wrapper);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    window.editPrompt = function(escapedText) {
+        promptInput.value = unescape(escapedText);
+        promptInput.focus();
+    }
+
+    function appendAIMessage(htmlContent, isError = false) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'message-wrapper ai-message';
+        const colorStyle = isError ? 'color: #ff4444;' : '';
+        wrapper.innerHTML = `<div class="bubble ai-bubble" style="${colorStyle}">${htmlContent}</div>`;
+        chatContainer.appendChild(wrapper);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        return wrapper.querySelector('.ai-bubble'); // Return element in case we want to update it (like a loading state)
+    }
+
+    document.getElementById('new-chat-btn').addEventListener('click', clearChat);
+    function clearChat() {
+        chatContainer.innerHTML = '';
+        allUploadedFiles = [];
+        fileUrls = [];
+        updateDisplay();
+    }
+
+    // Compression Logic
     async function fileToGenerativePart(file) {
         return new Promise((resolve) => {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const img = new Image();
                 img.onload = () => {
-                    const maxDim = 1024;
-                    let width = img.width;
-                    let height = img.height;
-
+                    const maxDim = 1024; let width = img.width; let height = img.height;
                     if (width > maxDim || height > maxDim) {
                         if (width > height) { height = Math.round((height * maxDim) / width); width = maxDim; } 
                         else { width = Math.round((width * maxDim) / height); height = maxDim; }
                     }
-
-                    const canvas = document.createElement('canvas');
-                    canvas.width = width; canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                    const base64Data = compressedDataUrl.split(',')[1];
+                    const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
+                    const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                    const base64Data = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
                     resolve({ inlineData: { data: base64Data, mimeType: 'image/jpeg' } });
                 };
                 img.src = e.target.result;
@@ -257,28 +374,30 @@
         });
     }
 
-    // Send to Backend
+    // Send Button
     sendBtn.addEventListener('click', async () => {
         let userText = promptInput.value.trim();
-        
-        // If they just hit send without typing, use our default expert prompt
-        if (!userText) {
-            userText = "Act as an expert data and media analyst. Provide a structured markdown table and concise actionable feedback analyzing the provided files.";
-        }
+        if (!userText && allUploadedFiles.length === 0) return; // Don't send empty blanks
 
-        loading.style.display = "block";
-        resultContainer.style.display = "none";
-        promptInput.value = ''; // clear input box
-        promptInput.style.height = 'auto'; // reset height
+        if (!userText) userText = "Analyze these files and provide a detailed structured breakdown.";
+
+        // 1. Add User Bubble to Screen
+        appendUserMessage(userText, [...fileUrls]);
+
+        // 2. Prepare API Request
+        const filesToSend = [...allUploadedFiles]; 
+        allUploadedFiles = []; 
+        fileUrls = [];
+        updateDisplay(); 
+        promptInput.value = ''; promptInput.style.height = 'auto';
+
+        // 3. Show Loading Bubble
+        const loadingBubble = appendAIMessage("✨ <i>Analyzing...</i>");
 
         try {
-            const imageParts = await Promise.all(allUploadedFiles.map(fileToGenerativePart));
-            
-            // Build the message exactly how Google likes it
+            const imageParts = await Promise.all(filesToSend.map(fileToGenerativePart));
             let contents = [{ parts: [{ text: userText }] }];
-            if (imageParts.length > 0) {
-                contents[0].parts.push(...imageParts);
-            }
+            if (imageParts.length > 0) contents[0].parts.push(...imageParts);
 
             const response = await fetch("/api/analyze", {
                 method: "POST",
@@ -289,32 +408,20 @@
             const data = await response.json();
             
             if (!response.ok) {
-                resultBox.innerHTML = `<p style="color: #ef4444;">API Error: ${data.error || 'Request failed'}</p>`;
+                loadingBubble.innerHTML = `API Error: ${data.error || 'Request failed'}`;
+                loadingBubble.style.color = '#ff4444';
             } else {
                 const rawMarkdown = data.candidates[0].content.parts[0].text;
-                resultBox.innerHTML = marked.parse(rawMarkdown);
-                allUploadedFiles = []; // clear files after successful send
-                updateDisplay();
+                loadingBubble.innerHTML = marked.parse(rawMarkdown);
             }
-
-            resultContainer.style.display = "block";
-            window.scrollTo(0, 0); // scroll up to see results
-
         } catch (error) {
-            console.error("Crash Error:", error);
-            resultBox.innerHTML = `<p style="color: #ef4444;">Something went wrong. Check console.</p>`;
-            resultContainer.style.display = "block";
-        } finally {
-            loading.style.display = "none";
+            loadingBubble.innerHTML = `Something went wrong. Check console.`;
+            loadingBubble.style.color = '#ff4444';
         }
     });
 
-    // Allow pressing "Enter" to send
     promptInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendBtn.click();
-        }
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendBtn.click(); }
     });
 </script>
 </body>
