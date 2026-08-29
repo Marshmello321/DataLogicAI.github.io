@@ -5,86 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Data Analyzer Engine</title>
 </head>
-<body>
+<body style="font-family: sans-serif; padding: 20px;">
 
     <h2>Step 1: The Input Zone (Multi-file enabled)</h2>
     
-    <!-- 1. The Drag and Drop Area -->
     <div id="drop-zone" style="border: 2px dashed #999; padding: 60px; text-align: center; width: 400px; margin-bottom: 20px;">
         Drag and drop your data files here<br><br>
         <small>(Accepts multiple .csv, .xlsx, .jpg, .png)</small>
     </div>
 
-    <!-- 2. The Standard File Button (Notice the "multiple" attribute added at the end) -->
     <label for="file-upload">Or choose files manually: </label>
     <input type="file" id="file-upload" accept=".csv, .xlsx, image/png, image/jpeg" multiple>
 
-    <!-- 3. The Output Message -->
     <p><strong>Files ready for AI:</strong></p>
     <ul id="file-list" style="color: blue;">
         <li>None selected yet</li>
     </ul>
 
-    <!-- The JavaScript Engine -->
+    <button id="analyze-btn" style="padding: 10px 20px; font-size: 16px; margin-top: 10px; cursor: pointer;">
+        Analyze Files
+    </button>
+    
+    <div id="loading" style="display: none; color: orange; margin-top: 15px; font-weight: bold;">Sending to AI... Please wait...</div>
+    <div id="result-box" style="margin-top: 20px; padding: 15px; border: 1px solid #ccc; background: #f9f9f9; display: none; white-space: pre-wrap; width: 600px;"></div>
+
     <script>
         const dropZone = document.getElementById('drop-zone');
         const fileInput = document.getElementById('file-upload');
         const fileListDisplay = document.getElementById('file-list');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const loading = document.getElementById('loading');
+        const resultBox = document.getElementById('result-box');
         
-        // This array will hold all the files the user adds
         let allUploadedFiles = [];
 
-        // Handle file selection from the standard button
-        fileInput.addEventListener('change', function(event) {
-            processFiles(event.target.files);
-        });
-
-        // Prevent the browser from just opening the file when you drop it
-        dropZone.addEventListener('dragover', function(event) {
-            event.preventDefault();
-            dropZone.style.backgroundColor = '#f0f0f0';
-        });
-
-        dropZone.addEventListener('dragleave', function(event) {
-            event.preventDefault();
+        fileInput.addEventListener('change', (e) => processFiles(e.target.files));
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.backgroundColor = '#f0f0f0'; });
+        dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.style.backgroundColor = 'transparent'; });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
             dropZone.style.backgroundColor = 'transparent';
+            if (e.dataTransfer.files.length > 0) processFiles(e.dataTransfer.files);
         });
 
-        // Handle the actual drop event
-        dropZone.addEventListener('drop', function(event) {
-            event.preventDefault();
-            dropZone.style.backgroundColor = 'transparent';
-            
-            if (event.dataTransfer.files.length > 0) {
-                processFiles(event.dataTransfer.files);
-            }
-        });
-
-        // The new master function that catches MULTIPLE files
         function processFiles(files) {
-            // Loop through the new files and add them to our main array
-            for (let i = 0; i < files.length; i++) {
-                allUploadedFiles.push(files[i]);
-            }
-            
+            for (let i = 0; i < files.length; i++) allUploadedFiles.push(files[i]);
             updateDisplay();
         }
 
-        // Updates the list on the screen
         function updateDisplay() {
-            // Clear out the "None selected yet" text
             fileListDisplay.innerHTML = '';
-            
-            // Create a new bullet point for each file
             allUploadedFiles.forEach(file => {
                 const li = document.createElement('li');
                 li.textContent = file.name;
                 fileListDisplay.appendChild(li);
             });
-
-            console.log("Current files queued for AI:", allUploadedFiles);
         }
-    </script>
 
+        async function fileToGenerativePart(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64Data = reader.result.split(',')[1];
+                    resolve({
+                        inlineData: { data: base64Data, mimeType: file.type }
+                    });
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+analyzeBtn.addEventListener('click', async () => {
+            if (allUploadedFiles.length === 0) {
+                alert("Please upload at least one file first!");
+                return;
+            }
+
+            // PASTE YOUR KEY HERE AGAIN
+            
+            
+            loading.style.display = "block";
+            resultBox.style.display = "none";
+
+            try {
+                const imageParts = await Promise.all(allUploadedFiles.map(fileToGenerativePart));
+                const prompt = "Act as an expert analyst. Look at these images and tell me exactly what they contain. If they are YouTube thumbnails, rate them out of 10 for how eye-catching they are and suggest one improvement.";
+
+                // FIX 1: We are using a safer way to combine the URL and the API key 
+                // We also updated the model name to 'gemini-1.5-flash-latest' to prevent 404 errors
+              const apiUrl = "/api/analyze";
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: prompt }, ...imageParts]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                // FIX 2: If Google throws an error, print the exact error to the screen!
+                if (!response.ok) {
+                    console.error("Google API Error:", data);
+                    resultBox.textContent = "API Error: " + (data.error?.message || "Unknown error occurred.");
+                    resultBox.style.display = "block";
+                    return; // Stop the code here so it doesn't crash
+                }
+
+                // If it succeeds, show the answer
+                const aiText = data.candidates[0].content.parts[0].text;
+                resultBox.textContent = aiText;
+                resultBox.style.display = "block";
+
+            } catch (error) {
+                console.error("Crash Error:", error);
+                resultBox.textContent = "Something crashed. Check the console for details.";
+                resultBox.style.display = "block";
+            } finally {
+                loading.style.display = "none";
+            }
+        });
+
+</script>
 </body>
 </html>
