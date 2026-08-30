@@ -59,7 +59,6 @@
         
         .history-title-container { display: flex; align-items: center; gap: 8px; flex-grow: 1; min-width: 0; overflow: hidden; }
         .history-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
         .pin-icon { width: 14px; height: 14px; flex-shrink: 0; color: var(--text-muted); }
         .history-item.active .pin-icon { color: var(--accent); }
         
@@ -124,15 +123,17 @@
 
         /* --- ICONS & ACTIONS --- */
         .message-actions { display: flex; gap: 16px; margin-top: 8px; color: var(--text-muted); font-size: 13px; font-weight: 500; }
+        .ai-actions { opacity: 0; transition: opacity 0.4s ease; margin-left: 20px; } /* AI actions hidden until reveal finishes */
         .action-link { cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
         .action-link:hover { color: var(--text-main); }
         .action-link svg { width: 14px; height: 14px; }
         .copied { color: #4ade80 !important; }
+        .reading { color: var(--accent) !important; }
 
         .spinner { width: 16px; height: 16px; border: 2px solid transparent; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px;}
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- INPUT BAR --- */
+        /* --- INPUT BAR & LANG DROPDOWN --- */
         .input-wrapper {
             position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 40px); max-width: 800px; background-color: var(--bar-bg);
@@ -153,10 +154,41 @@
             padding: 10px 0; font-family: inherit; overflow-y: auto;
         }
         
-        .icon-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .icon-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; position: relative; }
         .icon-btn:hover { background-color: rgba(255,255,255,0.1); color: var(--text-main); }
         .send-btn { background-color: #0b57d0; color: #ffffff; margin-bottom: 2px; }
         .send-btn:hover { background-color: #1b6ef3; color: white; }
+
+        /* Mic Pulsing */
+        .mic-active { color: #ff5252 !important; animation: pulse-mic 1.5s infinite; }
+        @keyframes pulse-mic { 0% { box-shadow: 0 0 0 0 rgba(255,82,82, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255,82,82, 0); } 100% { box-shadow: 0 0 0 0 rgba(255,82,82, 0); } }
+
+        /* Language Dropdown */
+        .lang-container { position: relative; margin-bottom: 2px; }
+        .lang-btn { background-color: #333537; color: var(--text-main); border: none; border-radius: 16px; padding: 8px 12px; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.2s; }
+        .lang-btn:hover { background-color: #444746; }
+        .lang-menu { display: none; position: absolute; bottom: 40px; right: 0; background-color: #282a2c; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.5); min-width: 120px;}
+        .lang-menu.show { display: block; }
+        .lang-menu button { display: block; width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 13px; }
+        .lang-menu button:hover { background-color: rgba(255,255,255,0.1); }
+
+        /* --- SHARE MODAL --- */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+        .share-modal { background-color: #1e1f20; padding: 24px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
+        .share-modal h3 { margin: 0 0 16px 0; font-size: 18px; font-weight: 500; }
+        .close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-muted); cursor: pointer; }
+        .close-modal:hover { color: var(--text-main); }
+        .share-link-box { display: flex; align-items: center; justify-content: space-between; background-color: #282a2c; border-radius: 24px; padding: 6px 6px 6px 16px; margin-bottom: 20px; }
+        .share-link-text { color: var(--text-main); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+        .copy-link-btn { background-color: #a8c7fa; color: #000; border: none; border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .copy-link-btn:hover { background-color: #b9d3ff; }
+        .social-icons { display: flex; justify-content: space-around; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 20px;}
+        .social-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted); font-size: 11px; }
+        .social-btn:hover { color: var(--text-main); }
+        .s-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; }
+        .s-linkedin { background-color: #0077b5; } .s-facebook { background-color: #1877f2; }
+        .s-twitter { background-color: #000000; border: 1px solid #333; } .s-reddit { background-color: #ff4500; }
+        .s-circle svg { width: 22px; height: 22px; fill: currentColor; stroke: none; }
 
         /* Rendered Markdown Styling */
         table { width: 100%; border-collapse: collapse; margin: 16px 0; }
@@ -185,7 +217,7 @@
         <div style="width:40px;"></div>
     </header>
 
-    <!-- EMPTY STATE DASHBOARD -->
+    <!-- EMPTY STATE -->
     <div class="empty-state" id="empty-state">
         <h1>Select Analysis Mode</h1>
         <div class="suggestions">
@@ -216,12 +248,61 @@
         <div id="file-previews" class="file-previews"></div>
         <div class="chat-bar">
             <input type="file" id="file-upload" accept=".csv, .xlsx, image/png, image/jpeg" multiple style="display: none;">
-            <button id="add-file-btn" class="icon-btn"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg></button>
+            <button id="add-file-btn" class="icon-btn" title="Upload"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg></button>
             <textarea id="prompt-input" rows="1" placeholder="Choose a mode above, or type a custom question..."></textarea>
+            
+            <!-- Voice Input Mic -->
+            <button id="mic-btn" class="icon-btn" title="Voice Input">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+            </button>
+
+            <!-- Language Selector -->
+            <div class="lang-container">
+                <button class="lang-btn" id="lang-btn">🌐 English ⌄</button>
+                <div class="lang-menu" id="lang-menu">
+                    <button onclick="setLanguage('English')">English</button>
+                    <button onclick="setLanguage('Hindi')">Hindi</button>
+                    <button onclick="setLanguage('Spanish')">Spanish</button>
+                    <button onclick="setLanguage('French')">French</button>
+                </div>
+            </div>
+
             <button id="send-btn" class="icon-btn send-btn"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
         </div>
     </div>
 </main>
+
+<!-- SHARE MODAL -->
+<div class="modal-overlay" id="share-modal">
+    <div class="share-modal">
+        <button class="close-modal" onclick="closeShareModal()"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        <h3>Shareable public link</h3>
+        <div class="share-link-box">
+            <span class="share-link-text" id="share-url">data-logic.vercel.app/share/...</span>
+            <button class="copy-link-btn" onclick="copyShareLink(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy link</button>
+        </div>
+        <div style="font-size:11px; color:var(--text-muted); line-height:1.4;">Public links can be reshared. Share responsibly.</div>
+        
+        <div class="social-icons">
+            <div class="social-btn" onclick="shareTo('linkedin')">
+                <div class="s-circle s-linkedin"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></div>
+                LinkedIn
+            </div>
+            <div class="social-btn" onclick="shareTo('facebook')">
+                <div class="s-circle s-facebook"><svg viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></div>
+                Facebook
+            </div>
+            <div class="social-btn" onclick="shareTo('twitter')">
+                <div class="s-circle s-twitter"><svg viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></div>
+                X
+            </div>
+            <div class="social-btn" onclick="shareTo('reddit')">
+                <div class="s-circle s-reddit"><svg viewBox="0 0 24 24"><path d="M24 11.5c0-1.65-1.35-3-3-3-.96 0-1.86.48-2.42 1.24-1.64-1-3.75-1.64-6.07-1.72.08-1.1.4-3.05 1.52-3.7.72-.4 1.73-.24 3 .5C17.2 6.3 18.46 7.5 20 7.5c1.65 0 3-1.35 3-3s-1.35-3-3-3c-1.38 0-2.54.94-2.88 2.22-1.43-.72-2.64-.8-3.6-.25-1.64.94-1.95 3.47-2 4.55-2.33.08-4.45.7-6.1 1.72C4.86 8.98 3.96 8.5 3 8.5c-1.65 0-3 1.35-3 3 0 1.32.84 2.44 2.05 2.84-.03.22-.05.44-.05.66 0 3.86 4.5 7 10 7s10-3.14 10-7c0-.22-.02-.44-.05-.66 1.2-.4 2.05-1.54 2.05-2.84zM2.3 11.5c0-.94.76-1.7 1.7-1.7.6 0 1.16.3 1.48.8-1.15.54-2.13 1.26-2.9 2.14-.18-.38-.28-.8-.28-1.24zm17.7 8.3c-2.33 1.4-5.3 1.4-7.7 1.4-2.4 0-5.37 0-7.7-1.4C3.25 18.4 2.5 16.8 2.5 15c0-3.2 3.9-5.8 7.5-5.8 3.6 0 7.5 2.6 7.5 5.8 0 1.8-.75 3.4-2.1 4.8zm2.9-6.16c-.76-.88-1.74-1.6-2.9-2.14.32-.5.88-.8 1.48-.8.94 0 1.7.76 1.7 1.7 0 .44-.1.86-.28 1.24zm-9.3-1.64c-1.05 0-1.9.85-1.9 1.9s.85 1.9 1.9 1.9 1.9-.85 1.9-1.9-.85-1.9-1.9-1.9zm4.2 0c-1.05 0-1.9.85-1.9 1.9s.85 1.9 1.9 1.9 1.9-.85 1.9-1.9-.85-1.9-1.9-1.9zm-7.6 4.6c.72 1.32 2.2 2.1 4.4 2.1 2.2 0 3.68-.78 4.4-2.1.13-.24-.04-.54-.3-.46-1.5.5-2.7 1-4.1 1-1.4 0-2.6-.5-4.1-1-.26-.1-.43.22-.3.46z"/></svg></div>
+                Reddit
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     // --- PREMIUM SVG ICONS ---
@@ -233,8 +314,90 @@
         share: `<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>`,
         trash: `<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`,
         dots: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>`,
-        x: `<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`
+        x: `<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`,
+        speaker: `<svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`
     };
+
+    // --- LANGUAGE SELECTOR ---
+    let targetLanguage = 'English';
+    document.getElementById('lang-btn').addEventListener('click', (e) => {
+        document.getElementById('lang-menu').classList.toggle('show'); e.stopPropagation();
+    });
+    window.setLanguage = function(lang) {
+        targetLanguage = lang;
+        document.getElementById('lang-btn').innerHTML = `🌐 ${lang} ⌄`;
+        document.getElementById('lang-menu').classList.remove('show');
+    }
+
+    // --- VOICE INPUT (MIC) ---
+    const micBtn = document.getElementById('mic-btn');
+    const promptInput = document.getElementById('prompt-input');
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition;
+
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+
+        recognition.onstart = () => { micBtn.classList.add('mic-active'); };
+        recognition.onresult = (event) => {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) transcript += event.results[i][0].transcript;
+            promptInput.value = transcript;
+            promptInput.style.height = 'auto'; promptInput.style.height = (promptInput.scrollHeight) + 'px';
+        };
+        recognition.onend = () => { micBtn.classList.remove('mic-active'); };
+        recognition.onerror = () => { micBtn.classList.remove('mic-active'); };
+
+        micBtn.addEventListener('click', () => {
+            if (micBtn.classList.contains('mic-active')) recognition.stop();
+            else recognition.start();
+        });
+    } else {
+        micBtn.addEventListener('click', () => alert("Voice input is not supported in this browser."));
+    }
+
+    // --- TEXT TO SPEECH (READ ALOUD) ---
+    let synth = window.speechSynthesis;
+    window.readAloud = function(btn) {
+        if (synth.speaking) { synth.cancel(); btn.classList.remove('reading'); btn.innerHTML = `${svgs.speaker} Read Aloud`; return; }
+        
+        const bubble = btn.closest('.message-wrapper').querySelector('.ai-bubble');
+        const textToRead = bubble.innerText; // Extracts clean text, ignoring markdown symbols
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        
+        btn.classList.add('reading');
+        btn.innerHTML = `${svgs.speaker} Stop Reading`;
+        
+        utterance.onend = () => { btn.classList.remove('reading'); btn.innerHTML = `${svgs.speaker} Read Aloud`; };
+        synth.speak(utterance);
+    }
+
+    // --- SHARE MODAL ---
+    let currentShareUrl = "";
+    window.openShareModal = function(id) {
+        currentShareUrl = window.location.origin + "?chat=" + id; // Mock URL for now
+        document.getElementById('share-url').innerText = currentShareUrl;
+        document.getElementById('share-modal').style.display = 'flex';
+    }
+    window.closeShareModal = function() { document.getElementById('share-modal').style.display = 'none'; }
+    window.copyShareLink = function(btn) {
+        navigator.clipboard.writeText(currentShareUrl);
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = `${svgs.check} Copied!`; btn.style.backgroundColor = '#4ade80';
+        setTimeout(() => { btn.innerHTML = originalHtml; btn.style.backgroundColor = ''; }, 2000);
+    }
+    window.shareTo = function(platform) {
+        const text = "Check out this AI Analysis!";
+        const url = encodeURIComponent(currentShareUrl);
+        let shareLink = "";
+        if(platform === 'linkedin') shareLink = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+        if(platform === 'facebook') shareLink = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+        if(platform === 'twitter') shareLink = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+        if(platform === 'reddit') shareLink = `https://www.reddit.com/submit?url=${url}&title=${text}`;
+        window.open(shareLink, '_blank');
+    }
 
     // --- STATE & HISTORY MANAGEMENT ---
     let sessions = JSON.parse(localStorage.getItem('dl_sessions')) || [];
@@ -278,18 +441,16 @@
         const item = document.createElement('div');
         item.className = `history-item ${session.id === currentSessionId ? 'active' : ''}`;
         
-        const pinHtml = session.pinned ? svgs.pin : '';
-        
         item.innerHTML = `
             <div class="history-title-container">
-                ${pinHtml}
+                ${session.pinned ? svgs.pin : ''}
                 <span class="history-title">${session.title}</span>
             </div>
             <button class="history-options-btn" onclick="toggleMenu('${session.id}', event)">${svgs.dots}</button>
             <div class="history-dropdown" id="menu-${session.id}">
                 <button onclick="actionChat('${session.id}', 'pin', event)">${svgs.pin} ${session.pinned ? 'Unpin Chat' : 'Pin Chat'}</button>
                 <button onclick="actionChat('${session.id}', 'rename', event)">${svgs.edit} Rename</button>
-                <button onclick="alert('Share URL generated!')">${svgs.share} Share</button>
+                <button onclick="openShareModal('${session.id}'); toggleMenu('${session.id}', event); event.stopPropagation();">${svgs.share} Share</button>
                 <button onclick="actionChat('${session.id}', 'delete', event)" style="color:#ff4444;">${svgs.trash} Delete</button>
             </div>
         `;
@@ -311,7 +472,14 @@
         else if (action === 'rename') { const newName = prompt("Rename chat:", session.title); if (newName) session.title = newName; }
         localStorage.setItem('dl_sessions', JSON.stringify(sessions)); renderSidebar();
     }
-    window.onclick = function() { document.querySelectorAll('.history-dropdown').forEach(d => d.classList.remove('show')); }
+    window.onclick = function(e) { 
+        if(!e.target.closest('.history-dropdown') && !e.target.closest('.history-options-btn')) {
+            document.querySelectorAll('.history-dropdown').forEach(d => d.classList.remove('show')); 
+        }
+        if(!e.target.closest('.lang-container')) {
+            document.getElementById('lang-menu').classList.remove('show');
+        }
+    }
 
     function startNewChat() {
         currentSessionId = null;
@@ -330,7 +498,8 @@
                 if (msg.role === 'user') appendUserMessage(msg.text, msg.images || []);
                 if (msg.role === 'ai') {
                     const wrap = document.createElement('div'); wrap.className = 'message-wrapper ai-message';
-                    wrap.innerHTML = `<div class="bubble ai-bubble">${msg.text}</div>`;
+                    wrap.innerHTML = `<div class="bubble ai-bubble">${msg.text}</div>
+                    <div class="message-actions ai-actions" style="opacity:1;"><span class="action-link" onclick="readAloud(this)">${svgs.speaker} Read Aloud</span><span class="action-link" onclick="copyPrompt(this)" data-raw="${encodeURIComponent(msg.text)}">${svgs.copy} Copy</span></div>`;
                     chatBox.appendChild(wrap);
                 }
             });
@@ -342,22 +511,15 @@
     document.getElementById('toggle-sidebar').addEventListener('click', () => { document.getElementById('sidebar').classList.toggle('hidden'); });
     renderSidebar();
 
-    // --- SUGGESTION CHIPS ---
     window.setPrompt = function(text) { 
         const input = document.getElementById('prompt-input');
-        input.value = text; 
-        input.style.height = 'auto'; 
-        input.style.height = (input.scrollHeight) + 'px';
-        input.focus(); 
+        input.value = text; input.style.height = 'auto'; input.style.height = (input.scrollHeight) + 'px'; input.focus(); 
     }
 
     // --- FILE UPLOADS ---
     const fileInput = document.getElementById('file-upload');
     const filePreviews = document.getElementById('file-previews');
-    const promptInput = document.getElementById('prompt-input');
     let allUploadedFiles = []; 
-
-    promptInput.addEventListener('input', function() { this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px'; });
     document.getElementById('add-file-btn').addEventListener('click', () => fileInput.click());
 
     fileInput.addEventListener('change', async (e) => {
@@ -408,7 +570,6 @@
             <div class="bubble user-bubble">${safeText}</div>
             <div class="message-actions">
                 <span class="action-link" onclick="editPrompt(this)" data-raw="${encodeURIComponent(text)}">${svgs.edit} Edit</span>
-                <span class="action-link" onclick="copyPrompt(this)" data-raw="${encodeURIComponent(text)}">${svgs.copy} Copy</span>
             </div>
         `;
         document.getElementById('chat-container').appendChild(wrapper); scrollToBottom();
@@ -416,9 +577,7 @@
 
     window.editPrompt = function(el) { 
         promptInput.value = decodeURIComponent(el.getAttribute('data-raw')); 
-        promptInput.style.height = 'auto'; 
-        promptInput.style.height = (promptInput.scrollHeight) + 'px';
-        promptInput.focus(); 
+        promptInput.style.height = 'auto'; promptInput.style.height = (promptInput.scrollHeight) + 'px'; promptInput.focus(); 
     }
     
     window.copyPrompt = function(el) { 
@@ -428,11 +587,12 @@
         setTimeout(() => { el.innerHTML = originalHtml; el.classList.remove('copied'); }, 2000);
     }
 
-    function appendAIMessage(htmlContent, isLoading = false) {
+    function appendAIMessage(htmlContent) {
         const wrapper = document.createElement('div'); wrapper.className = 'message-wrapper ai-message';
-        wrapper.innerHTML = `<div class="bubble ai-bubble">${htmlContent}</div>`;
+        wrapper.innerHTML = `<div class="bubble ai-bubble">${htmlContent}</div>
+                             <div class="message-actions ai-actions" id="temp-action-bar"><span class="action-link" onclick="readAloud(this)">${svgs.speaker} Read Aloud</span><span class="action-link" onclick="copyPrompt(this)" id="temp-copy-btn">${svgs.copy} Copy</span></div>`;
         document.getElementById('chat-container').appendChild(wrapper); scrollToBottom();
-        return wrapper.querySelector('.ai-bubble');
+        return wrapper;
     }
 
     function scrollToBottom() {
@@ -440,38 +600,32 @@
         chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' });
     }
 
-    // --- SMART SMOOTH ELEMENT REVEAL ANIMATION (FIXED BLANK SCREEN) ---
-    function smoothReveal(bubbleElement, rawMarkdown, onComplete) {
+    function smoothReveal(bubbleElement, rawMarkdown, wrapperElement, onComplete) {
         bubbleElement.innerHTML = marked.parse(rawMarkdown);
         const elements = Array.from(bubbleElement.children);
         const chatBox = document.getElementById('chat-container');
         
         if (elements.length === 0) { if(onComplete) onComplete(); return; }
 
-        // Start by hiding everything completely so it takes up NO space
         elements.forEach(el => {
-            el.style.display = 'none';
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(15px)';
+            el.style.display = 'none'; el.style.opacity = '0'; el.style.transform = 'translateY(15px)';
             el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
         });
 
         let delay = 0;
         elements.forEach((el, index) => {
             setTimeout(() => {
-                // Restore element space
-                el.style.display = ''; 
-                // Force browser to recalculate height before animating
-                void el.offsetWidth; 
-                // Animate in
-                el.style.opacity = '1'; 
-                el.style.transform = 'translateY(0)';
-                // Gently track scroll with each newly revealed block
+                el.style.display = ''; void el.offsetWidth; 
+                el.style.opacity = '1'; el.style.transform = 'translateY(0)';
                 chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
                 
-                if (index === elements.length - 1 && onComplete) setTimeout(onComplete, 400);
+                if (index === elements.length - 1) {
+                    wrapperElement.querySelector('.ai-actions').style.opacity = '1';
+                    wrapperElement.querySelector('#temp-copy-btn').setAttribute('data-raw', encodeURIComponent(rawMarkdown));
+                    if (onComplete) setTimeout(onComplete, 400);
+                }
             }, delay);
-            delay += 180; // Smooth cascading rhythm
+            delay += 180; 
         });
     }
 
@@ -481,16 +635,23 @@
         if (!userText && allUploadedFiles.length === 0) return;
         if (!userText) userText = "Analyze these files and provide a detailed breakdown.";
 
+        // Secret Language Injection
+        let finalPromptToAI = userText;
+        if (targetLanguage !== 'English') {
+            finalPromptToAI += `\n\n[CRITICAL INSTRUCTION: You MUST translate and provide your entire response in ${targetLanguage}.]`;
+        }
+
         const imagesToSave = allUploadedFiles.map(f => f.dataUrl);
         const imagesToSend = allUploadedFiles.map(f => ({ inlineData: { data: f.base64, mimeType: f.mimeType } }));
         
         appendUserMessage(userText, imagesToSave);
         allUploadedFiles = []; updateDisplay(); promptInput.value = ''; promptInput.style.height = 'auto';
 
-        const loadingBubble = appendAIMessage(`<div class="spinner"></div> <span style="color:var(--accent); font-weight:500;">Analyzing data...</span>`, true);
+        const wrapper = appendAIMessage(`<div class="spinner"></div> <span style="color:var(--accent); font-weight:500;">Analyzing data...</span>`);
+        const loadingBubble = wrapper.querySelector('.ai-bubble');
 
         try {
-            let contents = [{ parts: [{ text: userText }] }];
+            let contents = [{ parts: [{ text: finalPromptToAI }] }];
             if (imagesToSend.length > 0) contents[0].parts.push(...imagesToSend);
 
             const response = await fetch("/api/analyze", {
@@ -503,8 +664,7 @@
                 loadingBubble.innerHTML = `API Error: ${data.error || 'Request failed'}`; loadingBubble.style.color = '#ff4444';
             } else {
                 const rawMarkdown = data.candidates[0].content.parts[0].text;
-                // Run the buttery smooth cascade animation with smart auto-scroll!
-                smoothReveal(loadingBubble, rawMarkdown, () => {
+                smoothReveal(loadingBubble, rawMarkdown, wrapper, () => {
                     saveSession(userText, imagesToSave, marked.parse(rawMarkdown)); 
                 });
             }
