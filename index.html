@@ -17,7 +17,6 @@
             --border-color: #444746;
         }
 
-        /* --- CUSTOM DARK SCROLLBARS --- */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #444746; border-radius: 4px; }
@@ -28,104 +27,63 @@
             background-color: var(--bg-color); color: var(--text-main);
             margin: 0; display: flex; height: 100vh; overflow: hidden;
         }
-
         svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* --- SIDEBAR & HISTORY MENU --- */
-        .sidebar {
-            width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color);
-            display: flex; flex-direction: column; padding: 16px; box-sizing: border-box;
-            transition: transform 0.3s ease; flex-shrink: 0; z-index: 100;
-        }
+        /* --- SIDEBAR --- */
+        .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 16px; box-sizing: border-box; transition: transform 0.3s ease; flex-shrink: 0; z-index: 100; }
         .sidebar.hidden { transform: translateX(-100%); position: absolute; height: 100%; }
-
-        .new-chat-btn {
-            background-color: transparent; color: var(--text-main); border: 1px solid var(--border-color);
-            padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 8px;
-            cursor: pointer; font-size: 14px; transition: background 0.2s; margin-bottom: 24px;
-        }
+        .new-chat-btn { background-color: transparent; color: var(--text-main); border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; transition: background 0.2s; margin-bottom: 24px; }
         .new-chat-btn:hover { background-color: rgba(255,255,255,0.05); }
-        
         .history-list { flex-grow: 1; overflow-y: auto; padding-right: 4px; }
         .history-section-title { font-size: 11px; font-weight: 600; color: #8e918f; text-transform: uppercase; margin: 16px 0 8px 4px; letter-spacing: 0.5px; }
-        
-        .history-item {
-            padding: 10px 12px; border-radius: 8px; cursor: pointer; color: var(--text-muted);
-            font-size: 13px; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center;
-            position: relative; flex-wrap: nowrap; gap: 8px; transition: background 0.2s;
-        }
+        .history-item { padding: 10px 12px; border-radius: 8px; cursor: pointer; color: var(--text-muted); font-size: 13px; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center; position: relative; flex-wrap: nowrap; gap: 8px; transition: background 0.2s; }
         .history-item.active { background-color: rgba(168, 199, 250, 0.12); color: #e3e3e3; font-weight: 500; }
         .history-item:hover { background-color: rgba(255,255,255,0.08); color: var(--text-main); }
-        
-        .history-title-container { display: flex; align-items: center; gap: 8px; flex-grow: 1; min-width: 0; overflow: hidden; }
+        .history-title-container { display: flex; align-items: center; gap: 8px; flex-grow: 1; min-width: 0; overflow: hidden; pointer-events: none; }
         .history-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .pin-icon { width: 14px; height: 14px; flex-shrink: 0; color: var(--text-muted); }
         .history-item.active .pin-icon { color: var(--accent); }
         
-        .history-options-btn { 
-            background: none; border: none; color: var(--text-muted); cursor: pointer; 
-            width: 28px; height: 28px; border-radius: 50%; opacity: 0; display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; transition: background 0.2s, opacity 0.2s;
-        }
+        .history-options-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; width: 28px; height: 28px; border-radius: 50%; opacity: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s, opacity 0.2s; }
         .history-item:hover .history-options-btn { opacity: 1; }
         .history-options-btn:hover { background-color: rgba(255,255,255,0.15); color: var(--text-main); }
 
-        .history-dropdown {
-            display: none; position: absolute; right: 10px; top: 38px; background-color: #282a2c;
-            min-width: 140px; box-shadow: 0px 8px 16px rgba(0,0,0,0.5); z-index: 1000;
-            border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden;
-        }
-        .history-dropdown.show { display: block; }
-        .history-dropdown button {
-            color: var(--text-main); padding: 10px 14px; display: flex; align-items: center; gap: 8px;
-            background: none; border: none; width: 100%; text-align: left; cursor: pointer; font-size: 13px;
-        }
-        .history-dropdown button:hover { background-color: rgba(255,255,255,0.1); }
-        .history-dropdown button svg { width: 14px; height: 14px; }
+        .dropdown-menu { display: none; position: absolute; right: 10px; top: 38px; background-color: #282a2c; min-width: 140px; box-shadow: 0px 8px 16px rgba(0,0,0,0.5); z-index: 1000; border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden; }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu button { color: var(--text-main); padding: 10px 14px; display: flex; align-items: center; gap: 8px; background: none; border: none; width: 100%; text-align: left; cursor: pointer; font-size: 13px; }
+        .dropdown-menu button:hover { background-color: rgba(255,255,255,0.1); }
+        .dropdown-menu button svg { width: 14px; height: 14px; }
 
         /* --- MAIN CONTENT & EMPTY STATE --- */
         .main-content { flex-grow: 1; display: flex; flex-direction: column; position: relative; width: 100%; }
         .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; }
         .menu-toggle { background: none; border: none; color: var(--text-main); cursor: pointer; padding: 8px; display: flex; align-items: center; }
 
-        .empty-state {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            flex-grow: 1; padding: 20px; text-align: center; margin-bottom: 80px; overflow-y: auto;
-        }
+        .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; padding: 20px; text-align: center; margin-bottom: 80px; overflow-y: auto; }
         .empty-state h1 { font-size: 32px; margin-bottom: 32px; background: linear-gradient(90deg, #a8c7fa, #c58af9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .suggestions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 660px; width: 100%; }
-        
-        .suggestion-chip {
-            background-color: var(--sidebar-bg); border: 1px solid var(--border-color);
-            padding: 16px; border-radius: 12px; cursor: pointer; color: var(--text-muted);
-            transition: 0.2s; text-align: left; display: flex; flex-direction: column; gap: 8px;
-        }
+        .suggestion-chip { background-color: var(--sidebar-bg); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; cursor: pointer; color: var(--text-muted); transition: 0.2s; text-align: left; display: flex; flex-direction: column; gap: 8px; }
         .suggestion-chip:hover { background-color: rgba(255,255,255,0.05); border-color: var(--accent); color: var(--text-main); }
         .chip-title { display: flex; align-items: center; gap: 8px; color: var(--text-main); font-weight: 600; font-size: 14px; }
         .chip-title svg { width: 18px; height: 18px; color: var(--accent); }
         .chip-desc { font-size: 12px; line-height: 1.4; }
 
         /* --- CHAT STREAM --- */
-        .chat-container {
-            display: none; flex-grow: 1; overflow-y: auto; padding: 20px 20px 140px 20px;
-            flex-direction: column; align-items: center; scroll-behavior: smooth;
-        }
-        .message-wrapper { width: 100%; max-width: 800px; display: flex; flex-direction: column; margin-bottom: 32px; }
+        .chat-container { display: none; flex-grow: 1; overflow-y: auto; padding: 20px 20px 140px 20px; flex-direction: column; align-items: center; scroll-behavior: smooth; }
+        .message-wrapper { width: 100%; max-width: 800px; display: flex; flex-direction: column; margin-bottom: 32px; position: relative; }
         .user-message { align-items: flex-end; }
         .ai-message { align-items: flex-start; }
-
         .bubble { padding: 16px 20px; border-radius: 20px; max-width: 90%; line-height: 1.6; }
         .user-bubble { background-color: var(--user-bubble); border-bottom-right-radius: 4px; color: var(--text-main); }
         .ai-bubble { background-color: transparent; color: var(--text-main); width: 100%; }
-
         .chat-images { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; justify-content: flex-end; }
         .chat-img { width: 120px; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); }
 
-        /* --- ICONS & ACTIONS --- */
-        .message-actions { display: flex; gap: 16px; margin-top: 8px; color: var(--text-muted); font-size: 13px; font-weight: 500; }
-        .ai-actions { opacity: 0; transition: opacity 0.4s ease; margin-left: 20px; } /* AI actions hidden until reveal finishes */
-        .action-link { cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
-        .action-link:hover { color: var(--text-main); }
+        /* Actions */
+        .message-actions { display: flex; gap: 16px; margin-top: 8px; color: var(--text-muted); font-size: 13px; font-weight: 500; align-items: center; }
+        .ai-actions { opacity: 0; transition: opacity 0.4s ease; margin-left: 20px; position: relative; } 
+        .action-link { cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s; background: none; border: none; color: inherit; font-size: inherit; padding: 4px 8px; border-radius: 6px;}
+        .action-link:hover { color: var(--text-main); background-color: rgba(255,255,255,0.05); }
         .action-link svg { width: 14px; height: 14px; }
         .copied { color: #4ade80 !important; }
         .reading { color: var(--accent) !important; }
@@ -134,12 +92,7 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* --- INPUT BAR & LANG DROPDOWN --- */
-        .input-wrapper {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 40px); max-width: 800px; background-color: var(--bar-bg);
-            border-radius: 24px; padding: 12px 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column; z-index: 50;
-        }
+        .input-wrapper { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 800px; background-color: var(--bar-bg); border-radius: 24px; padding: 12px 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; z-index: 50; }
         .file-previews { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
         .file-previews:empty { display: none; margin-bottom: 0; }
         .preview-card { position: relative; width: 64px; height: 64px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); }
@@ -148,18 +101,13 @@
         .remove-btn:hover { background: #ff4444; }
 
         .chat-bar { display: flex; align-items: flex-end; gap: 12px; }
-        textarea { 
-            flex-grow: 1; background: transparent; border: none; color: var(--text-main); 
-            font-size: 16px; resize: none; outline: none; max-height: 200px; min-height: 24px; 
-            padding: 10px 0; font-family: inherit; overflow-y: auto;
-        }
+        textarea { flex-grow: 1; background: transparent; border: none; color: var(--text-main); font-size: 16px; resize: none; outline: none; max-height: 200px; min-height: 24px; padding: 10px 0; font-family: inherit; overflow-y: auto; }
         
         .icon-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; position: relative; }
         .icon-btn:hover { background-color: rgba(255,255,255,0.1); color: var(--text-main); }
         .send-btn { background-color: #0b57d0; color: #ffffff; margin-bottom: 2px; }
         .send-btn:hover { background-color: #1b6ef3; color: white; }
 
-        /* Mic Pulsing */
         .mic-active { color: #ff5252 !important; animation: pulse-mic 1.5s infinite; }
         @keyframes pulse-mic { 0% { box-shadow: 0 0 0 0 rgba(255,82,82, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255,82,82, 0); } 100% { box-shadow: 0 0 0 0 rgba(255,82,82, 0); } }
 
@@ -167,21 +115,22 @@
         .lang-container { position: relative; margin-bottom: 2px; }
         .lang-btn { background-color: #333537; color: var(--text-main); border: none; border-radius: 16px; padding: 8px 12px; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.2s; }
         .lang-btn:hover { background-color: #444746; }
-        .lang-menu { display: none; position: absolute; bottom: 40px; right: 0; background-color: #282a2c; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.5); min-width: 120px;}
+        .lang-menu { display: none; position: absolute; bottom: 40px; right: 0; background-color: #282a2c; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.5); min-width: 150px;}
         .lang-menu.show { display: block; }
         .lang-menu button { display: block; width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 13px; }
         .lang-menu button:hover { background-color: rgba(255,255,255,0.1); }
 
-        /* --- SHARE MODAL --- */
+        /* --- MODALS (Share & Expand) --- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
-        .share-modal { background-color: #1e1f20; padding: 24px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
-        .share-modal h3 { margin: 0 0 16px 0; font-size: 18px; font-weight: 500; }
+        .custom-modal { background-color: #1e1f20; padding: 24px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
+        .custom-modal.large { max-width: 700px; width: 95%; height: 70vh; display: flex; flex-direction: column; }
+        .custom-modal h3 { margin: 0 0 16px 0; font-size: 18px; font-weight: 500; }
         .close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-muted); cursor: pointer; }
         .close-modal:hover { color: var(--text-main); }
+        
         .share-link-box { display: flex; align-items: center; justify-content: space-between; background-color: #282a2c; border-radius: 24px; padding: 6px 6px 6px 16px; margin-bottom: 20px; }
         .share-link-text { color: var(--text-main); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
         .copy-link-btn { background-color: #a8c7fa; color: #000; border: none; border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-        .copy-link-btn:hover { background-color: #b9d3ff; }
         .social-icons { display: flex; justify-content: space-around; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 20px;}
         .social-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted); font-size: 11px; }
         .social-btn:hover { color: var(--text-main); }
@@ -189,6 +138,10 @@
         .s-linkedin { background-color: #0077b5; } .s-facebook { background-color: #1877f2; }
         .s-twitter { background-color: #000000; border: 1px solid #333; } .s-reddit { background-color: #ff4500; }
         .s-circle svg { width: 22px; height: 22px; fill: currentColor; stroke: none; }
+
+        /* Expand Modal Textarea */
+        #expand-textarea { flex-grow: 1; background: #282a2c; border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); font-family: inherit; font-size: 16px; padding: 16px; resize: none; outline: none; margin-bottom: 16px; }
+        .save-expand-btn { background-color: var(--accent); color: #000; border: none; border-radius: 20px; padding: 10px 24px; font-weight: 600; cursor: pointer; align-self: flex-end; }
 
         /* Rendered Markdown Styling */
         table { width: 100%; border-collapse: collapse; margin: 16px 0; }
@@ -198,7 +151,6 @@
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
     <button class="new-chat-btn" onclick="startNewChat()">
         <svg width="16" height="16" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -207,7 +159,6 @@
     <div class="history-list" id="history-list"></div>
 </aside>
 
-<!-- MAIN CONTENT -->
 <main class="main-content">
     <header class="header">
         <button class="menu-toggle" id="toggle-sidebar">
@@ -217,7 +168,6 @@
         <div style="width:40px;"></div>
     </header>
 
-    <!-- EMPTY STATE -->
     <div class="empty-state" id="empty-state">
         <h1>Select Analysis Mode</h1>
         <div class="suggestions">
@@ -240,10 +190,8 @@
         </div>
     </div>
 
-    <!-- CHAT STREAM -->
     <div class="chat-container" id="chat-container"></div>
 
-    <!-- INPUT BAR -->
     <div class="input-wrapper">
         <div id="file-previews" class="file-previews"></div>
         <div class="chat-bar">
@@ -251,19 +199,16 @@
             <button id="add-file-btn" class="icon-btn" title="Upload"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg></button>
             <textarea id="prompt-input" rows="1" placeholder="Choose a mode above, or type a custom question..."></textarea>
             
-            <!-- Voice Input Mic -->
-            <button id="mic-btn" class="icon-btn" title="Voice Input">
-                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
-            </button>
+            <button id="expand-btn" class="icon-btn" title="Expand Editor" onclick="openExpandModal()"><svg width="18" height="18" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg></button>
+            <button id="mic-btn" class="icon-btn" title="Voice Input"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg></button>
 
-            <!-- Language Selector -->
             <div class="lang-container">
                 <button class="lang-btn" id="lang-btn">🌐 English ⌄</button>
                 <div class="lang-menu" id="lang-menu">
-                    <button onclick="setLanguage('English')">English</button>
-                    <button onclick="setLanguage('Hindi')">Hindi</button>
-                    <button onclick="setLanguage('Spanish')">Spanish</button>
-                    <button onclick="setLanguage('French')">French</button>
+                    <button onclick="setLanguage('English', 'en-US', 'English')">English</button>
+                    <button onclick="setLanguage('Hindi', 'hi-IN', 'हिन्दी')">हिन्दी (Hindi)</button>
+                    <button onclick="setLanguage('Spanish', 'es-ES', 'Español')">Español (Spanish)</button>
+                    <button onclick="setLanguage('French', 'fr-FR', 'Français')">Français (French)</button>
                 </div>
             </div>
 
@@ -272,35 +217,29 @@
     </div>
 </main>
 
-<!-- SHARE MODAL -->
 <div class="modal-overlay" id="share-modal">
-    <div class="share-modal">
-        <button class="close-modal" onclick="closeShareModal()"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+    <div class="custom-modal">
+        <button class="close-modal" onclick="closeModal('share-modal')"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         <h3>Shareable public link</h3>
         <div class="share-link-box">
-            <span class="share-link-text" id="share-url">data-logic.vercel.app/share/...</span>
-            <button class="copy-link-btn" onclick="copyShareLink(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy link</button>
+            <span class="share-link-text" id="share-url"></span>
+            <button class="copy-link-btn" onclick="copyShareLink(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy</button>
         </div>
-        <div style="font-size:11px; color:var(--text-muted); line-height:1.4;">Public links can be reshared. Share responsibly.</div>
-        
         <div class="social-icons">
-            <div class="social-btn" onclick="shareTo('linkedin')">
-                <div class="s-circle s-linkedin"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></div>
-                LinkedIn
-            </div>
-            <div class="social-btn" onclick="shareTo('facebook')">
-                <div class="s-circle s-facebook"><svg viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></div>
-                Facebook
-            </div>
-            <div class="social-btn" onclick="shareTo('twitter')">
-                <div class="s-circle s-twitter"><svg viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></div>
-                X
-            </div>
-            <div class="social-btn" onclick="shareTo('reddit')">
-                <div class="s-circle s-reddit"><svg viewBox="0 0 24 24"><path d="M24 11.5c0-1.65-1.35-3-3-3-.96 0-1.86.48-2.42 1.24-1.64-1-3.75-1.64-6.07-1.72.08-1.1.4-3.05 1.52-3.7.72-.4 1.73-.24 3 .5C17.2 6.3 18.46 7.5 20 7.5c1.65 0 3-1.35 3-3s-1.35-3-3-3c-1.38 0-2.54.94-2.88 2.22-1.43-.72-2.64-.8-3.6-.25-1.64.94-1.95 3.47-2 4.55-2.33.08-4.45.7-6.1 1.72C4.86 8.98 3.96 8.5 3 8.5c-1.65 0-3 1.35-3 3 0 1.32.84 2.44 2.05 2.84-.03.22-.05.44-.05.66 0 3.86 4.5 7 10 7s10-3.14 10-7c0-.22-.02-.44-.05-.66 1.2-.4 2.05-1.54 2.05-2.84zM2.3 11.5c0-.94.76-1.7 1.7-1.7.6 0 1.16.3 1.48.8-1.15.54-2.13 1.26-2.9 2.14-.18-.38-.28-.8-.28-1.24zm17.7 8.3c-2.33 1.4-5.3 1.4-7.7 1.4-2.4 0-5.37 0-7.7-1.4C3.25 18.4 2.5 16.8 2.5 15c0-3.2 3.9-5.8 7.5-5.8 3.6 0 7.5 2.6 7.5 5.8 0 1.8-.75 3.4-2.1 4.8zm2.9-6.16c-.76-.88-1.74-1.6-2.9-2.14.32-.5.88-.8 1.48-.8.94 0 1.7.76 1.7 1.7 0 .44-.1.86-.28 1.24zm-9.3-1.64c-1.05 0-1.9.85-1.9 1.9s.85 1.9 1.9 1.9 1.9-.85 1.9-1.9-.85-1.9-1.9-1.9zm4.2 0c-1.05 0-1.9.85-1.9 1.9s.85 1.9 1.9 1.9 1.9-.85 1.9-1.9-.85-1.9-1.9-1.9zm-7.6 4.6c.72 1.32 2.2 2.1 4.4 2.1 2.2 0 3.68-.78 4.4-2.1.13-.24-.04-.54-.3-.46-1.5.5-2.7 1-4.1 1-1.4 0-2.6-.5-4.1-1-.26-.1-.43.22-.3.46z"/></svg></div>
-                Reddit
-            </div>
+            <div class="social-btn" onclick="shareTo('linkedin')"><div class="s-circle s-linkedin"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></div>LinkedIn</div>
+            <div class="social-btn" onclick="shareTo('facebook')"><div class="s-circle s-facebook"><svg viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></div>Facebook</div>
+            <div class="social-btn" onclick="shareTo('twitter')"><div class="s-circle s-twitter"><svg viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></div>X</div>
+            <div class="social-btn" onclick="shareTo('reddit')"><div class="s-circle s-reddit"><svg viewBox="0 0 24 24"><path d="M24 11.5c0-1.65-1.35-3-3-3-.96 0-1.86.48-2.42 1.24-1.64-1-3.75-1.64-6.07-1.72.08-1.1.4-3.05 1.52-3.7.72-.4 1.73-.24 3 .5C17.2 6.3 18.46 7.5 20 7.5c1.65 0 3-1.35 3-3s-1.35-3-3-3c-1.38 0-2.54.94-2.88 2.22-1.43-.72-2.64-.8-3.6-.25-1.64.94-1.95 3.47-2 4.55-2.33.08-4.45.7-6.1 1.72C4.86 8.98 3.96 8.5 3 8.5c-1.65 0-3 1.35-3 3 0 1.32.84 2.44 2.05 2.84-.03.22-.05.44-.05.66 0 3.86 4.5 7 10 7s10-3.14 10-7c0-.22-.02-.44-.05-.66 1.2-.4 2.05-1.54 2.05-2.84zM2.3 11.5c0-.94.76-1.7 1.7-1.7.6 0 1.16.3 1.48.8-1.15.54-2.13 1.26-2.9 2.14-.18-.38-.28-.8-.28-1.24zm17.7 8.3c-2.33 1.4-5.3 1.4-7.7 1.4-2.4 0-5.37 0-7.7-1.4C3.25 18.4 2.5 16.8 2.5 15c0-3.2 3.9-5.8 7.5-5.8 3.6 0 7.5 2.6 7.5 5.8 0 1.8-.75 3.4-2.1 4.8zm2.9-6.16c-.76-.88-1.74-1.6-2.9-2.14.32-.5.88-.8 1.48-.8.94 0 1.7.76 1.7 1.7 0 .44-.1.86-.28 1.24zm-9.3-1.64c-1.05 0-1.9.85-1.9 1.9s.85 1.9 1.9 1.9 1.9-.85 1.9-1.9-.85-1.9-1.9-1.9zm4.2 0c-1.05 0-1.9.85-1.9 1.9s.85 1.9 1.9 1.9 1.9-.85 1.9-1.9-.85-1.9-1.9-1.9zm-7.6 4.6c.72 1.32 2.2 2.1 4.4 2.1 2.2 0 3.68-.78 4.4-2.1.13-.24-.04-.54-.3-.46-1.5.5-2.7 1-4.1 1-1.4 0-2.6-.5-4.1-1-.26-.1-.43.22-.3.46z"/></svg></div>Reddit</div>
         </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="expand-modal">
+    <div class="custom-modal large">
+        <button class="close-modal" onclick="closeModal('expand-modal')"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        <h3>Expand Editor</h3>
+        <textarea id="expand-textarea" placeholder="Type your full analysis prompt here..."></textarea>
+        <button class="save-expand-btn" onclick="saveExpandModal()">Done</button>
     </div>
 </div>
 
@@ -315,18 +254,33 @@
         trash: `<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`,
         dots: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>`,
         x: `<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`,
-        speaker: `<svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`
+        speaker: `<svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`,
+        redo: `<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>`,
+        download: `<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`
     };
 
-    // --- LANGUAGE SELECTOR ---
+    // --- LANGUAGE & VOICE SETTINGS ---
     let targetLanguage = 'English';
-    document.getElementById('lang-btn').addEventListener('click', (e) => {
-        document.getElementById('lang-menu').classList.toggle('show'); e.stopPropagation();
-    });
-    window.setLanguage = function(lang) {
-        targetLanguage = lang;
-        document.getElementById('lang-btn').innerHTML = `🌐 ${lang} ⌄`;
+    let voiceCode = 'en-US';
+    document.getElementById('lang-btn').addEventListener('click', (e) => { document.getElementById('lang-menu').classList.toggle('show'); e.stopPropagation(); });
+    window.setLanguage = function(lang, code, display) {
+        targetLanguage = lang; voiceCode = code;
+        document.getElementById('lang-btn').innerHTML = `🌐 ${display} ⌄`;
         document.getElementById('lang-menu').classList.remove('show');
+    }
+
+    // --- EXPAND MODAL ---
+    window.openExpandModal = function() {
+        document.getElementById('expand-textarea').value = document.getElementById('prompt-input').value;
+        document.getElementById('expand-modal').style.display = 'flex';
+        document.getElementById('expand-textarea').focus();
+    }
+    window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
+    window.saveExpandModal = function() {
+        const input = document.getElementById('prompt-input');
+        input.value = document.getElementById('expand-textarea').value;
+        input.style.height = 'auto'; input.style.height = (input.scrollHeight) + 'px';
+        closeModal('expand-modal');
     }
 
     // --- VOICE INPUT (MIC) ---
@@ -337,23 +291,19 @@
 
     if (SpeechRecognition) {
         recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = true;
-
+        recognition.continuous = false; recognition.interimResults = true;
         recognition.onstart = () => { micBtn.classList.add('mic-active'); };
         recognition.onresult = (event) => {
             let transcript = '';
             for (let i = event.resultIndex; i < event.results.length; ++i) transcript += event.results[i][0].transcript;
-            promptInput.value = transcript;
-            promptInput.style.height = 'auto'; promptInput.style.height = (promptInput.scrollHeight) + 'px';
+            promptInput.value = transcript; promptInput.style.height = 'auto'; promptInput.style.height = (promptInput.scrollHeight) + 'px';
         };
         recognition.onend = () => { micBtn.classList.remove('mic-active'); };
-        recognition.onerror = () => { micBtn.classList.remove('mic-active'); };
-
-        micBtn.addEventListener('click', () => {
-            if (micBtn.classList.contains('mic-active')) recognition.stop();
-            else recognition.start();
-        });
+        recognition.onerror = (e) => { 
+            micBtn.classList.remove('mic-active'); 
+            if(e.error === 'not-allowed') alert("Microphone access denied. Please click the lock icon in your browser's address bar to allow microphone access.");
+        };
+        micBtn.addEventListener('click', () => { if (micBtn.classList.contains('mic-active')) recognition.stop(); else recognition.start(); });
     } else {
         micBtn.addEventListener('click', () => alert("Voice input is not supported in this browser."));
     }
@@ -362,36 +312,39 @@
     let synth = window.speechSynthesis;
     window.readAloud = function(btn) {
         if (synth.speaking) { synth.cancel(); btn.classList.remove('reading'); btn.innerHTML = `${svgs.speaker} Read Aloud`; return; }
-        
         const bubble = btn.closest('.message-wrapper').querySelector('.ai-bubble');
-        const textToRead = bubble.innerText; // Extracts clean text, ignoring markdown symbols
-        const utterance = new SpeechSynthesisUtterance(textToRead);
-        
-        btn.classList.add('reading');
-        btn.innerHTML = `${svgs.speaker} Stop Reading`;
-        
+        const utterance = new SpeechSynthesisUtterance(bubble.innerText);
+        utterance.lang = voiceCode; // Forces Native Voice!
+        btn.classList.add('reading'); btn.innerHTML = `${svgs.speaker} Stop Reading`;
         utterance.onend = () => { btn.classList.remove('reading'); btn.innerHTML = `${svgs.speaker} Read Aloud`; };
         synth.speak(utterance);
+    }
+
+    // --- EXPORT TO DOCS ---
+    window.exportToDocs = function(btn) {
+        const text = btn.closest('.message-wrapper').querySelector('.ai-bubble').innerText;
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'AI_Analysis_Export.txt';
+        a.click(); URL.revokeObjectURL(url);
+        document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
     }
 
     // --- SHARE MODAL ---
     let currentShareUrl = "";
     window.openShareModal = function(id) {
-        currentShareUrl = window.location.origin + "?chat=" + id; // Mock URL for now
+        currentShareUrl = window.location.origin + "?chat=" + id; 
         document.getElementById('share-url').innerText = currentShareUrl;
         document.getElementById('share-modal').style.display = 'flex';
     }
-    window.closeShareModal = function() { document.getElementById('share-modal').style.display = 'none'; }
     window.copyShareLink = function(btn) {
         navigator.clipboard.writeText(currentShareUrl);
         const originalHtml = btn.innerHTML;
-        btn.innerHTML = `${svgs.check} Copied!`; btn.style.backgroundColor = '#4ade80';
-        setTimeout(() => { btn.innerHTML = originalHtml; btn.style.backgroundColor = ''; }, 2000);
+        btn.innerHTML = `${svgs.check} Copied!`; btn.style.backgroundColor = '#4ade80'; btn.style.color = '#000';
+        setTimeout(() => { btn.innerHTML = originalHtml; btn.style.backgroundColor = '#a8c7fa'; }, 2000);
     }
     window.shareTo = function(platform) {
-        const text = "Check out this AI Analysis!";
-        const url = encodeURIComponent(currentShareUrl);
-        let shareLink = "";
+        const text = "Check out this AI Analysis!"; const url = encodeURIComponent(currentShareUrl); let shareLink = "";
         if(platform === 'linkedin') shareLink = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
         if(platform === 'facebook') shareLink = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
         if(platform === 'twitter') shareLink = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
@@ -424,11 +377,8 @@
     }
 
     function renderSidebar() {
-        const list = document.getElementById('history-list');
-        list.innerHTML = '';
-        let pinned = sessions.filter(s => s.pinned);
-        let unpinned = sessions.filter(s => !s.pinned);
-
+        const list = document.getElementById('history-list'); list.innerHTML = '';
+        let pinned = sessions.filter(s => s.pinned); let unpinned = sessions.filter(s => !s.pinned);
         if (pinned.length > 0) {
             list.innerHTML += `<div class="history-section-title">Pinned</div>`;
             pinned.forEach(s => list.appendChild(createHistoryItem(s)));
@@ -440,57 +390,53 @@
     function createHistoryItem(session) {
         const item = document.createElement('div');
         item.className = `history-item ${session.id === currentSessionId ? 'active' : ''}`;
-        
         item.innerHTML = `
             <div class="history-title-container">
-                ${session.pinned ? svgs.pin : ''}
-                <span class="history-title">${session.title}</span>
+                ${session.pinned ? svgs.pin : ''} <span class="history-title">${session.title}</span>
             </div>
-            <button class="history-options-btn" onclick="toggleMenu('${session.id}', event)">${svgs.dots}</button>
-            <div class="history-dropdown" id="menu-${session.id}">
+            <button class="history-options-btn" onclick="toggleMenu('menu-${session.id}', event)">${svgs.dots}</button>
+            <div class="dropdown-menu" id="menu-${session.id}">
                 <button onclick="actionChat('${session.id}', 'pin', event)">${svgs.pin} ${session.pinned ? 'Unpin Chat' : 'Pin Chat'}</button>
                 <button onclick="actionChat('${session.id}', 'rename', event)">${svgs.edit} Rename</button>
-                <button onclick="openShareModal('${session.id}'); toggleMenu('${session.id}', event); event.stopPropagation();">${svgs.share} Share</button>
+                <button onclick="openShareModal('${session.id}'); document.getElementById('menu-${session.id}').classList.remove('show'); event.stopPropagation();">${svgs.share} Share</button>
                 <button onclick="actionChat('${session.id}', 'delete', event)" style="color:#ff4444;">${svgs.trash} Delete</button>
             </div>
         `;
-        item.addEventListener('click', () => loadSession(session.id));
+        // FIXED BUG 1: Item click directly loads chat and hides empty state
+        item.addEventListener('click', (e) => { 
+            if(!e.target.closest('.history-options-btn') && !e.target.closest('.dropdown-menu')) loadSession(session.id); 
+        });
         return item;
     }
 
-    window.toggleMenu = function(id, event) {
-        event.stopPropagation();
-        document.querySelectorAll('.history-dropdown').forEach(d => d.classList.remove('show'));
-        document.getElementById(`menu-${id}`).classList.add('show');
+    window.toggleMenu = function(menuId, event) {
+        event.stopPropagation(); document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
+        document.getElementById(menuId).classList.add('show');
     }
 
     window.actionChat = function(id, action, event) {
-        event.stopPropagation();
-        const session = sessions.find(s => s.id === id);
+        event.stopPropagation(); const session = sessions.find(s => s.id === id);
         if (action === 'delete') { sessions = sessions.filter(s => s.id !== id); if (currentSessionId === id) startNewChat(); } 
         else if (action === 'pin') session.pinned = !session.pinned;
         else if (action === 'rename') { const newName = prompt("Rename chat:", session.title); if (newName) session.title = newName; }
         localStorage.setItem('dl_sessions', JSON.stringify(sessions)); renderSidebar();
     }
+    
     window.onclick = function(e) { 
-        if(!e.target.closest('.history-dropdown') && !e.target.closest('.history-options-btn')) {
-            document.querySelectorAll('.history-dropdown').forEach(d => d.classList.remove('show')); 
+        if(!e.target.closest('.dropdown-menu') && !e.target.closest('.history-options-btn') && !e.target.closest('.action-link')) {
+            document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show')); 
         }
-        if(!e.target.closest('.lang-container')) {
-            document.getElementById('lang-menu').classList.remove('show');
-        }
+        if(!e.target.closest('.lang-container')) document.getElementById('lang-menu').classList.remove('show');
     }
 
     function startNewChat() {
-        currentSessionId = null;
-        document.getElementById('chat-container').innerHTML = ''; document.getElementById('chat-container').style.display = 'none';
-        document.getElementById('empty-state').style.display = 'flex';
-        allUploadedFiles = []; updateDisplay(); renderSidebar();
+        currentSessionId = null; document.getElementById('chat-container').innerHTML = ''; document.getElementById('chat-container').style.display = 'none';
+        document.getElementById('empty-state').style.display = 'flex'; allUploadedFiles = []; updateDisplay(); renderSidebar();
     }
 
     function loadSession(id) {
         currentSessionId = id; const session = sessions.find(s => s.id === id);
-        document.getElementById('empty-state').style.display = 'none';
+        document.getElementById('empty-state').style.display = 'none'; // FORCE HIDE
         const chatBox = document.getElementById('chat-container');
         chatBox.style.display = 'flex'; chatBox.innerHTML = '';
         if (session) {
@@ -499,7 +445,17 @@
                 if (msg.role === 'ai') {
                     const wrap = document.createElement('div'); wrap.className = 'message-wrapper ai-message';
                     wrap.innerHTML = `<div class="bubble ai-bubble">${msg.text}</div>
-                    <div class="message-actions ai-actions" style="opacity:1;"><span class="action-link" onclick="readAloud(this)">${svgs.speaker} Read Aloud</span><span class="action-link" onclick="copyPrompt(this)" data-raw="${encodeURIComponent(msg.text)}">${svgs.copy} Copy</span></div>`;
+                    <div class="message-actions ai-actions" style="opacity:1;">
+                        <button class="action-link" onclick="readAloud(this)">${svgs.speaker} Read Aloud</button>
+                        <button class="action-link" onclick="copyPrompt(this)" data-raw="${encodeURIComponent(msg.text)}">${svgs.copy} Copy</button>
+                        <button class="action-link" onclick="regenerateResponse(this)">${svgs.redo} Regenerate</button>
+                        <div style="position:relative;">
+                            <button class="action-link" onclick="toggleMenu('ai-menu-${Date.now()}', event)">${svgs.dots}</button>
+                            <div class="dropdown-menu" id="ai-menu-${Date.now()}">
+                                <button onclick="exportToDocs(this)">${svgs.download} Export to Docs</button>
+                            </div>
+                        </div>
+                    </div>`;
                     chatBox.appendChild(wrap);
                 }
             });
@@ -533,16 +489,13 @@
             reader.onload = (e) => {
                 const img = new Image();
                 img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    let w = img.width, h = img.height;
+                    const canvas = document.createElement('canvas'); let w = img.width, h = img.height;
                     if (w > 800 || h > 800) { if (w > h) { h = Math.round(h * 800 / w); w = 800; } else { w = Math.round(w * 800 / h); h = 800; } }
                     canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                     const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
                     resolve({ dataUrl: dataUrl, base64: dataUrl.split(',')[1], mimeType: 'image/jpeg' });
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+                }; img.src = e.target.result;
+            }; reader.readAsDataURL(file);
         });
     }
 
@@ -560,7 +513,6 @@
     function appendUserMessage(text, imgUrls) {
         document.getElementById('empty-state').style.display = 'none';
         document.getElementById('chat-container').style.display = 'flex';
-        
         const wrapper = document.createElement('div'); wrapper.className = 'message-wrapper user-message';
         let imagesHtml = imgUrls.length > 0 ? `<div class="chat-images">` + imgUrls.map(url => `<img src="${url}" class="chat-img">`).join('') + `</div>` : '';
         const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -569,7 +521,8 @@
             ${imagesHtml}
             <div class="bubble user-bubble">${safeText}</div>
             <div class="message-actions">
-                <span class="action-link" onclick="editPrompt(this)" data-raw="${encodeURIComponent(text)}">${svgs.edit} Edit</span>
+                <button class="action-link" onclick="editPrompt(this)" data-raw="${encodeURIComponent(text)}">${svgs.edit} Edit</button>
+                <button class="action-link" onclick="copyPrompt(this)" data-raw="${encodeURIComponent(text)}">${svgs.copy} Copy</button>
             </div>
         `;
         document.getElementById('chat-container').appendChild(wrapper); scrollToBottom();
@@ -580,37 +533,40 @@
         promptInput.style.height = 'auto'; promptInput.style.height = (promptInput.scrollHeight) + 'px'; promptInput.focus(); 
     }
     
-    window.copyPrompt = function(el) { 
-        navigator.clipboard.writeText(decodeURIComponent(el.getAttribute('data-raw')));
-        const originalHtml = el.innerHTML;
-        el.innerHTML = `${svgs.check} Copied!`; el.classList.add('copied');
-        setTimeout(() => { el.innerHTML = originalHtml; el.classList.remove('copied'); }, 2000);
+    window.copyPrompt = function(btn) { 
+        navigator.clipboard.writeText(decodeURIComponent(btn.getAttribute('data-raw')));
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = `${svgs.check} Copied!`; btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = originalHtml; btn.classList.remove('copied'); }, 2000);
     }
 
     function appendAIMessage(htmlContent) {
         const wrapper = document.createElement('div'); wrapper.className = 'message-wrapper ai-message';
+        const menuId = 'ai-menu-' + Date.now();
         wrapper.innerHTML = `<div class="bubble ai-bubble">${htmlContent}</div>
-                             <div class="message-actions ai-actions" id="temp-action-bar"><span class="action-link" onclick="readAloud(this)">${svgs.speaker} Read Aloud</span><span class="action-link" onclick="copyPrompt(this)" id="temp-copy-btn">${svgs.copy} Copy</span></div>`;
+                             <div class="message-actions ai-actions" id="temp-action-bar">
+                                <button class="action-link" onclick="readAloud(this)">${svgs.speaker} Read Aloud</button>
+                                <button class="action-link" onclick="copyPrompt(this)" id="temp-copy-btn">${svgs.copy} Copy</button>
+                                <button class="action-link" onclick="regenerateResponse(this)">${svgs.redo} Regenerate</button>
+                                <div style="position:relative;">
+                                    <button class="action-link" onclick="toggleMenu('${menuId}', event)">${svgs.dots}</button>
+                                    <div class="dropdown-menu" id="${menuId}">
+                                        <button onclick="exportToDocs(this)">${svgs.download} Export to Docs</button>
+                                    </div>
+                                </div>
+                             </div>`;
         document.getElementById('chat-container').appendChild(wrapper); scrollToBottom();
         return wrapper;
     }
 
-    function scrollToBottom() {
-        const chat = document.getElementById('chat-container');
-        chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' });
-    }
+    function scrollToBottom() { const chat = document.getElementById('chat-container'); chat.scrollTo({ top: chat.scrollHeight, behavior: 'smooth' }); }
 
     function smoothReveal(bubbleElement, rawMarkdown, wrapperElement, onComplete) {
         bubbleElement.innerHTML = marked.parse(rawMarkdown);
-        const elements = Array.from(bubbleElement.children);
-        const chatBox = document.getElementById('chat-container');
-        
+        const elements = Array.from(bubbleElement.children); const chatBox = document.getElementById('chat-container');
         if (elements.length === 0) { if(onComplete) onComplete(); return; }
 
-        elements.forEach(el => {
-            el.style.display = 'none'; el.style.opacity = '0'; el.style.transform = 'translateY(15px)';
-            el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-        });
+        elements.forEach(el => { el.style.display = 'none'; el.style.opacity = '0'; el.style.transform = 'translateY(15px)'; el.style.transition = 'opacity 0.4s ease, transform 0.4s ease'; });
 
         let delay = 0;
         elements.forEach((el, index) => {
@@ -618,34 +574,21 @@
                 el.style.display = ''; void el.offsetWidth; 
                 el.style.opacity = '1'; el.style.transform = 'translateY(0)';
                 chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
-                
                 if (index === elements.length - 1) {
                     wrapperElement.querySelector('.ai-actions').style.opacity = '1';
                     wrapperElement.querySelector('#temp-copy-btn').setAttribute('data-raw', encodeURIComponent(rawMarkdown));
                     if (onComplete) setTimeout(onComplete, 400);
                 }
-            }, delay);
-            delay += 180; 
+            }, delay); delay += 180; 
         });
     }
 
-    // --- SEND API REQUEST ---
-    document.getElementById('send-btn').addEventListener('click', async () => {
-        let userText = promptInput.value.trim();
-        if (!userText && allUploadedFiles.length === 0) return;
-        if (!userText) userText = "Analyze these files and provide a detailed breakdown.";
-
-        // Secret Language Injection
-        let finalPromptToAI = userText;
-        if (targetLanguage !== 'English') {
-            finalPromptToAI += `\n\n[CRITICAL INSTRUCTION: You MUST translate and provide your entire response in ${targetLanguage}.]`;
-        }
-
-        const imagesToSave = allUploadedFiles.map(f => f.dataUrl);
-        const imagesToSend = allUploadedFiles.map(f => ({ inlineData: { data: f.base64, mimeType: f.mimeType } }));
+    // --- MAIN API EXECUTION ---
+    async function runAnalysis(userText, imagesToSend, imagesToSave, isRegen = false) {
+        document.getElementById('empty-state').style.display = 'none';
         
-        appendUserMessage(userText, imagesToSave);
-        allUploadedFiles = []; updateDisplay(); promptInput.value = ''; promptInput.style.height = 'auto';
+        let finalPromptToAI = userText;
+        if (targetLanguage !== 'English') finalPromptToAI += `\n\n[CRITICAL INSTRUCTION: You MUST translate and provide your entire response in ${targetLanguage}.]`;
 
         const wrapper = appendAIMessage(`<div class="spinner"></div> <span style="color:var(--accent); font-weight:500;">Analyzing data...</span>`);
         const loadingBubble = wrapper.querySelector('.ai-bubble');
@@ -654,10 +597,7 @@
             let contents = [{ parts: [{ text: finalPromptToAI }] }];
             if (imagesToSend.length > 0) contents[0].parts.push(...imagesToSend);
 
-            const response = await fetch("/api/analyze", {
-                method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents })
-            });
-
+            const response = await fetch("/api/analyze", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents }) });
             const data = await response.json();
             
             if (!response.ok) {
@@ -665,12 +605,52 @@
             } else {
                 const rawMarkdown = data.candidates[0].content.parts[0].text;
                 smoothReveal(loadingBubble, rawMarkdown, wrapper, () => {
-                    saveSession(userText, imagesToSave, marked.parse(rawMarkdown)); 
+                    if(!isRegen) { saveSession(userText, imagesToSave, marked.parse(rawMarkdown)); }
+                    else {
+                        // Update existing session memory on regenerate
+                        const session = sessions.find(s => s.id === currentSessionId);
+                        if(session) {
+                            session.messages.push({ role: 'ai', text: marked.parse(rawMarkdown) });
+                            localStorage.setItem('dl_sessions', JSON.stringify(sessions));
+                        }
+                    }
                 });
             }
-        } catch (error) {
-            loadingBubble.innerHTML = `Something went wrong. Check console.`; loadingBubble.style.color = '#ff4444';
+        } catch (error) { loadingBubble.innerHTML = `Something went wrong. Check console.`; loadingBubble.style.color = '#ff4444'; }
+    }
+
+    // --- REGENERATE BUTTON LOGIC ---
+    window.regenerateResponse = function(btn) {
+        const wrapper = btn.closest('.message-wrapper');
+        const prevUserMsg = wrapper.previousElementSibling;
+        if(!prevUserMsg || !prevUserMsg.classList.contains('user-message')) return;
+        
+        const userText = decodeURIComponent(prevUserMsg.querySelector('.action-link').getAttribute('data-raw'));
+        wrapper.remove(); // Remove old AI answer
+        
+        // Grab images from history state if they exist
+        let imagesToSave = []; let imagesToSend = [];
+        const session = sessions.find(s => s.id === currentSessionId);
+        if(session) {
+            session.messages.pop(); // Pop old AI answer from memory
+            imagesToSave = session.messages[session.messages.length - 1].images || [];
+            imagesToSend = imagesToSave.map(dataUrl => ({ inlineData: { data: dataUrl.split(',')[1], mimeType: 'image/jpeg' } }));
         }
+        runAnalysis(userText, imagesToSend, imagesToSave, true);
+    }
+
+    // --- SEND BUTTON ---
+    document.getElementById('send-btn').addEventListener('click', () => {
+        let userText = promptInput.value.trim();
+        if (!userText && allUploadedFiles.length === 0) return;
+        if (!userText) userText = "Analyze these files and provide a detailed breakdown.";
+
+        const imagesToSave = allUploadedFiles.map(f => f.dataUrl);
+        const imagesToSend = allUploadedFiles.map(f => ({ inlineData: { data: f.base64, mimeType: f.mimeType } }));
+        
+        appendUserMessage(userText, imagesToSave);
+        allUploadedFiles = []; updateDisplay(); promptInput.value = ''; promptInput.style.height = 'auto';
+        runAnalysis(userText, imagesToSend, imagesToSave, false);
     });
 
     promptInput.addEventListener('keypress', function (e) {
