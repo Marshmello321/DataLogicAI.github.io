@@ -41,7 +41,7 @@
         .history-item.active { background-color: rgba(168, 199, 250, 0.12); color: #e3e3e3; font-weight: 500; }
         .history-item:hover { background-color: rgba(255,255,255,0.08); color: var(--text-main); }
         
-        .history-title-container { display: flex; align-items: center; gap: 8px; flex-grow: 1; min-width: 0; overflow: hidden; }
+        .history-title-container { display: flex; align-items: center; gap: 8px; flex-grow: 1; min-width: 0; overflow: hidden; pointer-events: none; }
         .history-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .pin-icon { width: 14px; height: 14px; flex-shrink: 0; color: var(--text-muted); }
         .history-item.active .pin-icon { color: var(--accent); }
@@ -124,7 +124,7 @@
         .lang-menu button { display: block; width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 13px; }
         .lang-menu button:hover { background-color: rgba(255,255,255,0.1); }
 
-        /* --- MODALS (Share & Expand) --- */
+        /* --- MODALS (Share, Expand, Rename) --- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
         .custom-modal { background-color: #1e1f20; padding: 24px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
         
@@ -134,8 +134,14 @@
         .expand-body { flex-grow: 1; padding: 24px; display: flex; flex-direction: column; }
         #expand-textarea { flex-grow: 1; background: transparent; border: none; color: var(--text-main); font-size: 18px; resize: none; outline: none; line-height: 1.5; }
         .expand-footer { padding: 16px 24px; display: flex; justify-content: flex-end; border-top: 1px solid var(--border-color); }
-        .save-expand-btn { background-color: var(--accent); color: #000; border: none; border-radius: 20px; padding: 10px 24px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s;}
-        .save-expand-btn:hover { background-color: #b9d3ff; }
+        .save-btn { background-color: var(--accent); color: #000; border: none; border-radius: 20px; padding: 10px 24px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s;}
+        .save-btn:hover { background-color: #b9d3ff; }
+
+        /* Rename Modal Specifics */
+        .rename-input { width: 100%; background: #282a2c; border: 1px solid var(--border-color); color: var(--text-main); padding: 12px; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box; }
+        .rename-input:focus { border-color: var(--accent); }
+        .cancel-btn { background: transparent; color: var(--text-muted); border: none; cursor: pointer; padding: 8px 16px; font-weight: 500; border-radius: 8px; }
+        .cancel-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
 
         .custom-modal h3 { margin: 0 0 16px 0; font-size: 18px; font-weight: 500; }
         .close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; }
@@ -152,7 +158,6 @@
         .s-twitter { background-color: #000000; border: 1px solid #333; } .s-reddit { background-color: #ff4500; }
         .s-circle svg { width: 22px; height: 22px; fill: currentColor; stroke: none; }
 
-        /* Rendered Markdown Styling */
         table { width: 100%; border-collapse: collapse; margin: 16px 0; }
         th, td { border: 1px solid var(--border-color); padding: 10px 14px; text-align: left; }
         th { background-color: #282a2c; color: var(--accent); }
@@ -236,7 +241,19 @@
             <textarea id="expand-textarea" placeholder="Type your full analysis prompt here..."></textarea>
         </div>
         <div class="expand-footer">
-            <button class="save-expand-btn" onclick="saveExpandModal()">Done</button>
+            <button class="save-btn" onclick="saveExpandModal()">Done</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="rename-modal">
+    <div class="custom-modal">
+        <button class="close-modal" onclick="closeModal('rename-modal')"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        <h3>Rename chat</h3>
+        <input type="text" id="rename-input" class="rename-input" placeholder="Enter new name...">
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:20px;">
+            <button class="cancel-btn" onclick="closeModal('rename-modal')">Cancel</button>
+            <button class="save-btn" onclick="saveRenameModal()">Rename</button>
         </div>
     </div>
 </div>
@@ -284,13 +301,14 @@
         document.getElementById('lang-menu').classList.remove('show');
     }
 
+    window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
+
     // --- EXPAND MODAL ---
     window.openExpandModal = function() {
         document.getElementById('expand-textarea').value = document.getElementById('prompt-input').value;
         document.getElementById('expand-modal').style.display = 'flex';
         document.getElementById('expand-textarea').focus();
     }
-    window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
     window.saveExpandModal = function() {
         const input = document.getElementById('prompt-input');
         input.value = document.getElementById('expand-textarea').value;
@@ -302,18 +320,19 @@
     // --- FLUID SEARCH BAR AUTO-EXPAND ---
     const promptInput = document.getElementById('prompt-input');
     promptInput.addEventListener('input', function() { 
-        this.style.height = '24px'; // Reset to min to calculate shrinkage 
-        this.style.height = Math.min(this.scrollHeight, 200) + 'px'; // Cap at 200px before scrolling
+        this.style.height = '24px'; 
+        this.style.height = Math.min(this.scrollHeight, 200) + 'px'; 
     });
 
-    // --- VOICE INPUT (MIC) ---
+    // --- VOICE INPUT (MIC KEEP-ALIVE) ---
     const micBtn = document.getElementById('mic-btn');
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition;
+    let isMicIntentional = false; // Tracks if user actually wants mic on
 
     if (SpeechRecognition) {
         recognition = new SpeechRecognition();
-        recognition.continuous = true; // BUG FIX: Keep listening continuously
+        recognition.continuous = true; 
         recognition.interimResults = true;
         
         recognition.onstart = () => { micBtn.classList.add('mic-active'); };
@@ -324,20 +343,32 @@
             }
             if(finalTranscript) {
                 promptInput.value += (promptInput.value ? ' ' : '') + finalTranscript.trim();
-                promptInput.dispatchEvent(new Event('input')); // Trigger auto-expand resize
+                promptInput.dispatchEvent(new Event('input')); 
             }
         };
-        recognition.onend = () => { micBtn.classList.remove('mic-active'); };
+        recognition.onend = () => { 
+            // BUG FIX: Keep-Alive Loop. If browser auto-closes, restart it!
+            if (isMicIntentional) {
+                recognition.start();
+            } else {
+                micBtn.classList.remove('mic-active'); 
+            }
+        };
         recognition.onerror = (e) => { 
-            micBtn.classList.remove('mic-active'); 
-            if(e.error === 'not-allowed') alert("Microphone access denied. Please click the lock icon in your browser's address bar to allow microphone access.");
+            if(e.error === 'not-allowed') {
+                isMicIntentional = false;
+                micBtn.classList.remove('mic-active');
+                alert("Microphone access denied. Please click the lock icon in your browser's address bar to allow microphone access.");
+            }
         };
         
         micBtn.addEventListener('click', () => { 
-            if (micBtn.classList.contains('mic-active')) {
+            if (isMicIntentional) {
+                isMicIntentional = false;
                 recognition.stop(); 
             } else {
-                recognition.lang = voiceCode; // BUG FIX: Bind mic to selected language
+                isMicIntentional = true;
+                recognition.lang = voiceCode; 
                 recognition.start(); 
             }
         });
@@ -345,13 +376,22 @@
         micBtn.addEventListener('click', () => alert("Voice input is not supported in this browser."));
     }
 
-    // --- TEXT TO SPEECH (READ ALOUD) ---
+    // --- TEXT TO SPEECH (SMART AUTO-DETECT) ---
     let synth = window.speechSynthesis;
     window.readAloud = function(btn) {
         if (synth.speaking) { synth.cancel(); btn.classList.remove('reading'); return; }
         const bubble = btn.closest('.message-wrapper').querySelector('.ai-bubble');
         const utterance = new SpeechSynthesisUtterance(bubble.innerText);
-        utterance.lang = voiceCode; // Forces Native Voice Accent!
+        
+        // BUG FIX: Smart Language Detection for Accents
+        if (/[\u0900-\u097F]/.test(bubble.innerText)) {
+            utterance.lang = 'hi-IN'; // Force Native Hindi Voice
+        } else if (/[\u0C00-\u0C7F]/.test(bubble.innerText)) {
+            utterance.lang = 'te-IN'; // Telugu fallback
+        } else {
+            utterance.lang = voiceCode; // Default to Dropdown
+        }
+
         btn.classList.add('reading');
         utterance.onend = () => { btn.classList.remove('reading'); };
         synth.speak(utterance);
@@ -389,6 +429,26 @@
         window.open(shareLink, '_blank');
     }
 
+    // --- RENAME MODAL ---
+    let sessionToRename = null;
+    window.openRenameModal = function(id, currentName) {
+        sessionToRename = id;
+        document.getElementById('rename-input').value = currentName;
+        document.getElementById('rename-modal').style.display = 'flex';
+        document.getElementById('rename-input').focus();
+    }
+    window.saveRenameModal = function() {
+        const newName = document.getElementById('rename-input').value.trim();
+        if (newName && sessionToRename) {
+            const session = sessions.find(s => s.id === sessionToRename);
+            if (session) session.title = newName;
+            localStorage.setItem('dl_sessions', JSON.stringify(sessions)); 
+            renderSidebar();
+        }
+        closeModal('rename-modal');
+        sessionToRename = null;
+    }
+
     // --- STATE & HISTORY MANAGEMENT ---
     let sessions = JSON.parse(localStorage.getItem('dl_sessions')) || [];
     let currentSessionId = null;
@@ -413,13 +473,20 @@
         }
     }
 
+    // BUG FIX: Safe DOM Appending ensures Click Listeners are never lost
     function renderSidebar() {
-        const list = document.getElementById('history-list'); list.innerHTML = '';
-        let pinned = sessions.filter(s => s.pinned); let unpinned = sessions.filter(s => !s.pinned);
+        const list = document.getElementById('history-list'); 
+        list.innerHTML = ''; // Clear once
+        let pinned = sessions.filter(s => s.pinned); 
+        let unpinned = sessions.filter(s => !s.pinned);
+        
         if (pinned.length > 0) {
-            list.innerHTML += `<div class="history-section-title">Pinned</div>`;
+            const pTitle = document.createElement('div'); pTitle.className = 'history-section-title'; pTitle.innerText = 'Pinned';
+            list.appendChild(pTitle);
             pinned.forEach(s => list.appendChild(createHistoryItem(s)));
-            list.innerHTML += `<div class="history-section-title" style="margin-top:20px;">Recent</div>`;
+            
+            const rTitle = document.createElement('div'); rTitle.className = 'history-section-title'; rTitle.style.marginTop = '20px'; rTitle.innerText = 'Recent';
+            list.appendChild(rTitle);
         }
         unpinned.forEach(s => list.appendChild(createHistoryItem(s)));
     }
@@ -439,7 +506,7 @@
                 <button onclick="actionChat('${session.id}', 'delete', event)" style="color:#ff4444;">${svgs.trash} Delete</button>
             </div>
         `;
-        // BUG FIX 1: Pure block click routing
+        // Safe binding that never gets overwritten
         item.addEventListener('click', (e) => { 
             if(!e.target.closest('.history-options-btn') && !e.target.closest('.dropdown-menu')) loadSession(session.id); 
         });
@@ -455,7 +522,10 @@
         event.stopPropagation(); const session = sessions.find(s => s.id === id);
         if (action === 'delete') { sessions = sessions.filter(s => s.id !== id); if (currentSessionId === id) startNewChat(); } 
         else if (action === 'pin') session.pinned = !session.pinned;
-        else if (action === 'rename') { const newName = prompt("Rename chat:", session.title); if (newName) session.title = newName; }
+        else if (action === 'rename') { 
+            openRenameModal(id, session.title); 
+            return; // Halt execution until modal saves
+        }
         localStorage.setItem('dl_sessions', JSON.stringify(sessions)); renderSidebar();
     }
     
@@ -473,7 +543,7 @@
 
     function loadSession(id) {
         currentSessionId = id; const session = sessions.find(s => s.id === id);
-        document.getElementById('empty-state').style.display = 'none'; // FORCE HIDE
+        document.getElementById('empty-state').style.display = 'none'; 
         const chatBox = document.getElementById('chat-container');
         chatBox.style.display = 'flex'; chatBox.innerHTML = '';
         if (session) {
@@ -553,7 +623,6 @@
         let imagesHtml = imgUrls.length > 0 ? `<div class="chat-images">` + imgUrls.map(url => `<img src="${url}" class="chat-img">`).join('') + `</div>` : '';
         const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         
-        // Removed text labels, kept SVGs and added Titles
         wrapper.innerHTML = `
             ${imagesHtml}
             <div class="bubble user-bubble">${safeText}</div>
@@ -581,7 +650,6 @@
         const wrapper = document.createElement('div'); wrapper.className = 'message-wrapper ai-message';
         const menuId = 'ai-menu-' + Date.now();
         
-        // BUG FIX: Ensure AI Actions remain totally hidden until animation is 100% complete
         wrapper.innerHTML = `<div class="bubble ai-bubble">${htmlContent}</div>
                              <div class="message-actions ai-actions" id="temp-action-bar">
                                 <button class="action-link" onclick="readAloud(this)" title="Read Aloud">${svgs.speaker}</button>
@@ -614,13 +682,12 @@
                 el.style.opacity = '1'; el.style.transform = 'translateY(0)';
                 chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
                 
-                // ONLY Reveal AI Action Bar when the last paragraph has faded in
                 if (index === elements.length - 1) {
                     setTimeout(() => {
                         wrapperElement.querySelector('.ai-actions').style.opacity = '1';
                         wrapperElement.querySelector('#temp-copy-btn').setAttribute('data-raw', encodeURIComponent(rawMarkdown));
                         if (onComplete) onComplete();
-                    }, 400); // 400ms wait so text finishes animating first
+                    }, 400); 
                 }
             }, delay); delay += 180; 
         });
@@ -650,7 +717,6 @@
                 smoothReveal(loadingBubble, rawMarkdown, wrapper, () => {
                     if(!isRegen) { saveSession(userText, imagesToSave, marked.parse(rawMarkdown)); }
                     else {
-                        // Update existing session memory on regenerate
                         const session = sessions.find(s => s.id === currentSessionId);
                         if(session) {
                             session.messages.push({ role: 'ai', text: marked.parse(rawMarkdown) });
@@ -669,13 +735,12 @@
         if(!prevUserMsg || !prevUserMsg.classList.contains('user-message')) return;
         
         const userText = decodeURIComponent(prevUserMsg.querySelector('.action-link[title="Copy"]').getAttribute('data-raw'));
-        wrapper.remove(); // Remove old AI answer
+        wrapper.remove(); 
         
-        // Grab images from history state if they exist
         let imagesToSave = []; let imagesToSend = [];
         const session = sessions.find(s => s.id === currentSessionId);
         if(session) {
-            session.messages.pop(); // Pop old AI answer from memory
+            session.messages.pop(); 
             imagesToSave = session.messages[session.messages.length - 1].images || [];
             imagesToSend = imagesToSave.map(dataUrl => ({ inlineData: { data: dataUrl.split(',')[1], mimeType: 'image/jpeg' } }));
         }
@@ -693,7 +758,7 @@
         
         appendUserMessage(userText, imagesToSave);
         allUploadedFiles = []; updateDisplay(); 
-        promptInput.value = ''; promptInput.dispatchEvent(new Event('input')); // Shrink text box
+        promptInput.value = ''; promptInput.dispatchEvent(new Event('input')); 
         
         runAnalysis(userText, imagesToSend, imagesToSave, false);
     });
