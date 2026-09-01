@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataLogic AI</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        // Initialize Mermaid in Dark Mode
+        mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+    </script>
     <style>
         :root {
             --bg-color: #131314;
@@ -56,7 +61,7 @@
         .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; position: relative; z-index: 10; }
         .menu-toggle { background: none; border: none; color: var(--text-main); cursor: pointer; padding: 8px; display: flex; align-items: center; }
 
-        /* --- TOP MODE TOGGLE (Chat | Upload) --- */
+        /* --- TOP MODE TOGGLE --- */
         .mode-toggle { position: absolute; left: 50%; transform: translateX(-50%); display: flex; background: #282a2c; border-radius: 20px; padding: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .mode-btn { background: transparent; color: var(--text-muted); border: none; border-radius: 16px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 6px;}
         .mode-btn.active { background: #444746; color: var(--text-main); box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
@@ -79,13 +84,17 @@
         
         .upload-controls { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; justify-content: center; }
         
-        /* PREMIUM ROUNDED DROPDOWNS */
-        .upload-select { background: #282a2c; color: var(--text-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 20px; font-size: 14px; font-weight: 500; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; padding-right: 40px; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c4c7c5%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; transition: border-color 0.2s;}
-        .upload-select:hover { border-color: var(--accent); }
+        /* CUSTOM PREMIUM DROPDOWNS (Upload Hub) */
+        .upload-dropdown-container { position: relative; }
+        .upload-select-btn { background: #282a2c; color: var(--text-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 20px; font-size: 14px; font-weight: 500; outline: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; width: 220px; transition: border-color 0.2s; }
+        .upload-select-btn:hover { border-color: var(--accent); }
+        .upload-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: #282a2c; border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.5); z-index: 100; margin-top: 8px; }
+        .upload-dropdown-menu.show { display: block; }
+        .upload-dropdown-menu button { display: block; width: 100%; text-align: left; padding: 12px 20px; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 14px; font-weight: 500; transition: 0.2s;}
+        .upload-dropdown-menu button:hover { background-color: rgba(255,255,255,0.08); color: var(--accent); }
         
         .big-analyze-btn { background: var(--accent); color: #000; border: none; border-radius: 24px; padding: 14px 32px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
         .big-analyze-btn:hover { background: #b9d3ff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(168, 199, 250, 0.3); }
-
         .hub-previews { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; max-width: 660px; justify-content: center; }
 
         /* --- CHAT STREAM --- */
@@ -110,16 +119,17 @@
         .spinner { width: 16px; height: 16px; border: 2px solid transparent; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px;}
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* MARKDOWN DARK MODE CSS (Tables, Code Blocks, Lists) */
+        /* MARKDOWN DARK MODE & MERMAID CSS */
         table { width: 100%; border-collapse: collapse; margin: 16px 0; }
         th, td { border: 1px solid var(--border-color); padding: 10px 14px; text-align: left; }
         th { background-color: #282a2c; color: var(--accent); }
-        
         pre { background-color: #1e1f20; padding: 16px; border-radius: 12px; overflow-x: auto; border: 1px solid var(--border-color); margin: 16px 0; }
         code { font-family: 'Courier New', Courier, monospace; color: #a8c7fa; background-color: rgba(168, 199, 250, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 14px; }
         pre code { background-color: transparent; padding: 0; color: #e3e3e3; }
         ul, ol { margin: 12px 0 12px 24px; padding: 0; line-height: 1.6; }
         li { margin-bottom: 8px; }
+        
+        .mermaid { background: transparent; padding: 16px; display: flex; justify-content: center; margin: 16px 0; border-radius: 12px; border: 1px solid var(--border-color); overflow-x: auto; }
 
         /* --- INPUT BAR --- */
         .input-wrapper { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 800px; background-color: var(--bar-bg); border-radius: 24px; padding: 12px 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; z-index: 50; transition: 0.3s opacity, 0.3s transform; }
@@ -240,18 +250,31 @@
         <div class="hub-previews" id="hub-file-previews"></div>
 
         <div class="upload-controls">
-            <select class="upload-select" id="hub-depth">
-                <option value="level1">Level 1: Quick Summary</option>
-                <option value="level2" selected>Level 2: Standard Analysis</option>
-                <option value="level3">Level 3: Deep Dive Breakdown</option>
-            </select>
-            <select class="upload-select" id="hub-lang">
-                <option value="English">English</option>
-                <option value="Hindi">हिन्दी (Hindi)</option>
-                <option value="Marathi">मराठी (Marathi)</option>
-                <option value="Spanish">Español (Spanish)</option>
-                <option value="French">Français (French)</option>
-            </select>
+            <div class="upload-dropdown-container">
+                <button class="upload-select-btn" id="hub-depth-btn">
+                    <span>✨ Pro (Standard)</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="upload-dropdown-menu" id="hub-depth-menu">
+                    <button onclick="setUploadDepth('flash', '⚡ Flash (Summary)')">⚡ Flash (Summary)</button>
+                    <button onclick="setUploadDepth('pro', '✨ Pro (Standard)')">✨ Pro (Standard)</button>
+                    <button onclick="setUploadDepth('ultra', '🔥 Ultra (Deep Dive)')">🔥 Ultra (Deep Dive)</button>
+                </div>
+            </div>
+
+            <div class="upload-dropdown-container">
+                <button class="upload-select-btn" id="hub-lang-btn">
+                    <span>🌐 English</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="upload-dropdown-menu" id="hub-lang-menu">
+                    <button onclick="setUploadLang('English', '🌐 English')">🌐 English</button>
+                    <button onclick="setUploadLang('Hindi', '🌐 हिन्दी (Hindi)')">🌐 हिन्दी (Hindi)</button>
+                    <button onclick="setUploadLang('Marathi', '🌐 मराठी (Marathi)')">🌐 मराठी (Marathi)</button>
+                    <button onclick="setUploadLang('Spanish', '🌐 Español (Spanish)')">🌐 Español (Spanish)</button>
+                    <button onclick="setUploadLang('French', '🌐 Français (French)')">🌐 Français (French)</button>
+                </div>
+            </div>
         </div>
 
         <button class="big-analyze-btn" onclick="executeUploadHubAnalysis()">
@@ -365,15 +388,44 @@
         }
     }
 
-    // --- LANGUAGE SETTINGS ---
+    // --- LANGUAGE & DEPTH SETTINGS ---
     let targetLanguage = 'English';
     let voiceCode = 'en-US';
+    let uploadDepthVal = 'pro'; 
+
     document.getElementById('lang-btn').addEventListener('click', (e) => { document.getElementById('lang-menu').classList.toggle('show'); e.stopPropagation(); });
+    
+    // Custom Upload Dropdown Toggles
+    document.getElementById('hub-depth-btn').addEventListener('click', (e) => {
+        document.getElementById('hub-depth-menu').classList.toggle('show');
+        document.getElementById('hub-lang-menu').classList.remove('show');
+        e.stopPropagation();
+    });
+    
+    document.getElementById('hub-lang-btn').addEventListener('click', (e) => {
+        document.getElementById('hub-lang-menu').classList.toggle('show');
+        document.getElementById('hub-depth-menu').classList.remove('show');
+        e.stopPropagation();
+    });
+
     window.setLanguage = function(lang, code, display) {
         targetLanguage = lang; voiceCode = code;
         document.getElementById('lang-btn').innerHTML = `🌐 ${display} ⌄`;
         document.getElementById('lang-menu').classList.remove('show');
     }
+
+    window.setUploadLang = function(lang, display) {
+        targetLanguage = lang; 
+        document.getElementById('hub-lang-btn').querySelector('span').innerText = display;
+        document.getElementById('hub-lang-menu').classList.remove('show');
+    }
+
+    window.setUploadDepth = function(depth, display) {
+        uploadDepthVal = depth;
+        document.getElementById('hub-depth-btn').querySelector('span').innerText = display;
+        document.getElementById('hub-depth-menu').classList.remove('show');
+    }
+
     window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
 
     // --- EXPAND MODAL ---
@@ -433,7 +485,6 @@
             }
             
             let spacer = baseTextForMic ? " " : "";
-            // Instant DOM update. Decoupled from heavy event listener to prevent lag.
             promptInput.value = baseTextForMic + spacer + finalTranscript + interimTranscript;
             promptInput.style.height = '24px'; 
             promptInput.style.height = Math.min(promptInput.scrollHeight, 200) + 'px'; 
@@ -564,22 +615,22 @@
     window.executeUploadHubAnalysis = function() {
         if(allUploadedFiles.length === 0) return alert("Please upload at least one file first.");
         
-        const depthVal = document.getElementById('hub-depth').value;
-        const langVal = document.getElementById('hub-lang').value;
+        const depthVal = uploadDepthVal;
+        const langVal = targetLanguage;
         const fileCount = allUploadedFiles.length;
         
-        let depthName = depthVal === 'level1' ? 'Level 1 (Quick Summary)' : depthVal === 'level2' ? 'Level 2 (Standard Analysis)' : 'Level 3 (Deep Dive Breakdown)';
+        let depthName = depthVal === 'flash' ? 'Flash (Summary)' : depthVal === 'pro' ? 'Pro (Standard Analysis)' : 'Ultra (Deep Dive Breakdown)';
         
         // Frontend Clean Display Text
         const displayPrompt = `Analyze ${fileCount} uploaded file(s).\nSettings: ${depthName} | Language: ${langVal}`;
 
         // Backend Hidden API Prompt
         let depthInstruction = "";
-        if(depthVal === 'level1') depthInstruction = "Provide a concise, Level 1 high-level summary with bullet points.";
-        if(depthVal === 'level2') depthInstruction = "Provide a balanced, Level 2 detailed standard analysis.";
-        if(depthVal === 'level3') depthInstruction = "Provide an exhaustive, Level 3 highly detailed deep-dive structural breakdown.";
+        if(depthVal === 'flash') depthInstruction = "Provide a Flash (Level 1) concise high-level summary with bullet points. Generate 1 simple Mermaid.js chart.";
+        if(depthVal === 'pro') depthInstruction = "Provide a Pro (Level 2) balanced standard analysis. Generate 2 distinct Mermaid.js charts (e.g. pie, bar).";
+        if(depthVal === 'ultra') depthInstruction = "Provide an Ultra (Level 3) exhaustive deep-dive structural breakdown. Generate 3 or more complex Mermaid.js charts (pie, bar, line).";
 
-        const masterPrompt = `Analyze the provided files. ${depthInstruction} CRITICAL: Do NOT use HTML tags like <p>. Use pure Markdown only. You MUST extract all metrics into clean Markdown tables. You MUST use creative text-based visualizations including ASCII bar charts (██████ 60%), emoji-based pie charts (🌕🌗🌑), and grid matrices. Output the ENTIRE response translated perfectly into ${langVal}.`;
+        const masterPrompt = `Analyze the provided files. ${depthInstruction} CRITICAL: Do NOT use HTML tags like <p>. Use pure Markdown only. You MUST extract metrics into clean Markdown tables. Use clean ASCII progress bars (e.g., [██████░░░░] 60%) instead of emojis. You MUST use Mermaid.js syntax (inside \`\`\`mermaid code blocks) to generate beautiful charts. Output the ENTIRE response translated perfectly into ${langVal}.`;
 
         switchMode('chat');
         
@@ -665,6 +716,25 @@
                     setTimeout(() => {
                         wrapperElement.querySelector('.ai-actions').style.opacity = '1';
                         wrapperElement.querySelector('#temp-copy-btn').setAttribute('data-raw', encodeURIComponent(rawMarkdown));
+                        
+                        // Render Mermaid Charts dynamically
+                        const mermaidBlocks = wrapperElement.querySelectorAll('code.language-mermaid');
+                        if(mermaidBlocks.length > 0) {
+                            mermaidBlocks.forEach((block, i) => {
+                                const id = 'mermaid-' + Date.now() + '-' + i;
+                                const graphDef = block.textContent;
+                                const parent = block.parentElement; // The <pre> tag
+                                const div = document.createElement('div');
+                                div.className = 'mermaid';
+                                div.id = id;
+                                div.textContent = graphDef;
+                                parent.replaceWith(div);
+                            });
+                            // Run the renderer
+                            try { mermaid.run({ querySelector: '.mermaid' }); } 
+                            catch(e) { console.error("Mermaid Render Error", e); }
+                        }
+
                         if (onComplete) onComplete();
                     }, 400); 
                 }
@@ -742,7 +812,7 @@
         const imagesToSave = allUploadedFiles.map(f => f.dataUrl);
         const imagesToSend = allUploadedFiles.map(f => ({ inlineData: { data: f.base64, mimeType: f.mimeType } }));
         
-        appendUserMessage(userText, userText, imagesToSave); // frontend text == backend text
+        appendUserMessage(userText, userText, imagesToSave); 
         allUploadedFiles = []; updateDisplay(); 
         promptInput.value = ''; promptInput.style.height = '24px'; 
         
@@ -878,11 +948,20 @@
         localStorage.setItem('dl_sessions', JSON.stringify(sessions)); renderSidebar();
     }
     
+    // Globally close all custom dropdown menus on outside click
     window.onclick = function(e) { 
         if(!e.target.closest('.dropdown-menu') && !e.target.closest('.history-options-btn') && !e.target.closest('.action-link')) {
             document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show')); 
         }
         if(!e.target.closest('.lang-container')) document.getElementById('lang-menu').classList.remove('show');
+        if(!e.target.closest('#hub-depth-btn') && !e.target.closest('#hub-depth-menu')) {
+            const menu = document.getElementById('hub-depth-menu');
+            if(menu) menu.classList.remove('show');
+        }
+        if(!e.target.closest('#hub-lang-btn') && !e.target.closest('#hub-lang-menu')) {
+            const menu = document.getElementById('hub-lang-menu');
+            if(menu) menu.classList.remove('show');
+        }
     }
 
     function startNewChat() {
@@ -918,6 +997,10 @@
                     chatBox.appendChild(wrap);
                 }
             });
+            // Auto-render Mermaid on load
+            setTimeout(() => {
+                try { mermaid.run({ querySelector: '.mermaid' }); } catch(e){}
+            }, 100);
         }
         renderSidebar(); setTimeout(scrollToBottom, 50);
         if (window.innerWidth < 768) document.getElementById('sidebar').classList.add('hidden');
