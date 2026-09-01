@@ -65,7 +65,7 @@
         .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; padding: 20px; text-align: center; margin-bottom: 80px; overflow-y: auto; transition: 0.3s; }
         .empty-state h1 { font-size: 32px; margin-bottom: 32px; background: linear-gradient(90deg, #a8c7fa, #c58af9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .suggestions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 660px; width: 100%; }
-        .suggestion-chip { background-color: var(--sidebar-bg); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; cursor: pointer; color: var(--text-muted); transition: 0.2s; text-align: left; display: flex; flex-direction: column; gap: 8px; }
+        .suggestion-chip { background-color: var(--sidebar-bg); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; cursor: pointer; color: var(--text-muted); transition: 0.2s; text-align: left; display: flex; flex-direction: column; gap: 8px; z-index: 20; position: relative;}
         .suggestion-chip:hover { background-color: rgba(255,255,255,0.05); border-color: var(--accent); color: var(--text-main); }
         .chip-title { display: flex; align-items: center; gap: 8px; color: var(--text-main); font-weight: 600; font-size: 14px; }
         .chip-title svg { width: 18px; height: 18px; color: var(--accent); }
@@ -78,13 +78,14 @@
         .dropzone svg { width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.8; }
         
         .upload-controls { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; justify-content: center; }
-        .upload-select { background: #282a2c; color: var(--text-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 16px; font-size: 14px; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; padding-right: 32px; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c4c7c5%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 8px center; background-size: 16px; }
+        
+        /* PREMIUM ROUNDED DROPDOWNS */
+        .upload-select { background: #282a2c; color: var(--text-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 20px; font-size: 14px; font-weight: 500; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; padding-right: 40px; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c4c7c5%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; transition: border-color 0.2s;}
         .upload-select:hover { border-color: var(--accent); }
         
         .big-analyze-btn { background: var(--accent); color: #000; border: none; border-radius: 24px; padding: 14px 32px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
         .big-analyze-btn:hover { background: #b9d3ff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(168, 199, 250, 0.3); }
 
-        /* Hub Previews */
         .hub-previews { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; max-width: 660px; justify-content: center; }
 
         /* --- CHAT STREAM --- */
@@ -108,6 +109,17 @@
         .reading { color: var(--accent) !important; background-color: rgba(168, 199, 250, 0.1) !important; }
         .spinner { width: 16px; height: 16px; border: 2px solid transparent; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px;}
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* MARKDOWN DARK MODE CSS (Tables, Code Blocks, Lists) */
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        th, td { border: 1px solid var(--border-color); padding: 10px 14px; text-align: left; }
+        th { background-color: #282a2c; color: var(--accent); }
+        
+        pre { background-color: #1e1f20; padding: 16px; border-radius: 12px; overflow-x: auto; border: 1px solid var(--border-color); margin: 16px 0; }
+        code { font-family: 'Courier New', Courier, monospace; color: #a8c7fa; background-color: rgba(168, 199, 250, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 14px; }
+        pre code { background-color: transparent; padding: 0; color: #e3e3e3; }
+        ul, ol { margin: 12px 0 12px 24px; padding: 0; line-height: 1.6; }
+        li { margin-bottom: 8px; }
 
         /* --- INPUT BAR --- */
         .input-wrapper { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 800px; background-color: var(--bar-bg); border-radius: 24px; padding: 12px 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; z-index: 50; transition: 0.3s opacity, 0.3s transform; }
@@ -168,10 +180,6 @@
         .s-linkedin { background-color: #0077b5; } .s-facebook { background-color: #1877f2; }
         .s-twitter { background-color: #000000; border: 1px solid #333; } .s-reddit { background-color: #ff4500; }
         .s-circle svg { width: 22px; height: 22px; fill: currentColor; stroke: none; }
-
-        table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-        th, td { border: 1px solid var(--border-color); padding: 10px 14px; text-align: left; }
-        th { background-color: #282a2c; color: var(--accent); }
     </style>
 </head>
 <body>
@@ -382,6 +390,15 @@
         closeModal('expand-modal');
     }
 
+    // --- SUGGESTION CHIP TRIGGER ---
+    window.setPrompt = function(text) { 
+        const input = document.getElementById('prompt-input');
+        input.value = text;
+        input.style.height = '24px'; 
+        input.style.height = Math.min(input.scrollHeight, 200) + 'px';
+        input.focus(); 
+    }
+
     // --- FLUID SEARCH BAR AUTO-EXPAND ---
     const promptInput = document.getElementById('prompt-input');
     promptInput.addEventListener('input', function() { 
@@ -389,7 +406,7 @@
         this.style.height = Math.min(this.scrollHeight, 200) + 'px'; 
     });
 
-    // --- LIVE VOICE INPUT (MIC) ---
+    // --- LIVE VOICE INPUT (MIC) - Zero Lag ---
     const micBtn = document.getElementById('mic-btn');
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition;
@@ -416,9 +433,10 @@
             }
             
             let spacer = baseTextForMic ? " " : "";
-            // Instant DOM update for true live typing
+            // Instant DOM update. Decoupled from heavy event listener to prevent lag.
             promptInput.value = baseTextForMic + spacer + finalTranscript + interimTranscript;
-            promptInput.dispatchEvent(new Event('input')); 
+            promptInput.style.height = '24px'; 
+            promptInput.style.height = Math.min(promptInput.scrollHeight, 200) + 'px'; 
         };
         
         recognition.onend = () => { 
@@ -443,32 +461,43 @@
         micBtn.addEventListener('click', () => alert("Voice input is not supported in this browser."));
     }
 
-    // --- TEXT TO SPEECH (SMART QUEUE & NATIVE ACCENT) ---
+    // --- TEXT TO SPEECH (AGGRESSIVE OS VOICE MATCHER) ---
     let synth = window.speechSynthesis;
-    // Load voices proactively for better OS matching
     let voices = [];
     synth.onvoiceschanged = () => { voices = synth.getVoices(); };
 
     window.readAloud = function(btn) {
         if (btn.classList.contains('reading')) { synth.cancel(); btn.classList.remove('reading'); return; }
         
-        // Aggressively flush the audio queue
         synth.cancel(); 
         document.querySelectorAll('.reading').forEach(b => b.classList.remove('reading'));
 
         const bubble = btn.closest('.message-wrapper').querySelector('.ai-bubble');
         const utterance = new SpeechSynthesisUtterance(bubble.innerText);
         
-        // Smart Multilingual Voice Matcher
         let targetLangCode = voiceCode; 
-        if (/[\u0900-\u097F]/.test(bubble.innerText)) { // Detect Devanagari
+        let searchKeywords = [];
+
+        // Aggressively match native accents
+        if (/[\u0900-\u097F]/.test(bubble.innerText)) { 
             targetLangCode = (voiceCode === 'mr-IN') ? 'mr-IN' : 'hi-IN';
+            searchKeywords = (voiceCode === 'mr-IN') ? ['mr', 'marathi'] : ['hi', 'hindi'];
+        } else if (voiceCode === 'es-ES') {
+            searchKeywords = ['es', 'spanish', 'español'];
+        } else if (voiceCode === 'fr-FR') {
+            searchKeywords = ['fr', 'french', 'français'];
+        } else {
+            searchKeywords = ['en', 'english'];
         }
+
         utterance.lang = targetLangCode;
         
-        // Try to find a native voice object matching the exact OS language code
         if(voices.length > 0) {
-            const match = voices.find(v => v.lang.includes(targetLangCode));
+            const match = voices.find(v => {
+                let vName = v.name.toLowerCase();
+                let vLang = v.lang.toLowerCase();
+                return searchKeywords.some(kw => vName.includes(kw) || vLang.includes(kw));
+            });
             if(match) utterance.voice = match;
         }
 
@@ -492,7 +521,6 @@
         updateDisplay();
     });
 
-    // Drag and Drop Logic
     dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
     dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('dragover'); });
     dropzone.addEventListener('drop', async (e) => {
@@ -538,42 +566,48 @@
         
         const depthVal = document.getElementById('hub-depth').value;
         const langVal = document.getElementById('hub-lang').value;
+        const fileCount = allUploadedFiles.length;
         
+        let depthName = depthVal === 'level1' ? 'Level 1 (Quick Summary)' : depthVal === 'level2' ? 'Level 2 (Standard Analysis)' : 'Level 3 (Deep Dive Breakdown)';
+        
+        // Frontend Clean Display Text
+        const displayPrompt = `Analyze ${fileCount} uploaded file(s).\nSettings: ${depthName} | Language: ${langVal}`;
+
+        // Backend Hidden API Prompt
         let depthInstruction = "";
         if(depthVal === 'level1') depthInstruction = "Provide a concise, Level 1 high-level summary with bullet points.";
         if(depthVal === 'level2') depthInstruction = "Provide a balanced, Level 2 detailed standard analysis.";
         if(depthVal === 'level3') depthInstruction = "Provide an exhaustive, Level 3 highly detailed deep-dive structural breakdown.";
 
-        // The Hidden Master Prompt
-        const masterPrompt = `Analyze the provided files. ${depthInstruction} You MUST extract all metrics into clean Markdown tables and visualize data using text-based ASCII bar charts (e.g., ██████ 60%). Output the ENTIRE response translated perfectly into ${langVal}.`;
+        const masterPrompt = `Analyze the provided files. ${depthInstruction} CRITICAL: Do NOT use HTML tags like <p>. Use pure Markdown only. You MUST extract all metrics into clean Markdown tables. You MUST use creative text-based visualizations including ASCII bar charts (██████ 60%), emoji-based pie charts (🌕🌗🌑), and grid matrices. Output the ENTIRE response translated perfectly into ${langVal}.`;
 
-        // Seamless transition back to Chat Mode
         switchMode('chat');
         
-        // Execute exactly like a normal prompt
         const imagesToSave = allUploadedFiles.map(f => f.dataUrl);
         const imagesToSend = allUploadedFiles.map(f => ({ inlineData: { data: f.base64, mimeType: f.mimeType } }));
         
-        appendUserMessage(masterPrompt, imagesToSave);
+        appendUserMessage(displayPrompt, masterPrompt, imagesToSave);
         allUploadedFiles = []; updateDisplay(); 
         
-        runAnalysis(masterPrompt, imagesToSend, imagesToSave, false, langVal);
+        runAnalysis(masterPrompt, displayPrompt, imagesToSend, imagesToSave, false, langVal);
     }
 
     // --- CHAT RENDERING ---
-    function appendUserMessage(text, imgUrls) {
+    function appendUserMessage(displayText, apiText, imgUrls) {
         document.getElementById('empty-state').style.display = 'none';
         document.getElementById('chat-container').style.display = 'flex';
         const wrapper = document.createElement('div'); wrapper.className = 'message-wrapper user-message';
         let imagesHtml = imgUrls.length > 0 ? `<div class="chat-images">` + imgUrls.map(url => `<img src="${url}" class="chat-img">`).join('') + `</div>` : '';
-        const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const safeText = displayText.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>");
         
+        // Hidden span holds the true API master prompt for regeneration
         wrapper.innerHTML = `
             ${imagesHtml}
             <div class="bubble user-bubble">${safeText}</div>
             <div class="message-actions">
-                <button class="action-link" onclick="editPrompt(this)" data-raw="${encodeURIComponent(text)}" title="Edit">${svgs.edit}</button>
-                <button class="action-link" onclick="copyPrompt(this)" data-raw="${encodeURIComponent(text)}" title="Copy">${svgs.copy}</button>
+                <button class="action-link" onclick="editPrompt(this)" data-raw="${encodeURIComponent(displayText)}" title="Edit">${svgs.edit}</button>
+                <button class="action-link copy-btn" onclick="copyPrompt(this)" data-raw="${encodeURIComponent(displayText)}" title="Copy">${svgs.copy}</button>
+                <span class="hidden-api-prompt" style="display:none;" data-api="${encodeURIComponent(apiText)}"></span>
             </div>
         `;
         document.getElementById('chat-container').appendChild(wrapper); scrollToBottom();
@@ -639,13 +673,13 @@
     }
 
     // --- MAIN API EXECUTION ---
-    async function runAnalysis(userText, imagesToSend, imagesToSave, isRegen = false, explicitLang = null) {
+    async function runAnalysis(apiText, displayText, imagesToSend, imagesToSave, isRegen = false, explicitLang = null) {
         document.getElementById('empty-state').style.display = 'none';
         
-        let finalPromptToAI = userText;
+        let finalPromptToAI = apiText;
         let langToEnforce = explicitLang || targetLanguage;
         
-        if (langToEnforce !== 'English' && !userText.includes("MUST translate and provide your entire response in")) {
+        if (langToEnforce !== 'English' && !apiText.includes("MUST translate and provide your entire response in")) {
             finalPromptToAI += `\n\n[CRITICAL INSTRUCTION: You MUST translate and provide your entire response in ${langToEnforce}.]`;
         }
 
@@ -664,7 +698,7 @@
             } else {
                 const rawMarkdown = data.candidates[0].content.parts[0].text;
                 smoothReveal(loadingBubble, rawMarkdown, wrapper, () => {
-                    if(!isRegen) { saveSession(userText, imagesToSave, marked.parse(rawMarkdown)); }
+                    if(!isRegen) { saveSession(displayText, apiText, imagesToSave, marked.parse(rawMarkdown)); }
                     else {
                         const session = sessions.find(s => s.id === currentSessionId);
                         if(session) {
@@ -683,7 +717,8 @@
         const prevUserMsg = wrapper.previousElementSibling;
         if(!prevUserMsg || !prevUserMsg.classList.contains('user-message')) return;
         
-        const userText = decodeURIComponent(prevUserMsg.querySelector('.action-link[title="Copy"]').getAttribute('data-raw'));
+        const apiText = decodeURIComponent(prevUserMsg.querySelector('.hidden-api-prompt').getAttribute('data-api'));
+        const displayText = decodeURIComponent(prevUserMsg.querySelector('.copy-btn').getAttribute('data-raw'));
         wrapper.remove(); 
         
         let imagesToSave = []; let imagesToSend = [];
@@ -693,7 +728,7 @@
             imagesToSave = session.messages[session.messages.length - 1].images || [];
             imagesToSend = imagesToSave.map(dataUrl => ({ inlineData: { data: dataUrl.split(',')[1], mimeType: 'image/jpeg' } }));
         }
-        runAnalysis(userText, imagesToSend, imagesToSave, true);
+        runAnalysis(apiText, displayText, imagesToSend, imagesToSave, true);
     }
 
     // --- SEND BUTTON (STANDARD CHAT) ---
@@ -702,17 +737,16 @@
         if (!userText && allUploadedFiles.length === 0) return;
         if (!userText) userText = "Analyze these files and provide a detailed breakdown.";
 
-        // Auto Stop Mic
         if (recognition && isMicIntentional) { isMicIntentional = false; recognition.stop(); }
 
         const imagesToSave = allUploadedFiles.map(f => f.dataUrl);
         const imagesToSend = allUploadedFiles.map(f => ({ inlineData: { data: f.base64, mimeType: f.mimeType } }));
         
-        appendUserMessage(userText, imagesToSave);
+        appendUserMessage(userText, userText, imagesToSave); // frontend text == backend text
         allUploadedFiles = []; updateDisplay(); 
-        promptInput.value = ''; promptInput.dispatchEvent(new Event('input')); 
+        promptInput.value = ''; promptInput.style.height = '24px'; 
         
-        runAnalysis(userText, imagesToSend, imagesToSave, false);
+        runAnalysis(userText, userText, imagesToSend, imagesToSave, false);
     });
 
     promptInput.addEventListener('keypress', function (e) {
@@ -773,16 +807,16 @@
     let sessions = JSON.parse(localStorage.getItem('dl_sessions')) || [];
     let currentSessionId = null;
 
-    function saveSession(userText, base64Images, aiHtml) {
+    function saveSession(displayText, apiText, base64Images, aiHtml) {
         try {
             if (!currentSessionId) {
                 currentSessionId = Date.now().toString();
-                const title = userText ? userText.split(' ').slice(0, 4).join(' ') + '...' : 'New Analysis';
+                const title = displayText ? displayText.split(' ').slice(0, 4).join(' ') + '...' : 'New Analysis';
                 sessions.unshift({ id: currentSessionId, title: title, pinned: false, messages: [] });
             }
             const session = sessions.find(s => s.id === currentSessionId);
             if (session) {
-                session.messages.push({ role: 'user', text: userText, images: base64Images });
+                session.messages.push({ role: 'user', text: displayText, apiText: apiText, images: base64Images });
                 session.messages.push({ role: 'ai', text: aiHtml });
                 localStorage.setItem('dl_sessions', JSON.stringify(sessions));
                 renderSidebar();
@@ -866,7 +900,7 @@
         chatBox.style.display = 'flex'; chatBox.innerHTML = '';
         if (session) {
             session.messages.forEach(msg => {
-                if (msg.role === 'user') appendUserMessage(msg.text, msg.images || []);
+                if (msg.role === 'user') appendUserMessage(msg.text, msg.apiText || msg.text, msg.images || []);
                 if (msg.role === 'ai') {
                     const wrap = document.createElement('div'); wrap.className = 'message-wrapper ai-message';
                     wrap.innerHTML = `<div class="bubble ai-bubble">${msg.text}</div>
