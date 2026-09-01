@@ -88,7 +88,7 @@
         .action-link:hover { color: var(--text-main); background-color: rgba(255,255,255,0.1); }
         .action-link svg { width: 16px; height: 16px; }
         .copied { color: #4ade80 !important; }
-        .reading { color: var(--accent) !important; }
+        .reading { color: var(--accent) !important; background-color: rgba(168, 199, 250, 0.1) !important; }
 
         .spinner { width: 16px; height: 16px; border: 2px solid transparent; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px;}
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -103,8 +103,6 @@
         .remove-btn:hover { background: #ff4444; }
 
         .chat-bar { display: flex; align-items: flex-end; gap: 12px; }
-        
-        /* Fluid Textarea */
         textarea { flex-grow: 1; background: transparent; border: none; color: var(--text-main); font-size: 16px; resize: none; outline: none; max-height: 200px; min-height: 24px; padding: 10px 0; font-family: inherit; overflow-y: auto; }
         
         .icon-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; position: relative; flex-shrink: 0; }
@@ -124,11 +122,10 @@
         .lang-menu button { display: block; width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 13px; }
         .lang-menu button:hover { background-color: rgba(255,255,255,0.1); }
 
-        /* --- MODALS (Share, Expand, Rename) --- */
+        /* --- MODALS --- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
         .custom-modal { background-color: #1e1f20; padding: 24px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
         
-        /* Immersive Expand Modal */
         .immersive-modal { background-color: var(--bg-color); width: 100%; max-width: 900px; height: 80vh; border-radius: 16px; display: flex; flex-direction: column; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid var(--border-color); }
         .expand-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid var(--border-color); }
         .expand-body { flex-grow: 1; padding: 24px; display: flex; flex-direction: column; }
@@ -137,7 +134,6 @@
         .save-btn { background-color: var(--accent); color: #000; border: none; border-radius: 20px; padding: 10px 24px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s;}
         .save-btn:hover { background-color: #b9d3ff; }
 
-        /* Rename Modal Specifics */
         .rename-input { width: 100%; background: #282a2c; border: 1px solid var(--border-color); color: var(--text-main); padding: 12px; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box; }
         .rename-input:focus { border-color: var(--accent); }
         .cancel-btn { background: transparent; color: var(--text-muted); border: none; cursor: pointer; padding: 8px 16px; font-weight: 500; border-radius: 8px; }
@@ -221,6 +217,7 @@
                 <div class="lang-menu" id="lang-menu">
                     <button onclick="setLanguage('English', 'en-US', 'English')">English</button>
                     <button onclick="setLanguage('Hindi', 'hi-IN', 'हिन्दी')">हिन्दी (Hindi)</button>
+                    <button onclick="setLanguage('Marathi', 'mr-IN', 'मराठी')">मराठी (Marathi)</button>
                     <button onclick="setLanguage('Spanish', 'es-ES', 'Español')">Español (Spanish)</button>
                     <button onclick="setLanguage('French', 'fr-FR', 'Français')">Français (French)</button>
                 </div>
@@ -324,36 +321,53 @@
         this.style.height = Math.min(this.scrollHeight, 200) + 'px'; 
     });
 
-    // --- VOICE INPUT (MIC KEEP-ALIVE) ---
+    // --- VOICE INPUT (LIVE TYPING & KEEP-ALIVE) ---
     const micBtn = document.getElementById('mic-btn');
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition;
-    let isMicIntentional = false; // Tracks if user actually wants mic on
+    let isMicIntentional = false;
+    let baseTextForMic = ""; // Saves what was typed before pressing mic
 
     if (SpeechRecognition) {
         recognition = new SpeechRecognition();
         recognition.continuous = true; 
         recognition.interimResults = true;
         
-        recognition.onstart = () => { micBtn.classList.add('mic-active'); };
+        recognition.onstart = () => { 
+            micBtn.classList.add('mic-active'); 
+            baseTextForMic = promptInput.value.trim(); // Save existing text
+        };
+        
         recognition.onresult = (event) => {
             let finalTranscript = '';
+            let interimTranscript = '';
+            
+            // BUG FIX 1 & 5: Clear separation of final and interim strings to prevent duplication echo
             for (let i = event.resultIndex; i < event.results.length; ++i) {
-                finalTranscript += event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalTranscript += event.results[i][0].transcript;
+                } else {
+                    interimTranscript += event.results[i][0].transcript;
+                }
             }
-            if(finalTranscript) {
-                promptInput.value += (promptInput.value ? ' ' : '') + finalTranscript.trim();
-                promptInput.dispatchEvent(new Event('input')); 
-            }
+            
+            // Rebuild the text box perfectly every millisecond
+            let spacer = baseTextForMic ? " " : "";
+            promptInput.value = baseTextForMic + spacer + finalTranscript + interimTranscript;
+            promptInput.dispatchEvent(new Event('input')); // Keep auto-expand fluid
         };
+        
         recognition.onend = () => { 
-            // BUG FIX: Keep-Alive Loop. If browser auto-closes, restart it!
+            // Update the base text in case it loops
+            baseTextForMic = promptInput.value.trim(); 
+            
             if (isMicIntentional) {
-                recognition.start();
+                recognition.start(); // Keep-Alive loop
             } else {
                 micBtn.classList.remove('mic-active'); 
             }
         };
+        
         recognition.onerror = (e) => { 
             if(e.error === 'not-allowed') {
                 isMicIntentional = false;
@@ -376,24 +390,33 @@
         micBtn.addEventListener('click', () => alert("Voice input is not supported in this browser."));
     }
 
-    // --- TEXT TO SPEECH (SMART AUTO-DETECT) ---
+    // --- TEXT TO SPEECH (QUEUE CLEARER & SMART ACCENT) ---
     let synth = window.speechSynthesis;
     window.readAloud = function(btn) {
-        if (synth.speaking) { synth.cancel(); btn.classList.remove('reading'); return; }
+        // BUG FIX 2: If clicking the same active button, just turn it off
+        if (btn.classList.contains('reading')) { 
+            synth.cancel(); 
+            btn.classList.remove('reading'); 
+            return; 
+        }
+
+        // Violently clear the queue so the new click doesn't freeze
+        synth.cancel(); 
+        document.querySelectorAll('.reading').forEach(b => b.classList.remove('reading'));
+
         const bubble = btn.closest('.message-wrapper').querySelector('.ai-bubble');
         const utterance = new SpeechSynthesisUtterance(bubble.innerText);
         
-        // BUG FIX: Smart Language Detection for Accents
+        // BUG FIX 3: Smart Devanagari detection maps to proper Hindi or Marathi engine
         if (/[\u0900-\u097F]/.test(bubble.innerText)) {
-            utterance.lang = 'hi-IN'; // Force Native Hindi Voice
-        } else if (/[\u0C00-\u0C7F]/.test(bubble.innerText)) {
-            utterance.lang = 'te-IN'; // Telugu fallback
+            utterance.lang = (voiceCode === 'mr-IN') ? 'mr-IN' : 'hi-IN';
         } else {
-            utterance.lang = voiceCode; // Default to Dropdown
+            utterance.lang = voiceCode; // Default to standard dropdown
         }
 
         btn.classList.add('reading');
         utterance.onend = () => { btn.classList.remove('reading'); };
+        utterance.onerror = () => { btn.classList.remove('reading'); };
         synth.speak(utterance);
     }
 
@@ -473,10 +496,9 @@
         }
     }
 
-    // BUG FIX: Safe DOM Appending ensures Click Listeners are never lost
     function renderSidebar() {
         const list = document.getElementById('history-list'); 
-        list.innerHTML = ''; // Clear once
+        list.innerHTML = ''; 
         let pinned = sessions.filter(s => s.pinned); 
         let unpinned = sessions.filter(s => !s.pinned);
         
@@ -506,7 +528,6 @@
                 <button onclick="actionChat('${session.id}', 'delete', event)" style="color:#ff4444;">${svgs.trash} Delete</button>
             </div>
         `;
-        // Safe binding that never gets overwritten
         item.addEventListener('click', (e) => { 
             if(!e.target.closest('.history-options-btn') && !e.target.closest('.dropdown-menu')) loadSession(session.id); 
         });
@@ -524,7 +545,7 @@
         else if (action === 'pin') session.pinned = !session.pinned;
         else if (action === 'rename') { 
             openRenameModal(id, session.title); 
-            return; // Halt execution until modal saves
+            return; 
         }
         localStorage.setItem('dl_sessions', JSON.stringify(sessions)); renderSidebar();
     }
@@ -752,6 +773,12 @@
         let userText = promptInput.value.trim();
         if (!userText && allUploadedFiles.length === 0) return;
         if (!userText) userText = "Analyze these files and provide a detailed breakdown.";
+
+        // BUG FIX 4: Safely shut down microphone the exact second you hit send.
+        if (recognition && isMicIntentional) {
+            isMicIntentional = false;
+            recognition.stop();
+        }
 
         const imagesToSave = allUploadedFiles.map(f => f.dataUrl);
         const imagesToSend = allUploadedFiles.map(f => ({ inlineData: { data: f.base64, mimeType: f.mimeType } }));
