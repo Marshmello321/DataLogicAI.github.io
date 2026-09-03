@@ -31,11 +31,36 @@
         svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
         /* --- SIDEBAR --- */
-        .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 16px; box-sizing: border-box; transition: transform 0.3s ease; flex-shrink: 0; z-index: 100; }
+        .sidebar { width: 272px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 0; box-sizing: border-box; transition: transform 0.3s ease; flex-shrink: 0; z-index: 100; }
         .sidebar.hidden { transform: translateX(-100%); position: absolute; height: 100%; }
-        .new-chat-btn { background-color: transparent; color: var(--text-main); border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; transition: background 0.2s; margin-bottom: 24px; }
-        .new-chat-btn:hover { background-color: rgba(255,255,255,0.05); }
+        .sidebar-inner { display: flex; flex-direction: column; height: 100%; padding: 16px; box-sizing: border-box; overflow: hidden; }
+        .sidebar-header { display: flex; align-items: center; gap: 10px; padding: 4px 4px 18px 4px; }
+        .sidebar-logo-icon { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #a8c7fa, #c58af9); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .sidebar-logo-icon svg { width: 16px; height: 16px; color: #131314; stroke-width: 2.5; }
+        .sidebar-logo-text { font-size: 15px; font-weight: 600; color: var(--text-main); letter-spacing: 0.2px; }
+        .new-chat-btn { background-color: transparent; color: var(--text-main); border: 1px solid var(--border-color); padding: 12px; border-radius: 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: background 0.2s, border-color 0.2s; margin-bottom: 14px; }
+        .new-chat-btn:hover { background-color: rgba(255,255,255,0.05); border-color: var(--accent); }
+        .sidebar-search { position: relative; margin-bottom: 18px; }
+        .sidebar-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--text-muted); pointer-events: none; }
+        .sidebar-search input { width: 100%; background-color: rgba(255,255,255,0.04); border: 1px solid var(--border-color); border-radius: 10px; padding: 9px 12px 9px 34px; color: var(--text-main); font-size: 13px; outline: none; box-sizing: border-box; transition: border-color 0.2s, background 0.2s; }
+        .sidebar-search input:focus { border-color: var(--accent); background-color: rgba(255,255,255,0.06); }
+        .sidebar-search input::placeholder { color: var(--text-muted); }
         .history-list { flex-grow: 1; overflow-y: auto; padding-right: 4px; }
+        .history-empty { color: var(--text-muted); font-size: 12px; padding: 12px 4px; text-align: center; }
+        .sidebar-footer { border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: 8px; display: flex; align-items: center; gap: 10px; }
+        .sidebar-avatar { width: 30px; height: 30px; border-radius: 50%; background: #444746; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--text-main); flex-shrink: 0; }
+        .sidebar-user-info { flex-grow: 1; min-width: 0; }
+        .sidebar-user-name { font-size: 13px; font-weight: 500; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sidebar-user-plan { font-size: 11px; color: var(--text-muted); }
+        .sidebar-settings-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s, color 0.2s; }
+        .sidebar-settings-btn:hover { background-color: rgba(255,255,255,0.08); color: var(--text-main); }
+        .sidebar-settings-btn svg { width: 17px; height: 17px; }
+        .settings-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid var(--border-color); }
+        .settings-row:last-child { border-bottom: none; }
+        .settings-row-label { font-size: 14px; color: var(--text-main); }
+        .settings-row-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .settings-danger-btn { background: rgba(255,68,68,0.1); color: #ff6b6b; border: 1px solid rgba(255,68,68,0.3); padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s; }
+        .settings-danger-btn:hover { background: rgba(255,68,68,0.2); }
         .history-section-title { font-size: 11px; font-weight: 600; color: #8e918f; text-transform: uppercase; margin: 16px 0 8px 4px; letter-spacing: 0.5px; }
         
         .history-item { padding: 10px 12px; border-radius: 8px; cursor: pointer; color: var(--text-muted); font-size: 13px; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center; position: relative; flex-wrap: nowrap; gap: 8px; transition: background 0.2s; }
@@ -195,11 +220,31 @@
 <body>
 
 <aside class="sidebar" id="sidebar">
-    <button class="new-chat-btn" onclick="startNewChat()">
-        <svg width="16" height="16" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-        New Chat
-    </button>
-    <div class="history-list" id="history-list"></div>
+    <div class="sidebar-inner">
+        <div class="sidebar-header">
+            <div class="sidebar-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"></path></svg></div>
+            <span class="sidebar-logo-text">DataLogic AI</span>
+        </div>
+        <button class="new-chat-btn" onclick="startNewChat()">
+            <svg width="16" height="16" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            New Chat
+        </button>
+        <div class="sidebar-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="chat-search" placeholder="Search chats..." oninput="filterHistory(this.value)">
+        </div>
+        <div class="history-list" id="history-list"></div>
+        <div class="sidebar-footer">
+            <div class="sidebar-avatar" id="sidebar-avatar">U</div>
+            <div class="sidebar-user-info">
+                <div class="sidebar-user-name">Your Workspace</div>
+                <div class="sidebar-user-plan">Free Plan</div>
+            </div>
+            <button class="sidebar-settings-btn" title="Settings" onclick="openSettingsModal()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+        </div>
+    </div>
 </aside>
 
 <main class="main-content">
@@ -217,23 +262,24 @@
     </header>
 
     <div class="empty-state" id="empty-state">
-        <h1>Where should we begin?</h1>
+        <h1 id="empty-state-headline">Let's analyze your business</h1>
+        <p id="empty-state-sub" style="color:var(--text-muted); font-size:14px; margin-top:-24px; margin-bottom:24px;">Upload a photo, sheet, or just speak — I'll turn it into clear answers.</p>
         <div class="suggestions">
-            <div class="suggestion-chip" onclick="setPrompt('Extract all numerical data, totals, and key metrics from these files. Output the data in clean, structured Markdown tables and use text-based visual charts to make comparisons easy to read.')">
-                <div class="chip-title"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg> Data Extraction & Charting</div>
-                <div class="chip-desc">Extract numerical data into structured tables and visual charts.</div>
+            <div class="suggestion-chip" onclick="setPrompt('Analyze this sales data. Identify trends, best and worst performing days or products, and give me 2-3 clear recommendations to increase sales. Output key numbers in a Markdown table and a simple chart.')">
+                <div class="chip-title"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg> Sales Trend Analysis</div>
+                <div class="chip-desc">Upload sales data or a photo of your register — spot trends and get advice.</div>
             </div>
-            <div class="suggestion-chip" onclick="setPrompt('Perform a CTR (Click-Through Rate) & Thumbnail Audit. Analyze the visual hierarchy, contrast, and psychological hooks. Provide a structured breakdown and a final X/10 score.')">
-                <div class="chip-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> CTR & Thumbnail Audit</div>
-                <div class="chip-desc">Deep psychological and visual breakdown to maximize clicks.</div>
+            <div class="suggestion-chip" onclick="setPrompt('Analyze this expense or bank statement data. Categorize the spending, flag anything unusual, and give a simple cash-flow summary in plain language.')">
+                <div class="chip-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg> Expense & Cash-Flow Check</div>
+                <div class="chip-desc">Understand where your money is going and what to watch out for.</div>
             </div>
-            <div class="suggestion-chip" onclick="setPrompt('Provide an Executive Summary of this document. Condense the core arguments into 3-5 high-level bullet points suitable for a busy executive.')">
-                <div class="chip-title"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg> Executive Summary</div>
-                <div class="chip-desc">Condense dense screenshots or text into quick bullet points.</div>
+            <div class="suggestion-chip" onclick="setPrompt('Analyze this customer feedback or reviews. Summarize the overall sentiment, the top 3 complaints, and the top 3 things customers like. Keep it short and actionable.')">
+                <div class="chip-title"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg> Customer Feedback Summary</div>
+                <div class="chip-desc">Turn reviews or survey answers into a clear, useful summary.</div>
             </div>
-            <div class="suggestion-chip" onclick="setPrompt('Perform a UI/UX Design Review on this image. Identify friction points, evaluate color theory and spacing, and provide 3 actionable recommendations to improve user experience.')">
-                <div class="chip-title"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> UI/UX Design Review</div>
-                <div class="chip-desc">Identify layout flaws and get expert design recommendations.</div>
+            <div class="suggestion-chip" onclick="setPrompt('Analyze this staff attendance or shift data. Point out attendance patterns, overtime issues, and any staffing gaps. Keep the summary simple and practical.')">
+                <div class="chip-title"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> Staff & Attendance Review</div>
+                <div class="chip-desc">Spot attendance and staffing patterns from a shift sheet.</div>
             </div>
         </div>
     </div>
@@ -334,6 +380,26 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="business-modal">
+    <div class="custom-modal" style="max-width:400px;">
+        <h3>Tell me about your business</h3>
+        <p style="color:var(--text-muted); font-size:13px; margin:-8px 0 16px 0;">I'll remember this and tailor every analysis to it. You can change it anytime in Settings.</p>
+        <input type="text" id="business-name-input" class="rename-input" placeholder="Business name (e.g. Sharma General Store)" style="margin-bottom:12px;">
+        <select id="business-type-input" class="rename-input">
+            <option value="Retail / Shop">Retail / Shop</option>
+            <option value="Restaurant / Food">Restaurant / Food</option>
+            <option value="Salon / Clinic">Salon / Clinic</option>
+            <option value="Small Manufacturing">Small Manufacturing / Factory</option>
+            <option value="Freelancer / Service Provider">Freelancer / Service Provider</option>
+            <option value="Other">Other</option>
+        </select>
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:20px;">
+            <button class="cancel-btn" onclick="localStorage.setItem('dl_business_skipped','1'); closeModal('business-modal')">Skip for now</button>
+            <button class="save-btn" onclick="saveBusinessModal()">Save</button>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="share-modal">
     <div class="custom-modal">
         <button class="close-modal" onclick="closeModal('share-modal')"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
@@ -347,6 +413,44 @@
             <div class="social-btn" onclick="shareTo('facebook')"><div class="s-circle s-facebook"><svg viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></div>Facebook</div>
             <div class="social-btn" onclick="shareTo('twitter')"><div class="s-circle s-twitter"><svg viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></div>X</div>
             <div class="social-btn" onclick="shareTo('reddit')"><div class="s-circle s-reddit"><svg viewBox="0 0 24 24"><path d="M24 11.5c0-1.65-1.35-3-3-3-.96 0-1.86.48-2.42 1.24-1.64-1-3.75-1.64-6.07-1.72.08-1.1.4-3.05 1.52-3.7.72-.4 1.73-.24 3 .5C17.2 6.3 18.46 7.5 20 7.5c1.65 0 3-1.35 3-3s-1.35-3-3-3c-1.38 0-2.54.94-2.88 2.22-1.43-.72-2.64-.8-3.6-.25-1.64.94-1.95 3.47-2 4.55-2.33.08-4.45.7-6.1 1.72C4.86 8.98 3.96 8.5 3 8.5c-1.65 0-3 1.35-3 3 0 1.32.84 2.44 2.05 2.84-.03.22-.05.44-.05.66 0 3.86 4.5 7 10 7s10-3.14 10-7c0-.22-.02-.44-.05-.66 1.2-.4 2.05-1.54 2.05-2.84zM2.3 11.5c0-.94.76-1.7 1.7-1.7.6 0 1.16.3 1.48.8-1.15.54-2.13 1.26-2.9 2.14-.18-.38-.28-.8-.28-1.24zm17.7 8.3c-2.33 1.4-5.3 1.4-7.7 1.4-2.4 0-5.37 0-7.7-1.4C3.25 18.4 2.5 16.8 2.5 15c0-3.2 3.9-5.8 7.5-5.8 3.6 0 7.5 2.6 7.5 5.8 0 1.8-.75 3.4-2.1 4.8zm2.9-6.16c-.76-.88-1.74-1.6-2.9-2.14.32-.5.88-.8 1.48-.8.94 0 1.7.76 1.7 1.7 0 .44-.1.86-.28 1.24zm-9.3-1.64c-1.05 0-1.9.85-1.9 1.9s.85 1.9 1.9 1.9 1.9-.85 1.9-1.9-.85-1.9-1.9-1.9zm4.2 0c-1.05 0-1.9.85-1.9 1.9s.85 1.9 1.9 1.9 1.9-.85 1.9-1.9-.85-1.9-1.9-1.9zm-7.6 4.6c.72 1.32 2.2 2.1 4.4 2.1 2.2 0 3.68-.78 4.4-2.1.13-.24-.04-.54-.3-.46-1.5.5-2.7 1-4.1 1-1.4 0-2.6-.5-4.1-1-.26-.1-.43.22-.3.46z"/></svg></div>Reddit</div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="settings-modal">
+    <div class="custom-modal" style="max-width:420px;">
+        <button class="close-modal" onclick="closeModal('settings-modal')"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        <h3>Settings</h3>
+        <div class="settings-row">
+            <div>
+                <div class="settings-row-label">Display name</div>
+                <div class="settings-row-desc">Shown at the bottom of the sidebar</div>
+            </div>
+            <input type="text" id="settings-name-input" class="rename-input" style="width:120px;" placeholder="You">
+        </div>
+        <div class="settings-row">
+            <div>
+                <div class="settings-row-label">Business profile</div>
+                <div class="settings-row-desc">Used to tailor every analysis</div>
+            </div>
+            <button class="settings-danger-btn" style="background:rgba(168,199,250,0.1); color:var(--accent); border-color:rgba(168,199,250,0.3);" onclick="closeModal('settings-modal'); document.getElementById('business-modal').style.display='flex';">Edit</button>
+        </div>
+        <div class="settings-row">
+            <div>
+                <div class="settings-row-label">Chats stored</div>
+                <div class="settings-row-desc" id="settings-chat-count">0 conversations</div>
+            </div>
+        </div>
+        <div class="settings-row">
+            <div>
+                <div class="settings-row-label">Clear all chats</div>
+                <div class="settings-row-desc">This cannot be undone</div>
+            </div>
+            <button class="settings-danger-btn" onclick="clearAllChats()">Clear</button>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:20px;">
+            <button class="cancel-btn" onclick="closeModal('settings-modal')">Cancel</button>
+            <button class="save-btn" onclick="saveSettingsModal()">Save</button>
         </div>
     </div>
 </div>
@@ -748,6 +852,9 @@
         
         let finalPromptToAI = apiText;
         let langToEnforce = explicitLang || targetLanguage;
+
+        const bizContext = getBusinessContextPrefix();
+        if (bizContext) finalPromptToAI = bizContext + finalPromptToAI;
         
         if (langToEnforce !== 'English' && !apiText.includes("MUST translate and provide your entire response in")) {
             finalPromptToAI += `\n\n[CRITICAL INSTRUCTION: You MUST translate and provide your entire response in ${langToEnforce}.]`;
@@ -897,12 +1004,29 @@
         }
     }
 
+    let historyFilterQuery = '';
+
+    window.filterHistory = function(query) {
+        historyFilterQuery = query.trim().toLowerCase();
+        renderSidebar();
+    }
+
     function renderSidebar() {
         const list = document.getElementById('history-list'); 
         list.innerHTML = ''; 
-        let pinned = sessions.filter(s => s.pinned); 
-        let unpinned = sessions.filter(s => !s.pinned);
-        
+        const visibleSessions = historyFilterQuery
+            ? sessions.filter(s => s.title.toLowerCase().includes(historyFilterQuery))
+            : sessions;
+        let pinned = visibleSessions.filter(s => s.pinned); 
+        let unpinned = visibleSessions.filter(s => !s.pinned);
+
+        if (visibleSessions.length === 0) {
+            const empty = document.createElement('div'); empty.className = 'history-empty';
+            empty.innerText = historyFilterQuery ? 'No chats match your search' : 'No conversations yet';
+            list.appendChild(empty);
+            return;
+        }
+
         if (pinned.length > 0) {
             const pTitle = document.createElement('div'); pTitle.className = 'history-section-title'; pTitle.innerText = 'Pinned';
             list.appendChild(pTitle);
@@ -912,6 +1036,39 @@
             list.appendChild(rTitle);
         }
         unpinned.forEach(s => list.appendChild(createHistoryItem(s)));
+    }
+
+    // --- SETTINGS MODAL ---
+    function loadSidebarProfile() {
+        const savedName = localStorage.getItem('dl_username') || 'Your Workspace';
+        document.getElementById('sidebar-avatar').innerText = savedName.trim().charAt(0).toUpperCase() || 'U';
+        document.querySelector('.sidebar-user-name').innerText = savedName;
+        document.getElementById('settings-name-input').value = savedName === 'Your Workspace' ? '' : savedName;
+    }
+
+    window.openSettingsModal = function() {
+        updateSettingsChatCount();
+        document.getElementById('settings-modal').style.display = 'flex';
+    }
+
+    window.saveSettingsModal = function() {
+        const val = document.getElementById('settings-name-input').value.trim();
+        if (val) localStorage.setItem('dl_username', val);
+        loadSidebarProfile();
+        closeModal('settings-modal');
+    }
+
+    window.clearAllChats = function() {
+        if (!confirm('Delete all conversations? This cannot be undone.')) return;
+        sessions = [];
+        localStorage.setItem('dl_sessions', JSON.stringify(sessions));
+        startNewChat();
+        document.getElementById('settings-chat-count').innerText = '0 conversations';
+    }
+
+    function updateSettingsChatCount() {
+        const el = document.getElementById('settings-chat-count');
+        if (el) el.innerText = `${sessions.length} conversation${sessions.length === 1 ? '' : 's'}`;
     }
 
     function createHistoryItem(session) {
@@ -1006,7 +1163,54 @@
         if (window.innerWidth < 768) document.getElementById('sidebar').classList.add('hidden');
     }
 
+    // --- BUSINESS PROFILE (memory across visits) ---
+    function getBusinessProfile() {
+        try { return JSON.parse(localStorage.getItem('dl_business')) || null; } catch(e) { return null; }
+    }
+
+    function getBusinessContextPrefix() {
+        const biz = getBusinessProfile();
+        if (!biz || !biz.name) return '';
+        return `[Business context: You are analyzing data for "${biz.name}", a ${biz.type}. Keep your advice practical and specific to this type of business.]\n\n`;
+    }
+
+    function applyBusinessPersonalization() {
+        const biz = getBusinessProfile();
+        const headline = document.getElementById('empty-state-headline');
+        const sub = document.getElementById('empty-state-sub');
+        if (biz && biz.name) {
+            headline.innerText = `Welcome back, ${biz.name}`;
+            sub.innerText = `Upload a photo, sheet, or just speak — I'll tailor it to your ${biz.type.toLowerCase()}.`;
+            document.getElementById('business-name-input').value = biz.name;
+            document.getElementById('business-type-input').value = biz.type;
+        } else {
+            headline.innerText = "Let's analyze your business";
+            sub.innerText = "Upload a photo, sheet, or just speak — I'll turn it into clear answers.";
+        }
+    }
+
+    window.saveBusinessModal = function() {
+        const name = document.getElementById('business-name-input').value.trim();
+        const type = document.getElementById('business-type-input').value;
+        if (name) {
+            localStorage.setItem('dl_business', JSON.stringify({ name, type }));
+            applyBusinessPersonalization();
+        }
+        closeModal('business-modal');
+    }
+
+    // Show the business profile prompt once, on first visit only
+    if (!getBusinessProfile() && !localStorage.getItem('dl_business_skipped')) {
+        setTimeout(() => { document.getElementById('business-modal').style.display = 'flex'; }, 600);
+    }
+    document.getElementById('business-modal').addEventListener('click', function(e) {
+        if (e.target === this) { localStorage.setItem('dl_business_skipped', '1'); closeModal('business-modal'); }
+    });
+    applyBusinessPersonalization();
+
     document.getElementById('toggle-sidebar').addEventListener('click', () => { document.getElementById('sidebar').classList.toggle('hidden'); });
+    loadSidebarProfile();
+    updateSettingsChatCount();
     renderSidebar();
 </script>
 </body>
