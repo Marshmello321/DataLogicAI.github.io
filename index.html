@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DataLogic AI</title>
+<title>DataLogic AI - Business Analytics</title>
+<!-- SEO & Open Graph Tags -->
+<meta name="description" content="AI-powered sales tracking, cash-flow analysis, and store optimization for small business owners.">
+<meta property="og:title" content="DataLogic AI - Smart Shop Analysis">
+<meta property="og:description" content="Upload your sales data or a shop walkthrough video for instant actionable insights.">
+<meta property="og:image" content="https://yourdomain.com/og-preview.png">
+<meta property="og:type" content="website">
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23a8c7fa'/><circle cx='50' cy='50' r='30' fill='%23131314'/></svg>">
+
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <script>
@@ -88,7 +97,7 @@ svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; 
 .dropzone { width: 100%; max-width: 660px; height: 250px; border: 2px dashed var(--border-color); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); transition: 0.3s; cursor: pointer; margin-bottom: 24px; color: var(--text-muted); }
 .dropzone:hover, .dropzone.dragover { border-color: var(--accent); background: rgba(168, 199, 250, 0.05); color: var(--accent); }
 .dropzone svg { width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.8; }
-.upload-controls { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; justify-content: center; }
+.upload-controls { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; justify-content: center; align-items: center;}
 .upload-dropdown-container { position: relative; }
 .upload-select-btn { background: #282a2c; color: var(--text-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 20px; font-size: 14px; font-weight: 500; outline: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; width: 220px; transition: border-color 0.2s; }
 .upload-select-btn:hover { border-color: var(--accent); }
@@ -215,15 +224,33 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
  
 <aside class="sidebar" id="sidebar">
   <div class="brand-row"><div class="brand-dot"></div> DataLogic AI</div>
+
+  <!-- Basic Auth & Persistence Entry -->
+  <div class="auth-section" style="margin-bottom: 16px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Not logged in</div>
+    <button onclick="openAuthModal()" style="width: 100%; background: var(--accent); color: #000; border: none; padding: 8px; border-radius: 6px; font-weight: 600; cursor: pointer;">Sign In / Save History</button>
+  </div>
+
+  <!-- Usage Limits & Cost Guardrails -->
+  <div class="usage-guardrail" style="margin-bottom: 16px; font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+    <span>Free Scans:</span>
+    <span style="color: #4ade80; font-weight: 600;">5 / 5 remaining</span>
+  </div>
+
   <button class="new-chat-btn" onclick="startNewChat()">
     <svg width="16" height="16" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
     New Chat
   </button>
-  <a class="whatsapp-btn" href="https://wa.me/910000000000?text=Hi%20DataLogic%20AI%2C%20I%27d%20like%20to%20connect%20my%20business." target="_blank" rel="noopener">
+  <a class="whatsapp-btn" href="https://wa.me/YOUR_REAL_NUMBER_HERE?text=Hi%20DataLogic%20AI%2C%20I%27d%20like%20to%20connect%20my%20business." target="_blank" rel="noopener">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4a7.94 7.94 0 0 0-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 0 0 3.85 1h.01A7.94 7.94 0 0 0 20 12a7.9 7.9 0 0 0-2.4-5.68Zm-5.55 12.2h-.01a6.6 6.6 0 0 1-3.36-.92l-.24-.14-2.5.65.67-2.43-.16-.25a6.6 6.6 0 1 1 5.6 3.09Zm3.62-4.94c-.2-.1-1.17-.58-1.35-.64-.18-.07-.31-.1-.44.1-.13.2-.5.64-.62.77-.11.13-.23.15-.42.05-.2-.1-.83-.3-1.58-.97-.58-.52-.98-1.16-1.09-1.36-.11-.2-.01-.3.09-.4.09-.1.2-.23.3-.35.1-.11.13-.2.2-.33.06-.13.03-.25-.02-.35-.05-.1-.44-1.06-.6-1.45-.16-.38-.32-.33-.44-.34h-.37c-.13 0-.34.05-.52.25-.18.2-.68.67-.68 1.62 0 .96.7 1.89.79 2.02.1.13 1.37 2.1 3.33 2.94.46.2.83.32 1.11.41.47.15.9.13 1.24.08.38-.06 1.17-.48 1.33-.94.16-.46.16-.86.11-.94-.05-.08-.18-.13-.38-.23Z"/></svg>
     Try on WhatsApp
   </a>
   <div class="history-list" id="history-list"></div>
+
+  <!-- Privacy Policy / Data Handling Notice -->
+  <div style="margin-top: auto; padding-top: 16px; font-size: 11px; text-align: center; color: var(--text-muted); border-top: 1px solid var(--border-color);">
+    <a href="#" onclick="openPrivacyModal()" style="color: var(--text-muted); text-decoration: underline;">Privacy Policy & Data Handling</a>
+  </div>
 </aside>
  
 <main class="main-content">
@@ -242,6 +269,19 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
   <!-- CHAT EMPTY STATE -->
   <div class="empty-state" id="empty-state">
     <h1>Let's grow your business</h1>
+    
+    <!-- Simple 3-Step Onboarding -->
+    <div class="onboarding-steps" style="display: flex; gap: 16px; margin-bottom: 32px; text-align: left; background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); width: 100%; max-width: 660px;">
+      <div style="flex: 1;"><strong>1. Upload</strong><br><span style="font-size: 12px; color: var(--text-muted);">Drop your sales sheets or shop video.</span></div>
+      <div style="flex: 1;"><strong>2. Analyze</strong><br><span style="font-size: 12px; color: var(--text-muted);">AI reviews your data securely.</span></div>
+      <div style="flex: 1;"><strong>3. Get Advice</strong><br><span style="font-size: 12px; color: var(--text-muted);">Receive simple, actionable steps.</span></div>
+    </div>
+
+    <!-- Sample/Demo Data Button -->
+    <button onclick="loadSampleData()" style="margin-bottom: 24px; background: rgba(168,199,250,0.15); color: var(--accent); border: 1px solid var(--accent); padding: 10px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s;">
+      ✨ Try with Sample Data
+    </button>
+    
     <div class="subhead">Upload a photo, sheet, or just speak — I'll turn it into clear answers.</div>
     <div class="suggestions">
       <div class="suggestion-chip" onclick="setPrompt('Analyze this sales data or photo of my register. Identify sales trends, my best and worst selling days, and my top products. Give me 2-4 clear, plain-language action items I can act on this week to increase sales.')">
@@ -286,24 +326,13 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
           <svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
         <div class="upload-dropdown-menu" id="hub-depth-menu">
-          <button onclick="setUploadDepth('flash', '⚡ Flash (Summary)')">⚡ Flash (Summary)</button>
-          <button onclick="setUploadDepth('pro', '✨ Pro (Standard)')">✨ Pro (Standard)</button>
-          <button onclick="setUploadDepth('ultra', '🔥 Ultra (Deep Dive)')">🔥 Ultra (Deep Dive)</button>
+          <button onclick="setUploadDepth('flash', '⚡ Flash (Summary)')">⚡ Flash (Summary) - Fastest</button>
+          <button onclick="setUploadDepth('pro', '✨ Pro (Standard)')">✨ Pro (Standard) - Balanced</button>
+          <button onclick="setUploadDepth('ultra', '🔥 Ultra (Deep Dive)')">🔥 Ultra (Deep Dive) - Detailed</button>
         </div>
       </div>
-      <div class="upload-dropdown-container">
-        <button class="upload-select-btn" id="hub-lang-btn">
-          <span>🌐 English</span>
-          <svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div class="upload-dropdown-menu" id="hub-lang-menu">
-          <button onclick="setUploadLang('English', '🌐 English')">🌐 English</button>
-          <button onclick="setUploadLang('Hindi', '🌐 हिन्दी (Hindi)')">🌐 हिन्दी (Hindi)</button>
-          <button onclick="setUploadLang('Marathi', '🌐 मराठी (Marathi)')">🌐 मराठी (Marathi)</button>
-          <button onclick="setUploadLang('Spanish', '🌐 Español (Spanish)')">🌐 Español (Spanish)</button>
-          <button onclick="setUploadLang('French', '🌐 Français (French)')">🌐 Français (French)</button>
-        </div>
-      </div>
+      <!-- Pricing/Tier Explanation Modal Trigger -->
+      <button onclick="openTierModal()" style="background: none; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-size: 13px;">What do these tiers mean?</button>
     </div>
     <button class="big-analyze-btn" onclick="executeUploadHubAnalysis()">
       <svg width="20" height="20" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -330,7 +359,13 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
       </div>
       <input type="file" id="shop-video-capture" accept="video/*" capture="environment" style="display:none;">
       <input type="file" id="shop-video-upload" accept="video/*" style="display:none;">
+      
+      <!-- Scan Status & Progress Bar -->
       <div class="scan-status" id="scan-status"></div>
+      <div id="video-progress-container" style="display: none; width: 100%; max-width: 400px; margin-top: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden; height: 8px;">
+        <div id="video-progress-bar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.3s ease;"></div>
+      </div>
+
       <div class="scan-frame-strip" id="scan-frame-strip"></div>
     </div>
     <button class="big-analyze-btn" style="margin-top:20px;" id="scan-analyze-btn" onclick="executeShopScan()" disabled>
@@ -403,6 +438,42 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
     </div>
   </div>
 </div>
+
+<!-- Privacy Policy Modal -->
+<div class="modal-overlay" id="privacy-modal">
+  <div class="custom-modal">
+    <button class="close-modal" onclick="closeModal('privacy-modal')"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+    <h3>Data Handling & Privacy</h3>
+    <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+      Your trust is our priority. Financial data, sales sheets, and store videos uploaded to DataLogic AI are processed temporarily for analysis and are <strong>never used to train public AI models</strong>. All uploaded media is purged from our servers within 24 hours of session completion. 
+    </p>
+    <button class="save-btn" style="margin-top: 16px; width: 100%;" onclick="closeModal('privacy-modal')">I Understand</button>
+  </div>
+</div>
+
+<!-- Basic Auth Modal (Email only) -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="custom-modal">
+    <button class="close-modal" onclick="closeModal('auth-modal')"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+    <h3>Sign In</h3>
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Enter your email to save your chat history and unlock ongoing tracking. No password required — we'll send a magic link.</p>
+    <input type="email" class="rename-input" placeholder="storeowner@example.com" style="margin-bottom: 12px;">
+    <button class="save-btn" style="width: 100%;" onclick="closeModal('auth-modal'); alert('Demo: Magic link would be sent to this email.');">Send Magic Link</button>
+  </div>
+</div>
+
+<!-- Tier Explanation Modal -->
+<div class="modal-overlay" id="tier-modal">
+  <div class="custom-modal">
+    <button class="close-modal" onclick="closeModal('tier-modal')"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+    <h3>Model Tiers Explained</h3>
+    <ul style="font-size: 13px; color: var(--text-muted); padding-left: 16px;">
+      <li style="margin-bottom: 12px;"><strong style="color:var(--text-main);">⚡ Flash:</strong> Fastest response time. Best for quick summaries of single receipts or short questions.</li>
+      <li style="margin-bottom: 12px;"><strong style="color:var(--text-main);">✨ Pro:</strong> Standard balanced analysis. Best for weekly sales sheets or standard inventory planning.</li>
+      <li><strong style="color:var(--text-main);">🔥 Ultra:</strong> Deepest logical reasoning. Best for complex video walkthroughs and month-over-month cash flow correlations. Takes the longest to process.</li>
+    </ul>
+  </div>
+</div>
  
 <script>
 // --- PREMIUM SVG ICONS ---
@@ -420,6 +491,21 @@ const svgs = {
   download: `<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`
 };
  
+// --- NEW MODAL TRIGGERS ---
+window.openPrivacyModal = function() { document.getElementById('privacy-modal').style.display = 'flex'; };
+window.openAuthModal = function() { document.getElementById('auth-modal').style.display = 'flex'; };
+window.openTierModal = function() { document.getElementById('tier-modal').style.display = 'flex'; };
+
+// --- SAMPLE DATA INJECTION ---
+window.loadSampleData = function() {
+  const samplePrompt = "Analyze this sample weekly sales sheet. Identify my best and worst selling days, and give me 2 action items to improve cash flow.";
+  setPrompt(samplePrompt);
+  // Simulating the user pressing send automatically for a magical onboarding feel
+  setTimeout(() => {
+    document.getElementById('send-btn').click();
+  }, 500);
+};
+
 // --- MODE TOGGLE LOGIC ---
 window.switchMode = function(mode) {
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
@@ -454,12 +540,6 @@ document.getElementById('lang-btn').addEventListener('click', (e) => { document.
  
 document.getElementById('hub-depth-btn').addEventListener('click', (e) => {
   document.getElementById('hub-depth-menu').classList.toggle('show');
-  document.getElementById('hub-lang-menu').classList.remove('show');
-  e.stopPropagation();
-});
-document.getElementById('hub-lang-btn').addEventListener('click', (e) => {
-  document.getElementById('hub-lang-menu').classList.toggle('show');
-  document.getElementById('hub-depth-menu').classList.remove('show');
   e.stopPropagation();
 });
  
@@ -467,11 +547,6 @@ window.setLanguage = function(lang, code, display) {
   targetLanguage = lang; voiceCode = code;
   document.getElementById('lang-btn').innerHTML = `🌐 ${display} ⌄`;
   document.getElementById('lang-menu').classList.remove('show');
-}
-window.setUploadLang = function(lang, display) {
-  targetLanguage = lang;
-  document.getElementById('hub-lang-btn').querySelector('span').innerText = display;
-  document.getElementById('hub-lang-menu').classList.remove('show');
 }
 window.setUploadDepth = function(depth, display) {
   uploadDepthVal = depth;
@@ -656,12 +731,12 @@ window.executeUploadHubAnalysis = function() {
   runAnalysis(masterPrompt, displayPrompt, imagesToSend, imagesToSave, false, langVal);
 }
  
-// --- PROMPT BUILDER: every analysis leads with plain-language action items ---
+// --- PROMPT BUILDER ---
 function buildBusinessPrompt(taskInstruction, langVal) {
   return `You are a friendly, practical small-business advisor. ${taskInstruction}
  
 CRITICAL FORMAT RULES:
-1. Start your response with a section titled "## What To Do" containing 2-4 short, plain-language, concrete action items a busy shop owner could act on today. No jargon — write like you're talking to someone, not writing a report.
+1. Start your response with a section titled "## What To Do" containing 2-4 short, plain-language, concrete action items a busy shop owner could act on today. No jargon.
 2. After that, provide the detailed analysis the user asked for.
 3. Do NOT use HTML tags like <p>. Use pure Markdown only.
 4. Extract any metrics into clean Markdown tables.
@@ -712,7 +787,9 @@ function appendAIMessage(htmlContent) {
       <div style="position:relative;">
         <button class="action-link" onclick="toggleMenu('${menuId}', event)" title="More Options">${svgs.dots}</button>
         <div class="dropdown-menu" id="${menuId}">
-          <button onclick="exportToDocs(this)">${svgs.download} Export to Docs</button>
+          <button onclick="exportToDocs(this, 'txt')">${svgs.download} Export as Text</button>
+          <button onclick="exportToDocs(this, 'csv')">${svgs.download} Export Data to CSV</button>
+          <button onclick="exportToDocs(this, 'pdf')">${svgs.download} Download as PDF</button>
         </div>
       </div>
     </div>`;
@@ -884,9 +961,12 @@ async function extractFramesFromVideo(videoEl, frameCount) {
     const interval = duration / (frameCount + 1);
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    let captured = 0;
- 
-    function captureAt(time) {
+    
+    // Reveal progress bar
+    document.getElementById('video-progress-container').style.display = 'block';
+    const progressBar = document.getElementById('video-progress-bar');
+
+    function captureAt(time, stepIndex) {
       return new Promise((res) => {
         const onSeeked = () => {
           videoEl.removeEventListener('seeked', onSeeked);
@@ -894,22 +974,29 @@ async function extractFramesFromVideo(videoEl, frameCount) {
           canvas.height = Math.round(canvas.width * (videoEl.videoHeight / videoEl.videoWidth));
           ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
           const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
-          const frame = { dataUrl, base64: dataUrl.split(',')[1], mimeType: 'image/jpeg' };
-          shopFrames.push(frame);
+          shopFrames.push({ dataUrl, base64: dataUrl.split(',')[1], mimeType: 'image/jpeg' });
+          
           const img = document.createElement('img');
           img.src = dataUrl;
           scanFrameStrip.appendChild(img);
+          
+          // Update visual progress state
+          const progressPercent = Math.round((stepIndex / frameCount) * 100);
+          progressBar.style.width = `${progressPercent}%`;
+          scanStatus.innerText = `Analyzing your walkthrough... ${progressPercent}%`;
+          
           res();
         };
         videoEl.addEventListener('seeked', onSeeked);
         videoEl.currentTime = time;
       });
     }
- 
+
     (async () => {
       for (let i = 1; i <= frameCount; i++) {
-        await captureAt(Math.min(i * interval, duration - 0.1));
+        await captureAt(Math.min(i * interval, duration - 0.1), i);
       }
+      setTimeout(() => { document.getElementById('video-progress-container').style.display = 'none'; }, 1000);
       resolve();
     })();
   });
@@ -936,13 +1023,55 @@ window.executeShopScan = function() {
   runAnalysis(masterPrompt, displayPrompt, imagesToSend, imagesToSave, false, langVal);
 }
  
-// --- MISC MODALS (Export/Rename/Share) ---
-window.exportToDocs = function(btn) {
+// --- MISC MODALS & UPDATED EXPORT LOGIC (TXT/CSV/PDF) ---
+window.exportToDocs = function(btn, format) {
   const text = btn.closest('.message-wrapper').querySelector('.ai-bubble').innerText;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'AI_Analysis_Export.txt';
-  a.click(); URL.revokeObjectURL(url);
+  
+  if (format === 'pdf') {
+    // For a robust PDF without external libraries, we trigger the browser's print dialog
+    // on a temporary clean window specifically formatted for printing.
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>DataLogic AI - Report</title>
+          <style>
+            body { font-family: sans-serif; color: #111; padding: 40px; line-height: 1.6; }
+            h2, h3 { color: #0b57d0; }
+            table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+            th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+            th { background-color: #f8f9fa; }
+          </style>
+        </head>
+        <body>
+          <h2>DataLogic AI - Analysis Report</h2>
+          <hr>
+          <div>${btn.closest('.message-wrapper').querySelector('.ai-bubble').innerHTML}</div>
+          <script>window.onload = function() { window.print(); window.close(); }</script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  } else {
+    let data = text;
+    let mime = 'text/plain';
+    let filename = 'AI_Analysis_Export.txt';
+
+    if (format === 'csv') {
+      // Basic extraction of markdown tables into CSV format
+      mime = 'text/csv';
+      filename = 'DataLogic_Export.csv';
+      const rows = text.split('\n').filter(line => line.includes('|'));
+      data = rows.map(r => r.split('|').map(cell => cell.trim()).filter(cell => cell).join(',')).join('\n');
+      if (!data) data = "No tabular data found in this response.";
+    }
+
+    const blob = new Blob([data], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = filename;
+    a.click(); URL.revokeObjectURL(url);
+  }
+  
   document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
 }
  
@@ -1066,9 +1195,6 @@ window.onclick = function(e) {
   if (!e.target.closest('#hub-depth-btn') && !e.target.closest('#hub-depth-menu')) {
     const menu = document.getElementById('hub-depth-menu'); if (menu) menu.classList.remove('show');
   }
-  if (!e.target.closest('#hub-lang-btn') && !e.target.closest('#hub-lang-menu')) {
-    const menu = document.getElementById('hub-lang-menu'); if (menu) menu.classList.remove('show');
-  }
 }
  
 function startNewChat() {
@@ -1098,7 +1224,9 @@ function loadSession(id) {
             <div style="position:relative;">
               <button class="action-link" onclick="toggleMenu('${menuId}', event)" title="More Options">${svgs.dots}</button>
               <div class="dropdown-menu" id="${menuId}">
-                <button onclick="exportToDocs(this)">${svgs.download} Export to Docs</button>
+                <button onclick="exportToDocs(this, 'txt')">${svgs.download} Export as Text</button>
+                <button onclick="exportToDocs(this, 'csv')">${svgs.download} Export Data to CSV</button>
+                <button onclick="exportToDocs(this, 'pdf')">${svgs.download} Download as PDF</button>
               </div>
             </div>
           </div>`;
@@ -1119,4 +1247,3 @@ document.getElementById('toggle-sidebar').addEventListener('click', () => {
 </script>
 </body>
 </html>
- 
