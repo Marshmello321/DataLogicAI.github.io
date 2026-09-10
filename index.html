@@ -3,16 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- FIX 2: Added Meta description and Open Graph tags for social sharing -->
 <title>DataLogic AI</title>
-<meta name="description" content="DataLogic AI - Help shop owners track sales trends and cash-flow over time with AI.">
-<meta property="og:title" content="DataLogic AI - Smart Retail Analytics">
-<meta property="og:description" content="Upload sales sheets or scan your shop to get instant AI advice on increasing profit.">
-<meta property="og:image" content="https://datalogicai.github.io/og-preview.jpg">
-<meta property="og:type" content="website">
-<!-- FIX 7: Added Favicon -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
-
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <script>
@@ -47,7 +38,7 @@ svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; 
 .new-chat-btn:hover { background-color: rgba(255,255,255,0.05); }
 .whatsapp-btn { background-color: rgba(37, 211, 102, 0.12); color: var(--whatsapp); border: 1px solid rgba(37, 211, 102, 0.35); padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: background 0.2s; margin-bottom: 24px; text-decoration:none; }
 .whatsapp-btn:hover { background-color: rgba(37, 211, 102, 0.2); }
-.history-list { flex-grow: 1; overflow-y: auto; padding-right: 4px; margin-bottom: 16px; }
+.history-list { flex-grow: 1; overflow-y: auto; padding-right: 4px; }
 .history-section-title { font-size: 11px; font-weight: 600; color: #8e918f; text-transform: uppercase; margin: 16px 0 8px 4px; letter-spacing: 0.5px; }
 .history-item { padding: 10px 12px; border-radius: 8px; cursor: pointer; color: var(--text-muted); font-size: 13px; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center; position: relative; flex-wrap: nowrap; gap: 8px; transition: background 0.2s; }
 .history-item.active { background-color: rgba(168, 199, 250, 0.12); color: #e3e3e3; font-weight: 500; }
@@ -64,13 +55,6 @@ svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; 
 .dropdown-menu button { color: var(--text-main); padding: 10px 14px; display: flex; align-items: center; gap: 8px; background: none; border: none; width: 100%; text-align: left; cursor: pointer; font-size: 13px; }
 .dropdown-menu button:hover { background-color: rgba(255,255,255,0.1); }
 .dropdown-menu button svg { width: 14px; height: 14px; }
-
-/* Sidebar Footer (Usage & Privacy) */
-.sidebar-footer { border-top: 1px solid var(--border-color); padding-top: 12px; font-size: 12px; color: var(--text-muted); text-align: center; }
-.sidebar-footer a { color: var(--text-muted); text-decoration: underline; cursor: pointer; }
-.sidebar-footer a:hover { color: var(--text-main); }
-.usage-bar { width: 100%; background: #282a2c; height: 6px; border-radius: 4px; margin: 8px 0; overflow: hidden; }
-.usage-fill { height: 100%; background: var(--accent); width: 0%; transition: 0.3s; }
  
 /* --- MAIN CONTENT & HEADER --- */
 .main-content { flex-grow: 1; display: flex; flex-direction: column; position: relative; width: 100%; }
@@ -81,30 +65,11 @@ svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; 
 .mode-toggle { position: absolute; left: 50%; transform: translateX(-50%); display: flex; background: #282a2c; border-radius: 20px; padding: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
 .mode-btn { background: transparent; color: var(--text-muted); border: none; border-radius: 16px; padding: 6px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 6px; white-space:nowrap;}
 .mode-btn.active { background: #444746; color: var(--text-main); box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-
-/* --- GLOBAL LANGUAGE SELECTOR (Moved to Header) --- */
-.global-lang-container { position: relative; }
-.lang-btn { background-color: #333537; color: var(--text-main); border: none; border-radius: 16px; padding: 8px 12px; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.2s; white-space: nowrap; }
-.lang-btn:hover { background-color: #444746; }
-.lang-menu { display: none; position: absolute; top: 40px; right: 0; background-color: #282a2c; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.5); min-width: 150px; z-index: 1000;}
-.lang-menu.show { display: block; }
-.lang-menu button { display: block; width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 13px; }
-.lang-menu button:hover { background-color: rgba(255,255,255,0.1); }
  
 /* --- EMPTY STATE (Chat Mode Default) --- */
 .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; padding: 20px; text-align: center; margin-bottom: 80px; overflow-y: auto; transition: 0.3s; }
 .empty-state h1 { font-size: 32px; margin-bottom: 8px; background: linear-gradient(90deg, #a8c7fa, #c58af9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.empty-state .subhead { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
-
-/* FIX 3 & 4: Simple Onboarding & Demo Button */
-.onboarding-steps { display: flex; gap: 24px; margin-bottom: 32px; max-width: 660px; justify-content: center; text-align: left; }
-.step { flex: 1; background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); }
-.step-num { font-size: 12px; font-weight: bold; color: var(--accent); margin-bottom: 4px; text-transform: uppercase; }
-.step-desc { font-size: 13px; color: var(--text-muted); }
-.demo-btn-container { margin-bottom: 32px; }
-.demo-btn { background: rgba(168, 199, 250, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 10px 20px; border-radius: 20px; font-size: 14px; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
-.demo-btn:hover { background: rgba(168, 199, 250, 0.2); }
-
+.empty-state .subhead { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
 .suggestions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 660px; width: 100%; }
 .suggestion-chip { background-color: var(--sidebar-bg); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; cursor: pointer; color: var(--text-muted); transition: 0.2s; text-align: left; display: flex; flex-direction: column; gap: 8px; z-index: 20; position: relative;}
 .suggestion-chip:hover { background-color: rgba(255,255,255,0.05); border-color: var(--accent); color: var(--text-main); }
@@ -123,7 +88,7 @@ svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; 
 .dropzone { width: 100%; max-width: 660px; height: 250px; border: 2px dashed var(--border-color); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); transition: 0.3s; cursor: pointer; margin-bottom: 24px; color: var(--text-muted); }
 .dropzone:hover, .dropzone.dragover { border-color: var(--accent); background: rgba(168, 199, 250, 0.05); color: var(--accent); }
 .dropzone svg { width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.8; }
-.upload-controls { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; justify-content: center; align-items: center; }
+.upload-controls { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; justify-content: center; }
 .upload-dropdown-container { position: relative; }
 .upload-select-btn { background: #282a2c; color: var(--text-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 20px; font-size: 14px; font-weight: 500; outline: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; width: 220px; transition: border-color 0.2s; }
 .upload-select-btn:hover { border-color: var(--accent); }
@@ -131,10 +96,6 @@ svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; 
 .upload-dropdown-menu.show { display: block; }
 .upload-dropdown-menu button { display: block; width: 100%; text-align: left; padding: 12px 20px; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 14px; font-weight: 500; transition: 0.2s;}
 .upload-dropdown-menu button:hover { background-color: rgba(255,255,255,0.08); color: var(--accent); }
-/* Tier Info Button */
-.tier-info-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px; border-radius: 50%; }
-.tier-info-btn:hover { color: var(--accent); background: rgba(255,255,255,0.1); }
-
 .big-analyze-btn { background: var(--accent); color: #000; border: none; border-radius: 24px; padding: 14px 32px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
 .big-analyze-btn:hover { background: #b9d3ff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(168, 199, 250, 0.3); }
 .hub-previews { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; max-width: 660px; justify-content: center; }
@@ -152,8 +113,7 @@ svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; 
 #shop-video-preview { max-width:100%; max-height:260px; border-radius:12px; display:none; margin-top:8px; }
 .scan-frame-strip { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; justify-content:center; max-width:520px; }
 .scan-frame-strip img { width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid var(--border-color); }
-/* Video Loading State Styling */
-.scan-status { font-size:13px; color: var(--accent); margin-top:10px; min-height:16px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.scan-status { font-size:12px; color: var(--text-muted); margin-top:10px; min-height:16px; }
  
 /* --- CHAT STREAM --- */
 .chat-container { display: none; flex-grow: 1; overflow-y: auto; padding: 20px 20px 140px 20px; flex-direction: column; align-items: center; scroll-behavior: smooth; }
@@ -178,7 +138,7 @@ svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; 
 .action-link svg { width: 16px; height: 16px; }
 .copied { color: #4ade80 !important; }
 .reading { color: var(--accent) !important; background-color: rgba(168, 199, 250, 0.1) !important; }
-.spinner { width: 16px; height: 16px; border: 2px solid transparent; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
+.spinner { width: 16px; height: 16px; border: 2px solid transparent; border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px;}
 @keyframes spin { to { transform: rotate(360deg); } }
  
 table { width: 100%; border-collapse: collapse; margin: 16px 0; }
@@ -209,18 +169,26 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
 .mic-active { color: #ff5252 !important; animation: pulse-mic 1.5s infinite; }
 @keyframes pulse-mic { 0% { box-shadow: 0 0 0 0 rgba(255,82,82, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255,82,82, 0); } 100% { box-shadow: 0 0 0 0 rgba(255,82,82, 0); } }
  
+.lang-container { position: relative; margin-bottom: 2px; }
+.lang-btn { background-color: #333537; color: var(--text-main); border: none; border-radius: 16px; padding: 8px 12px; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.2s; white-space: nowrap; }
+.lang-btn:hover { background-color: #444746; }
+.lang-menu { display: none; position: absolute; bottom: 40px; right: 0; background-color: #282a2c; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.5); min-width: 150px;}
+.lang-menu.show { display: block; }
+.lang-menu button { display: block; width: 100%; text-align: left; padding: 10px 16px; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 13px; }
+.lang-menu button:hover { background-color: rgba(255,255,255,0.1); }
+ 
 /* --- MODALS --- */
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
 .custom-modal { background-color: #1e1f20; padding: 24px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
 .immersive-modal { background-color: var(--bg-color); width: 100%; max-width: 900px; height: 80vh; border-radius: 16px; display: flex; flex-direction: column; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid var(--border-color); }
 .expand-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid var(--border-color); }
-.expand-body { flex-grow: 1; padding: 24px; display: flex; flex-direction: column; overflow-y:auto; }
+.expand-body { flex-grow: 1; padding: 24px; display: flex; flex-direction: column; }
 #expand-textarea { flex-grow: 1; background: transparent; border: none; color: var(--text-main); font-size: 18px; resize: none; outline: none; line-height: 1.5; }
 .expand-footer { padding: 16px 24px; display: flex; justify-content: flex-end; border-top: 1px solid var(--border-color); }
 .save-btn { background-color: var(--accent); color: #000; border: none; border-radius: 20px; padding: 10px 24px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s;}
 .save-btn:hover { background-color: #b9d3ff; }
-.rename-input, .auth-input { width: 100%; background: #282a2c; border: 1px solid var(--border-color); color: var(--text-main); padding: 12px; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box; margin-bottom: 12px; }
-.rename-input:focus, .auth-input:focus { border-color: var(--accent); }
+.rename-input { width: 100%; background: #282a2c; border: 1px solid var(--border-color); color: var(--text-main); padding: 12px; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box; }
+.rename-input:focus { border-color: var(--accent); }
 .cancel-btn { background: transparent; color: var(--text-muted); border: none; cursor: pointer; padding: 8px 16px; font-weight: 500; border-radius: 8px; }
 .cancel-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.05); }
 .custom-modal h3 { margin: 0 0 16px 0; font-size: 18px; font-weight: 500; }
@@ -229,17 +197,17 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
 .share-link-box { display: flex; align-items: center; justify-content: space-between; background-color: #282a2c; border-radius: 24px; padding: 6px 6px 6px 16px; margin-bottom: 20px; }
 .share-link-text { color: var(--text-main); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
 .copy-link-btn { background-color: #a8c7fa; color: #000; border: none; border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-
-/* Pricing Table Modal Styling */
-.tier-table { width: 100%; margin-bottom: 16px; }
-.tier-table th { background: transparent; color: var(--text-main); border-bottom: 1px solid var(--border-color); padding: 8px; }
-.tier-table td { border: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 12px 8px; font-size: 13px; }
-.tier-table tr:last-child td { border-bottom: none; }
+.social-icons { display: flex; justify-content: space-around; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 20px;}
+.social-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted); font-size: 11px; }
+.social-btn:hover { color: var(--text-main); }
+.s-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; }
+.s-linkedin { background-color: #0077b5; } .s-facebook { background-color: #1877f2; }
+.s-twitter { background-color: #000000; border: 1px solid #333; } .s-reddit { background-color: #ff4500; }
+.s-circle svg { width: 22px; height: 22px; fill: currentColor; stroke: none; }
  
 @media (max-width: 640px) {
   .suggestions { grid-template-columns: 1fr; }
   .mode-toggle { transform: translateX(-50%) scale(0.85); }
-  .onboarding-steps { flex-direction: column; gap: 12px; }
 }
 </style>
 </head>
@@ -251,22 +219,11 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
     <svg width="16" height="16" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
     New Chat
   </button>
-  <!-- FIX 1: Provide clear instruction to replace WhatsApp number -->
-  <a class="whatsapp-btn" href="https://wa.me/YOUR_REAL_NUMBER_HERE?text=Hi%20DataLogic%20AI%2C%20I%27d%20like%20to%20connect%20my%20business." target="_blank" rel="noopener">
+  <a class="whatsapp-btn" href="https://wa.me/910000000000?text=Hi%20DataLogic%20AI%2C%20I%27d%20like%20to%20connect%20my%20business." target="_blank" rel="noopener">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4a7.94 7.94 0 0 0-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 0 0 3.85 1h.01A7.94 7.94 0 0 0 20 12a7.9 7.9 0 0 0-2.4-5.68Zm-5.55 12.2h-.01a6.6 6.6 0 0 1-3.36-.92l-.24-.14-2.5.65.67-2.43-.16-.25a6.6 6.6 0 1 1 5.6 3.09Zm3.62-4.94c-.2-.1-1.17-.58-1.35-.64-.18-.07-.31-.1-.44.1-.13.2-.5.64-.62.77-.11.13-.23.15-.42.05-.2-.1-.83-.3-1.58-.97-.58-.52-.98-1.16-1.09-1.36-.11-.2-.01-.3.09-.4.09-.1.2-.23.3-.35.1-.11.13-.2.2-.33.06-.13.03-.25-.02-.35-.05-.1-.44-1.06-.6-1.45-.16-.38-.32-.33-.44-.34h-.37c-.13 0-.34.05-.52.25-.18.2-.68.67-.68 1.62 0 .96.7 1.89.79 2.02.1.13 1.37 2.1 3.33 2.94.46.2.83.32 1.11.41.47.15.9.13 1.24.08.38-.06 1.17-.48 1.33-.94.16-.46.16-.86.11-.94-.05-.08-.18-.13-.38-.23Z"/></svg>
     Try on WhatsApp
   </a>
   <div class="history-list" id="history-list"></div>
-
-  <!-- FIX 4 & 5: Guardrails (Usage Counter) and Privacy Policy -->
-  <div class="sidebar-footer">
-    <div style="display:flex; justify-content:space-between;">
-      <span>Free Scans Used:</span>
-      <span id="usage-text">0 / 5</span>
-    </div>
-    <div class="usage-bar"><div class="usage-fill" id="usage-fill"></div></div>
-    <a onclick="document.getElementById('privacy-modal').style.display='flex'">Privacy Policy & Terms</a>
-  </div>
 </aside>
  
 <main class="main-content">
@@ -279,48 +236,13 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
       <button class="mode-btn" id="mode-upload" onclick="switchMode('upload')"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Upload</button>
       <button class="mode-btn" id="mode-scan" onclick="switchMode('scan')"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg> Scan Shop</button>
     </div>
-
-    <!-- FIX 6: Consolidated Language Selector in Header -->
-    <div class="global-lang-container">
-      <button class="lang-btn" id="global-lang-btn">🌐 English ⌄</button>
-      <div class="lang-menu" id="global-lang-menu">
-        <button onclick="setLanguage('English', 'en-US', 'English')">English</button>
-        <button onclick="setLanguage('Hindi', 'hi-IN', 'हिन्दी')">हिन्दी (Hindi)</button>
-        <button onclick="setLanguage('Marathi', 'mr-IN', 'मराठी')">मराठी (Marathi)</button>
-        <button onclick="setLanguage('Spanish', 'es-ES', 'Español')">Español (Spanish)</button>
-        <button onclick="setLanguage('French', 'fr-FR', 'Français')">Français (French)</button>
-      </div>
-    </div>
+    <div style="width:40px;"></div>
   </header>
  
   <!-- CHAT EMPTY STATE -->
   <div class="empty-state" id="empty-state">
     <h1>Let's grow your business</h1>
     <div class="subhead">Upload a photo, sheet, or just speak — I'll turn it into clear answers.</div>
-    
-    <!-- FEATURE 3 & 4: Simple Onboarding and Demo Button -->
-    <div class="onboarding-steps">
-      <div class="step">
-        <div class="step-num">Step 1</div>
-        <div class="step-desc"><strong>Upload</strong> your sales sheet or a video of your shop.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">Step 2</div>
-        <div class="step-desc"><strong>Analyze</strong> trends instantly with our custom AI models.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">Step 3</div>
-        <div class="step-desc"><strong>Get Advice</strong> on how to cut costs and increase profit.</div>
-      </div>
-    </div>
-
-    <div class="demo-btn-container">
-      <button class="demo-btn" onclick="runDemoData()">
-        <svg width="16" height="16" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-        Try with Sample Data
-      </button>
-    </div>
-
     <div class="suggestions">
       <div class="suggestion-chip" onclick="setPrompt('Analyze this sales data or photo of my register. Identify sales trends, my best and worst selling days, and my top products. Give me 2-4 clear, plain-language action items I can act on this week to increase sales.')">
         <div class="chip-title"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg> Sales Trend Analysis</div>
@@ -359,23 +281,29 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
     <div class="hub-previews" id="hub-file-previews"></div>
     <div class="upload-controls">
       <div class="upload-dropdown-container">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <button class="upload-select-btn" id="hub-depth-btn" style="width:190px;">
-            <span>✨ Pro (Standard)</span>
-            <svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-          </button>
-          <!-- FEATURE 1: Pricing Tier Explanation Trigger -->
-          <button class="tier-info-btn" onclick="document.getElementById('pricing-modal').style.display='flex'" title="What's this?">
-            <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-          </button>
-        </div>
+        <button class="upload-select-btn" id="hub-depth-btn">
+          <span>✨ Pro (Standard)</span>
+          <svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
         <div class="upload-dropdown-menu" id="hub-depth-menu">
           <button onclick="setUploadDepth('flash', '⚡ Flash (Summary)')">⚡ Flash (Summary)</button>
           <button onclick="setUploadDepth('pro', '✨ Pro (Standard)')">✨ Pro (Standard)</button>
           <button onclick="setUploadDepth('ultra', '🔥 Ultra (Deep Dive)')">🔥 Ultra (Deep Dive)</button>
         </div>
       </div>
-      <!-- Removed duplicate language selector here. It is now only in the header -->
+      <div class="upload-dropdown-container">
+        <button class="upload-select-btn" id="hub-lang-btn">
+          <span>🌐 English</span>
+          <svg width="16" height="16" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="upload-dropdown-menu" id="hub-lang-menu">
+          <button onclick="setUploadLang('English', '🌐 English')">🌐 English</button>
+          <button onclick="setUploadLang('Hindi', '🌐 हिन्दी (Hindi)')">🌐 हिन्दी (Hindi)</button>
+          <button onclick="setUploadLang('Marathi', '🌐 मराठी (Marathi)')">🌐 मराठी (Marathi)</button>
+          <button onclick="setUploadLang('Spanish', '🌐 Español (Spanish)')">🌐 Español (Spanish)</button>
+          <button onclick="setUploadLang('French', '🌐 Français (French)')">🌐 Français (French)</button>
+        </div>
+      </div>
     </div>
     <button class="big-analyze-btn" onclick="executeUploadHubAnalysis()">
       <svg width="20" height="20" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -402,7 +330,6 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
       </div>
       <input type="file" id="shop-video-capture" accept="video/*" capture="environment" style="display:none;">
       <input type="file" id="shop-video-upload" accept="video/*" style="display:none;">
-      <!-- FEATURE 6: Improved Loading State Area -->
       <div class="scan-status" id="scan-status"></div>
       <div class="scan-frame-strip" id="scan-frame-strip"></div>
     </div>
@@ -422,74 +349,20 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
       <textarea id="prompt-input" rows="1" placeholder="Ask about your business..."></textarea>
       <button id="expand-btn" class="icon-btn" title="Expand Editor" onclick="openExpandModal()"><svg width="18" height="18" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg></button>
       <button id="mic-btn" class="icon-btn" title="Voice Input"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg></button>
+      <div class="lang-container">
+        <button class="lang-btn" id="lang-btn">🌐 English ⌄</button>
+        <div class="lang-menu" id="lang-menu">
+          <button onclick="setLanguage('English', 'en-US', 'English')">English</button>
+          <button onclick="setLanguage('Hindi', 'hi-IN', 'हिन्दी')">हिन्दी (Hindi)</button>
+          <button onclick="setLanguage('Marathi', 'mr-IN', 'मराठी')">मराठी (Marathi)</button>
+          <button onclick="setLanguage('Spanish', 'es-ES', 'Español')">Español (Spanish)</button>
+          <button onclick="setLanguage('French', 'fr-FR', 'Français')">Français (French)</button>
+        </div>
+      </div>
       <button id="send-btn" class="icon-btn send-btn" title="Send"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
     </div>
   </div>
 </main>
- 
-<!-- MODALS -->
-
-<!-- FEATURE 5 / BUG 3: Basic Auth / Persistence Modal -->
-<div class="modal-overlay" id="auth-modal" style="display:none; background: rgba(0,0,0,0.9);">
-  <div class="custom-modal" style="text-align: center;">
-    <div style="display:flex; justify-content:center; margin-bottom:16px;">
-      <div class="brand-dot" style="width:40px; height:40px; border-radius:12px;"></div>
-    </div>
-    <h3>Welcome to DataLogic AI</h3>
-    <p style="font-size:13px; color:var(--text-muted); margin-bottom:24px;">Enter your email to save your chat history and analysis reports securely.</p>
-    <input type="email" id="auth-email" class="auth-input" placeholder="name@yourbusiness.com" required>
-    <button class="save-btn" style="width:100%; margin-top:12px;" onclick="loginUser()">Continue</button>
-  </div>
-</div>
-
-<!-- BUG 5: Privacy Policy Modal -->
-<div class="modal-overlay" id="privacy-modal">
-  <div class="immersive-modal" style="max-width: 600px; height: auto; max-height: 80vh;">
-    <div class="expand-header">
-      <h3 style="margin:0; font-weight:500;">Privacy & Data Handling</h3>
-      <button class="close-modal" style="position:static;" onclick="closeModal('privacy-modal')"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-    </div>
-    <div class="expand-body" style="font-size: 14px; line-height: 1.6; color: var(--text-muted);">
-      <p><strong>1. Data Uploads & Processing:</strong> When you upload sales sheets, financial data, or video walkthroughs, they are processed securely using Google's Gemini API to generate insights.</p>
-      <p><strong>2. Retention:</strong> Files and videos are processed in memory and are not permanently stored on our servers. Your chat history text is saved locally to your account for your convenience.</p>
-      <p><strong>3. Third-Party Sharing:</strong> We do not sell or share your business data with unauthorized third parties. Processing is strictly limited to the AI generating your report.</p>
-      <p><strong>4. Deletion:</strong> You can clear your chat history and account data at any time by selecting "Delete" on your sessions in the sidebar.</p>
-    </div>
-  </div>
-</div>
-
-<!-- FEATURE 1: Pricing/Tier Modal -->
-<div class="modal-overlay" id="pricing-modal">
-  <div class="custom-modal">
-    <button class="close-modal" onclick="closeModal('pricing-modal')"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-    <h3>Analysis Models</h3>
-    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Choose how deep you want the AI to look at your data. (Currently all tiers are free during beta).</p>
-    <table class="tier-table">
-      <tr>
-        <td><strong>⚡ Flash</strong></td>
-        <td>Fastest. Gives a quick bullet-point summary and 1 simple chart. Best for rapid checks.</td>
-      </tr>
-      <tr>
-        <td><strong>✨ Pro</strong></td>
-        <td>Balanced. Standard business analysis with multiple charts. Best for weekly reviews.</td>
-      </tr>
-      <tr>
-        <td><strong>🔥 Ultra</strong></td>
-        <td>Deep Dive. Exhaustive structural breakdown looking for hidden correlations. Slower.</td>
-      </tr>
-    </table>
-  </div>
-</div>
-
-<!-- BUG 4: Usage Limit Modal -->
-<div class="modal-overlay" id="limit-modal">
-  <div class="custom-modal" style="text-align: center;">
-    <button class="close-modal" onclick="closeModal('limit-modal')"><svg width="20" height="20" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-    <h3 style="color:#ff5252;">Usage Limit Reached</h3>
-    <p style="font-size:14px; color:var(--text-muted); margin-bottom:24px;">You have used all 5 of your free AI scans for this account. Video and data analysis requires significant processing power.</p>
-    <button class="save-btn" style="width:100%; margin-top:12px;" onclick="closeModal('limit-modal')">Upgrade to Pro (Coming Soon)</button>
-  </div>
-</div>
  
 <div class="modal-overlay" id="expand-modal">
   <div class="immersive-modal">
@@ -523,8 +396,8 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
       <button class="copy-link-btn" onclick="copyShareLink(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy</button>
     </div>
     <div class="social-icons">
-      <!-- Standardized social icons section ... -->
       <div class="social-btn" onclick="shareTo('linkedin')"><div class="s-circle s-linkedin"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></div>LinkedIn</div>
+      <div class="social-btn" onclick="shareTo('facebook')"><div class="s-circle s-facebook"><svg viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></div>Facebook</div>
       <div class="social-btn" onclick="shareTo('twitter')"><div class="s-circle s-twitter"><svg viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></div>X</div>
       <div class="social-btn" onclick="shareTo('reddit')"><div class="s-circle s-reddit"><svg viewBox="0 0 24 24"><path d="M24 11.5c0-1.65-1.35-3-3-3-.96 0-1.86.48-2.42 1.24-1.64-1-3.75-1.64-6.07-1.72.08-1.1.4-3.05 1.52-3.7.72-.4 1.73-.24 3 .5C17.2 6.3 18.46 7.5 20 7.5c1.65 0 3-1.35 3-3s-1.35-3-3-3c-1.38 0-2.54.94-2.88 2.22-1.43-.72-2.64-.8-3.6-.25-1.64.94-1.95 3.47-2 4.55-2.33.08-4.45.7-6.1 1.72C4.86 8.98 3.96 8.5 3 8.5c-1.65 0-3 1.35-3 3 0 1.32.84 2.44 2.05 2.84-.03.22-.05.44-.05.66 0 3.86 4.5 7 10 7s10-3.14 10-7c0-.22-.02-.44-.05-.66 1.2-.4 2.05-1.54 2.05-2.84zM2.3 11.5c0-.94.76-1.7 1.7-1.7.6 0 1.16.3 1.48.8-1.15.54-2.13 1.26-2.9 2.14-.18-.38-.28-.8-.28-1.24zm17.7 8.3c-2.33 1.4-5.3 1.4-7.7 1.4-2.4 0-5.37 0-7.7-1.4C3.25 18.4 2.5 16.8 2.5 15c0-3.2 3.9-5.8 7.5-5.8 3.6 0 7.5 2.6 7.5 5.8 0 1.8-.75 3.4-2.1 4.8zm2.9-6.16c-.76-.88-1.74-1.6-2.9-2.14.32-.5.88-.8 1.48-.8.94 0 1.7.76 1.7 1.7 0 .44-.1.86-.28 1.24zm-9.3-1.64c-1.05 0-1.9.85-1.9 1.9s.85 1.9 1.9 1.9 1.9-.85 1.9-1.9-.85-1.9-1.9-1.9zm4.2 0c-1.05 0-1.9.85-1.9 1.9s.85 1.9 1.9 1.9 1.9-.85 1.9-1.9-.85-1.9-1.9-1.9zm-7.6 4.6c.72 1.32 2.2 2.1 4.4 2.1 2.2 0 3.68-.78 4.4-2.1.13-.24-.04-.54-.3-.46-1.5.5-2.7 1-4.1 1-1.4 0-2.6-.5-4.1-1-.26-.1-.43.22-.3.46z"/></svg></div>Reddit</div>
     </div>
@@ -547,48 +420,6 @@ const svgs = {
   download: `<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`
 };
  
-// --- USAGE & LIMIT STATE LOGIC ---
-const MAX_FREE_SCANS = 5;
-function checkUsageLimit() {
-  let usage = parseInt(localStorage.getItem('dl_usage') || '0');
-  if(usage >= MAX_FREE_SCANS) {
-    document.getElementById('limit-modal').style.display = 'flex';
-    return false;
-  }
-  return true;
-}
-function incrementUsage() {
-  let usage = parseInt(localStorage.getItem('dl_usage') || '0');
-  usage += 1;
-  localStorage.setItem('dl_usage', usage);
-  updateUsageUI();
-}
-function updateUsageUI() {
-  let usage = parseInt(localStorage.getItem('dl_usage') || '0');
-  document.getElementById('usage-text').innerText = `${usage} / ${MAX_FREE_SCANS}`;
-  document.getElementById('usage-fill').style.width = `${(usage / MAX_FREE_SCANS) * 100}%`;
-}
-
-// --- AUTH STATE LOGIC ---
-function checkAuth() {
-  const email = localStorage.getItem('dl_user_email');
-  if(!email) {
-    document.getElementById('auth-modal').style.display = 'flex';
-  } else {
-    updateUsageUI();
-  }
-}
-window.loginUser = function() {
-  const emailInput = document.getElementById('auth-email').value;
-  if(emailInput && emailInput.includes('@')) {
-    localStorage.setItem('dl_user_email', emailInput);
-    document.getElementById('auth-modal').style.display = 'none';
-    updateUsageUI();
-  } else {
-    alert('Please enter a valid email.');
-  }
-}
-
 // --- MODE TOGGLE LOGIC ---
 window.switchMode = function(mode) {
   document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
@@ -614,25 +445,33 @@ window.switchMode = function(mode) {
   }
 }
  
-// --- GLOBAL LANGUAGE & DEPTH SETTINGS ---
+// --- LANGUAGE & DEPTH SETTINGS ---
 let targetLanguage = 'English';
 let voiceCode = 'en-US';
 let uploadDepthVal = 'pro';
  
-document.getElementById('global-lang-btn').addEventListener('click', (e) => { 
-  document.getElementById('global-lang-menu').classList.toggle('show'); 
-  e.stopPropagation(); 
-});
+document.getElementById('lang-btn').addEventListener('click', (e) => { document.getElementById('lang-menu').classList.toggle('show'); e.stopPropagation(); });
  
 document.getElementById('hub-depth-btn').addEventListener('click', (e) => {
   document.getElementById('hub-depth-menu').classList.toggle('show');
+  document.getElementById('hub-lang-menu').classList.remove('show');
+  e.stopPropagation();
+});
+document.getElementById('hub-lang-btn').addEventListener('click', (e) => {
+  document.getElementById('hub-lang-menu').classList.toggle('show');
+  document.getElementById('hub-depth-menu').classList.remove('show');
   e.stopPropagation();
 });
  
 window.setLanguage = function(lang, code, display) {
   targetLanguage = lang; voiceCode = code;
-  document.getElementById('global-lang-btn').innerHTML = `🌐 ${display} ⌄`;
-  document.getElementById('global-lang-menu').classList.remove('show');
+  document.getElementById('lang-btn').innerHTML = `🌐 ${display} ⌄`;
+  document.getElementById('lang-menu').classList.remove('show');
+}
+window.setUploadLang = function(lang, display) {
+  targetLanguage = lang;
+  document.getElementById('hub-lang-btn').querySelector('span').innerText = display;
+  document.getElementById('hub-lang-menu').classList.remove('show');
 }
 window.setUploadDepth = function(depth, display) {
   uploadDepthVal = depth;
@@ -641,20 +480,6 @@ window.setUploadDepth = function(depth, display) {
 }
 window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
  
-// --- DEMO DATA FUNCTION ---
-window.runDemoData = function() {
-  switchMode('chat');
-  const demoPrompt = "Analyze this sample weekly sales data for my coffee shop. Identify top products and suggest ways to improve weekend revenue.";
-  const demoApiPayload = "Sample Data: Monday=$400 (Top: Latte), Tuesday=$420 (Top: Latte), Wednesday=$390 (Top: Cappuccino), Thursday=$450 (Top: Muffin), Friday=$600 (Top: Cold Brew), Saturday=$300 (Top: Cold Brew), Sunday=$250 (Top: Drip Coffee). Problem: Weekend sales are inexplicably lower than weekdays.";
-  
-  appendUserMessage(demoPrompt, demoApiPayload, []);
-  
-  const instruction = "Provide a Flash (Level 1) concise high-level summary with bullet points.";
-  const masterPrompt = buildBusinessPrompt(`Analyze the provided sample data. ${instruction}\n\n${demoApiPayload}`, targetLanguage);
-  
-  runAnalysis(masterPrompt, demoPrompt, [], [], false, targetLanguage);
-}
-
 // --- EXPAND MODAL ---
 window.openExpandModal = function() {
   document.getElementById('expand-textarea').value = document.getElementById('prompt-input').value;
@@ -887,8 +712,7 @@ function appendAIMessage(htmlContent) {
       <div style="position:relative;">
         <button class="action-link" onclick="toggleMenu('${menuId}', event)" title="More Options">${svgs.dots}</button>
         <div class="dropdown-menu" id="${menuId}">
-          <button onclick="exportToDocs(this, 'txt')">${svgs.download} Export as TXT</button>
-          <button onclick="exportToDocs(this, 'csv')">${svgs.download} Export as CSV</button>
+          <button onclick="exportToDocs(this)">${svgs.download} Export to Docs</button>
         </div>
       </div>
     </div>`;
@@ -941,8 +765,6 @@ function smoothReveal(bubbleElement, rawMarkdown, wrapperElement, onComplete) {
  
 // --- MAIN API EXECUTION ---
 async function runAnalysis(apiText, displayText, imagesToSend, imagesToSave, isRegen = false, explicitLang = null) {
-  if (!checkUsageLimit()) return;
-  
   document.getElementById('empty-state').style.display = 'none';
   let finalPromptToAI = apiText;
   let langToEnforce = explicitLang || targetLanguage;
@@ -963,7 +785,6 @@ async function runAnalysis(apiText, displayText, imagesToSend, imagesToSave, isR
     if (!response.ok) {
       loadingBubble.innerHTML = `Something went wrong: ${data.error || 'Request failed'}. Please try again.`; loadingBubble.style.color = '#ff4444';
     } else {
-      incrementUsage(); // Deduct scan from allowance
       const rawMarkdown = data.candidates[0].content.parts[0].text;
       smoothReveal(loadingBubble, rawMarkdown, wrapper, () => {
         if (!isRegen) { saveSession(displayText, apiText, imagesToSave, highlightActionBox(marked.parse(rawMarkdown))); }
@@ -1043,17 +864,16 @@ function handleShopVideo(file) {
   shopFrames = [];
   scanFrameStrip.innerHTML = '';
   scanAnalyzeBtn.disabled = true;
-  scanStatus.innerHTML = '<div class="spinner"></div> Preparing video...';
+  scanStatus.innerText = 'Loading video…';
  
   const url = URL.createObjectURL(file);
   shopVideoPreview.src = url;
   shopVideoPreview.style.display = 'block';
  
   shopVideoPreview.onloadedmetadata = async () => {
-    scanStatus.innerHTML = '<div class="spinner"></div> Extracting key moments... <span id="vid-prog" style="color:var(--text-main);">0%</span>';
+    scanStatus.innerText = 'Pulling out key moments from your walkthrough…';
     await extractFramesFromVideo(shopVideoPreview, 6);
-    scanStatus.innerHTML = `✅ ${shopFrames.length} moments captured. Ready to analyze.`;
-    scanStatus.style.color = '#4ade80';
+    scanStatus.innerText = `${shopFrames.length} moments captured. Ready to analyze.`;
     scanAnalyzeBtn.disabled = shopFrames.length === 0;
   };
 }
@@ -1064,7 +884,7 @@ async function extractFramesFromVideo(videoEl, frameCount) {
     const interval = duration / (frameCount + 1);
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    const progText = document.getElementById('vid-prog');
+    let captured = 0;
  
     function captureAt(time) {
       return new Promise((res) => {
@@ -1089,7 +909,6 @@ async function extractFramesFromVideo(videoEl, frameCount) {
     (async () => {
       for (let i = 1; i <= frameCount; i++) {
         await captureAt(Math.min(i * interval, duration - 0.1));
-        if (progText) progText.innerText = Math.round((i / frameCount) * 100) + '%';
       }
       resolve();
     })();
@@ -1112,29 +931,17 @@ window.executeShopScan = function() {
   // reset scan hub
   shopVideoFile = null; shopFrames = [];
   shopVideoPreview.style.display = 'none'; shopVideoPreview.src = '';
-  scanFrameStrip.innerHTML = ''; scanStatus.innerText = ''; scanAnalyzeBtn.disabled = true; scanStatus.style.color = '';
+  scanFrameStrip.innerHTML = ''; scanStatus.innerText = ''; scanAnalyzeBtn.disabled = true;
  
   runAnalysis(masterPrompt, displayPrompt, imagesToSend, imagesToSave, false, langVal);
 }
  
 // --- MISC MODALS (Export/Rename/Share) ---
-window.exportToDocs = function(btn, type = 'txt') {
+window.exportToDocs = function(btn) {
   const text = btn.closest('.message-wrapper').querySelector('.ai-bubble').innerText;
-  let exportContent = text;
-  let filename = 'AI_Analysis_Export.txt';
-  let mimeType = 'text/plain';
-
-  // FIX 2/FEATURE 2: Added CSV export parsing
-  if(type === 'csv') {
-    filename = 'AI_Analysis_Export.csv';
-    mimeType = 'text/csv';
-    // Basic conversion: replace newlines with quotes and commas
-    exportContent = text.split('\n').map(line => `"${line.replace(/"/g, '""')}"`).join('\n');
-  }
-
-  const blob = new Blob([exportContent], { type: mimeType });
+  const blob = new Blob([text], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = filename;
+  const a = document.createElement('a'); a.href = url; a.download = 'AI_Analysis_Export.txt';
   a.click(); URL.revokeObjectURL(url);
   document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
 }
@@ -1255,9 +1062,12 @@ window.onclick = function(e) {
   if (!e.target.closest('.dropdown-menu') && !e.target.closest('.history-options-btn') && !e.target.closest('.action-link')) {
     document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
   }
-  if (!e.target.closest('.global-lang-container')) document.getElementById('global-lang-menu').classList.remove('show');
+  if (!e.target.closest('.lang-container')) document.getElementById('lang-menu').classList.remove('show');
   if (!e.target.closest('#hub-depth-btn') && !e.target.closest('#hub-depth-menu')) {
     const menu = document.getElementById('hub-depth-menu'); if (menu) menu.classList.remove('show');
+  }
+  if (!e.target.closest('#hub-lang-btn') && !e.target.closest('#hub-lang-menu')) {
+    const menu = document.getElementById('hub-lang-menu'); if (menu) menu.classList.remove('show');
   }
 }
  
@@ -1288,8 +1098,7 @@ function loadSession(id) {
             <div style="position:relative;">
               <button class="action-link" onclick="toggleMenu('${menuId}', event)" title="More Options">${svgs.dots}</button>
               <div class="dropdown-menu" id="${menuId}">
-                <button onclick="exportToDocs(this, 'txt')">${svgs.download} Export as TXT</button>
-                <button onclick="exportToDocs(this, 'csv')">${svgs.download} Export as CSV</button>
+                <button onclick="exportToDocs(this)">${svgs.download} Export to Docs</button>
               </div>
             </div>
           </div>`;
@@ -1303,17 +1112,11 @@ function loadSession(id) {
 }
  
 // --- INIT ---
-checkAuth();
 renderSidebar();
-
-// FIX 3: Persistence loading - load last session instead of empty state if returning user
-if(sessions.length > 0 && localStorage.getItem('dl_user_email')) {
-  loadSession(sessions[0].id);
-}
-
 document.getElementById('toggle-sidebar').addEventListener('click', () => {
   document.getElementById('sidebar').classList.toggle('hidden');
 });
 </script>
 </body>
 </html>
+ 
