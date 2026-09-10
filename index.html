@@ -270,13 +270,6 @@ textarea { flex-grow: 1; background: transparent; border: none; color: var(--tex
   <div class="empty-state" id="empty-state">
     <h1>Let's grow your business</h1>
     
-    <!-- Simple 3-Step Onboarding -->
-    <div class="onboarding-steps" style="display: flex; gap: 16px; margin-bottom: 32px; text-align: left; background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); width: 100%; max-width: 660px;">
-      <div style="flex: 1;"><strong>1. Upload</strong><br><span style="font-size: 12px; color: var(--text-muted);">Drop your sales sheets or shop video.</span></div>
-      <div style="flex: 1;"><strong>2. Analyze</strong><br><span style="font-size: 12px; color: var(--text-muted);">AI reviews your data securely.</span></div>
-      <div style="flex: 1;"><strong>3. Get Advice</strong><br><span style="font-size: 12px; color: var(--text-muted);">Receive simple, actionable steps.</span></div>
-    </div>
-
     <!-- Sample/Demo Data Button -->
     <button onclick="loadSampleData()" style="margin-bottom: 24px; background: rgba(168,199,250,0.15); color: var(--accent); border: 1px solid var(--accent); padding: 10px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s;">
       ✨ Try with Sample Data
@@ -1047,7 +1040,7 @@ window.exportToDocs = function(btn, format) {
           <h2>DataLogic AI - Analysis Report</h2>
           <hr>
           <div>${btn.closest('.message-wrapper').querySelector('.ai-bubble').innerHTML}</div>
-          <script>window.onload = function() { window.print(); window.close(); }</script>
+          <script>window.onload = function() { window.print(); window.close(); }<\/script>
         </body>
       </html>
     `);
